@@ -19,49 +19,34 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
-  //   onAuthStateChanged(getAuth(), (usr) => {
-  //     if (usr) {
-  //       setUser(usr);
-  //       setIsLoading(false);
-  //     } else {
-  //       setIsLoading(false);
-  //     }
-  //   });
+  onAuthStateChanged(getAuth(), (usr) => {
+    if (usr) {
+      setUser(usr);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  });
 
-  const onLogin = (email, password) => {
+  const onLogin = async (email, password) => {
     setIsLoading(true);
     setError(null);
-    loginRequest(email, password)
-      .then((u) => {
-        setUser(u.user);
-        setIsLoading(false);
-        setError(null);
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        setError(e.toString());
-      });
+    try {
+      const user = await loginRequest(email, password);
+      setUser(user.user);
+      setIsLoading(false);
+      setError(null);
+    } catch (error) {
+      setIsLoading(false);
+      setError(error.toString());
+    }
   };
 
-  //   const onRegister = (email, password) => {
-  //     setIsLoading(true);
-
-  //     registerRequest(email, password)
-  //       .then((u) => {
-  //         setUser(u);
-  //         setIsLoading(false);
-  //       })
-  //       .catch((e) => {
-  //         setIsLoading(false);
-  //         setError(e.toString());
-  //       });
-  //   };
   const onRegister = async (email, password) => {
     setIsLoading(true);
 
     try {
       const user = await registerRequest(email, password);
-
       setUser(user.user);
       setIsLoading(false);
       setError(null);
@@ -72,9 +57,10 @@ export const AuthenticationContextProvider = ({ children }) => {
     }
   };
 
-  const onLogout = () => {
+  const onLogout = async () => {
+    console.log('byee');
+    await signOut(getAuth());
     setUser(null);
-    signOut(getAuth());
   };
 
   const resetError = () => {

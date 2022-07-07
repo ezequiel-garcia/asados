@@ -4,9 +4,7 @@ import UserStack from './userStack';
 import AuthStack from './authStack';
 
 export default function RootNavigation() {
-  const authCtx = useContext(AuthenticationContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
 
-  const user = authCtx.user;
-
-  return user ? <UserStack /> : <AuthStack />;
+  return isAuthenticated ? <UserStack /> : <AuthStack />;
 }

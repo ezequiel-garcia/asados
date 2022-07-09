@@ -1,18 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from '../../constants/styles';
 import Button from '../ui/Button';
 import Input from './Input';
-// import Animation from './Animation';
 
 import { AuthenticationContext } from '../../store/auth/auth-context';
 
@@ -59,19 +51,23 @@ const ForgotPassword = () => {
         };
       });
     } else {
-      // If inputs are ok Login
-      authCtx.onLogin(inputs.email.value, inputs.password.value);
+      // If email it's ok, send the email verificaftion
+      const valid = await authCtx.forgotPassword(inputs.email.value);
+      console.log(valid);
+      if (valid) {
+        Alert.alert('Email Sent', 'The reset password was sent to your email');
+        Navigation.navigate('Login');
+      }
     }
   }
 
   return (
     <View style={styles.container}>
-      {/* <Animation /> */}
-      <Text style={styles.title}>Login</Text>
-
       <View style={{ width: 300 }}>
+        <Text style={styles.title}>Forgot Password?</Text>
+
         <Input
-          label="Email Address"
+          label="Enter email"
           onUpdateValue={(e) => inputChangeHandler('email', e)}
           value={inputs.email.value}
           keyboardType="email-address"
@@ -80,12 +76,13 @@ const ForgotPassword = () => {
 
         {submitError && (
           <Text style={styles.errorText}>
-            Login Authentication Failed. Check your data and try again.
+            There was a problem trying to send the email. Verify the data and
+            try again
           </Text>
         )}
 
         <View style={styles.buttons}>
-          <Button onPress={submitHandler}>LOGIN</Button>
+          <Button onPress={submitHandler}>SEND EMAIL</Button>
         </View>
       </View>
     </View>
@@ -104,9 +101,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 40,
+    fontSize: 30,
     marginBottom: 20,
-    textAlign: 'center',
   },
   text: {
     color: 'white',

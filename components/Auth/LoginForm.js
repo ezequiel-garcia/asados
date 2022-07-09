@@ -103,7 +103,12 @@ function AuthForm() {
             </Text>
           )}
 
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              authCtx.resetError();
+              Navigation.navigate('ForgotPassword');
+            }}
+          >
             <Text style={styles.text}>Forgot your password?</Text>
           </TouchableOpacity>
 
@@ -119,7 +124,6 @@ function AuthForm() {
       <View style={styles.signupContainer}>
         <TouchableOpacity
           onPress={() => {
-            //authCtx.error = null;
             authCtx.resetError();
             Navigation.navigate('SignIn');
           }}

@@ -1,6 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, createContext } from 'react';
-import { onAuthStateChanged, getAuth, signOut } from 'firebase/auth';
+import {
+  onAuthStateChanged,
+  getAuth,
+  signOut,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
 
 import { loginRequest, registerRequest } from './auth-service';
 
@@ -67,6 +72,23 @@ export const AuthenticationContextProvider = ({ children }) => {
     setError(null);
   };
 
+  const forgotPassword = (email) => {
+    setError(false);
+    setIsLoading(true);
+    return sendPasswordResetEmail(getAuth(), email)
+      .then(() => {
+        setIsLoading(false);
+        setError(null);
+        return true;
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+        console.log('error: ' + error);
+        return false;
+      });
+  };
+
   return (
     <AuthenticationContext.Provider
       value={{
@@ -78,6 +100,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         onRegister,
         onLogout,
         resetError,
+        forgotPassword,
       }}
     >
       {children}

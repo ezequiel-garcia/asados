@@ -1,10 +1,17 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SocialMediaLogin = () => {
   return (
     <View style={styles.containerSocialMedia}>
-      <Text style={{ color: 'white' }}>Or login with</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 1, height: 0.5, backgroundColor: '#ffffffa7' }} />
+        <View>
+          <Text style={styles.text}>Or login with</Text>
+        </View>
+        <View style={{ flex: 1, height: 0.5, backgroundColor: '#ffffffa7' }} />
+      </View>
       <View style={styles.socialMediaButtons}>
         <View style={styles.socialMediaButton}>
           <TouchableOpacity
@@ -38,7 +45,7 @@ export default SocialMediaLogin;
 const styles = StyleSheet.create({
   containerSocialMedia: {
     width: 300,
-    marginTop: 25,
+    marginTop: 45,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -51,5 +58,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  text: {
+    fontFamily: 'Montserrat_200ExtraLight',
+    color: 'white',
+    marginLeft: 10,
+    marginRight: 10,
   },
 });

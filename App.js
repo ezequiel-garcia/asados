@@ -1,35 +1,53 @@
-// import { LogBox } from 'react-native';
-
-// LogBox.ignoreLogs(['ViewPropTypes will be removed']);
-
-import { LogBox } from 'react-native';
-
-LogBox.ignoreLogs([
-  "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
-  'NativeBase: The contrast ratio of',
-  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
-]);
-
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-//import LoginScreen from './screens/LoginScreen';
 import Navigation from './navigation/index';
 
-//VAMOS VIENDO ESTO
+//import the firebase app
 import app from './config/firebase';
 
 import { AuthenticationContextProvider } from './store/auth/auth-context';
 
+import AppLoading from 'expo-app-loading';
+//Google fonts
+import {
+  useFonts,
+  Montserrat_100Thin,
+  Montserrat_200ExtraLight,
+  Montserrat_300Light,
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+  Montserrat_700Bold,
+  Montserrat_800ExtraBold,
+  Montserrat_900Black,
+} from '@expo-google-fonts/montserrat';
+
 export default function App() {
-  return (
-    <>
-      <StatusBar style="light" />
-      <AuthenticationContextProvider>
-        <Navigation />
-      </AuthenticationContextProvider>
-    </>
-  );
+  let [fontsLoaded] = useFonts({
+    Montserrat_100Thin,
+    Montserrat_200ExtraLight,
+    Montserrat_300Light,
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
+    Montserrat_800ExtraBold,
+    Montserrat_900Black,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <>
+        <StatusBar style="light" />
+        <AuthenticationContextProvider>
+          <Navigation />
+        </AuthenticationContextProvider>
+      </>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

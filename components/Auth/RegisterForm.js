@@ -180,14 +180,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    color: 'white',
+    color: '#ffffff',
     fontSize: 40,
     marginBottom: 20,
     textAlign: 'center',
+    fontFamily: 'Montserrat_400Regular',
   },
   text: {
     color: 'white',
     fontWeight: '300',
+    fontFamily: 'Montserrat_200ExtraLight',
   },
   errorText: {
     color: Colors.error200,
@@ -199,6 +201,7 @@ const styles = StyleSheet.create({
 
   signup: {
     color: Colors.secondary400,
+    fontFamily: 'Montserrat_500Medium',
   },
   signupContainer: {
     marginTop: 30,

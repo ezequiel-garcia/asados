@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const SocialMediaLogin = () => {
   return (
@@ -18,10 +18,12 @@ const SocialMediaLogin = () => {
             style={{
               backgroundColor: '#6262fb',
               padding: 20,
+              width: 65,
               borderRadius: 50,
+              alignItems: 'center',
             }}
           >
-            <Text style={{ color: 'white' }}>FB</Text>
+            <FontAwesome5 name="facebook-f" size={24} color="#332564" />
           </TouchableOpacity>
         </View>
         <View>
@@ -32,7 +34,7 @@ const SocialMediaLogin = () => {
               borderRadius: 50,
             }}
           >
-            <Text style={{ color: 'white' }}>GOO</Text>
+            <FontAwesome5 name="google" size={24} color="#332564" />
           </TouchableOpacity>
         </View>
       </View>

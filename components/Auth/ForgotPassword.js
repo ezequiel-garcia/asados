@@ -103,11 +103,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     marginBottom: 20,
+    fontFamily: 'Montserrat_300Light',
   },
-  text: {
-    color: 'white',
-    fontWeight: '300',
-  },
+
   errorText: {
     color: Colors.error200,
     marginBottom: 10,

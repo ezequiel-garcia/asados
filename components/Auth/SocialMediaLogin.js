@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 const SocialMediaLogin = () => {
   return (
@@ -17,24 +16,31 @@ const SocialMediaLogin = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#6262fb',
-              padding: 20,
-              width: 65,
+
               borderRadius: 50,
               alignItems: 'center',
             }}
           >
-            <FontAwesome5 name="facebook-f" size={24} color="#332564" />
+            <Image
+              source={require('../../assets/facebook-login.png')}
+              style={{ width: 70, height: 70 }}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
         </View>
         <View>
           <TouchableOpacity
             style={{
-              backgroundColor: '#6262fb',
-              padding: 20,
+              backgroundColor: '#ffffff',
+
               borderRadius: 50,
             }}
           >
-            <FontAwesome5 name="google" size={24} color="#332564" />
+            <Image
+              source={require('../../assets/google-login.png')}
+              style={{ width: 70, height: 70 }}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
         </View>
       </View>

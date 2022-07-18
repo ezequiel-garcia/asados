@@ -7,6 +7,9 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 
+//USER DATA
+import users from '../../users';
+
 import { loginRequest, registerRequest } from './auth-service';
 
 export const AuthenticationContext = createContext({
@@ -14,6 +17,9 @@ export const AuthenticationContext = createContext({
   isLoading: false,
   user: null,
   error: null,
+  //VER SI LO DEJO ACA O NO
+  userData: null,
+  // ----------------
   onLogin: (email, password) => {},
   onRegister: (emailIsValid, password) => {},
   onLogout: () => {},
@@ -23,6 +29,9 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+
+  // USER DATAAA
+  const userData = users[Math.round(Math.random())];
 
   onAuthStateChanged(getAuth(), (usr) => {
     if (usr) {
@@ -41,6 +50,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       setUser(user.user);
       setIsLoading(false);
       setError(null);
+      console.log(userData);
     } catch (error) {
       setIsLoading(false);
       setError(error.toString());
@@ -96,6 +106,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         user,
         isLoading,
         error,
+        userData,
         onLogin,
         onRegister,
         onLogout,

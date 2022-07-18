@@ -9,7 +9,7 @@ const Logout = () => {
 
   return (
     <TouchableOpacity onPress={() => authCtx.onLogout()}>
-      <MaterialCommunityIcons name="logout" size={24} color="black" />
+      <MaterialCommunityIcons name="logout" size={24} color="white" />
     </TouchableOpacity>
   );
 };

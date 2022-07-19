@@ -14,20 +14,26 @@ export default function MyTabs() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: Colors.secondary400,
+        tabBarActiveTintColor: Colors.secondary300,
         tabBarInactiveTintColor: Colors.primary800,
-        // tabBarStyle: {
-        //   backgroundColor: Colors.primary600,
-        //   borderRadius: 50,
-        // },
+        tabBarStyle: {
+          //   backgroundColor: Colors.primary600,
+          //   borderRadius: 50,
+          //   backgroundColor: 'transparent',
+        },
 
-        tabBarStyle: { position: 'absolute', borderTopWidth: 0 },
+        tabBarStyle: {
+          //   position: 'absolute',
+          borderTopWidth: 0,
+
+          //   backgroundColor: 'pink',
+        },
         tabBarBackground: () => (
           <LinearGradient
-            colors={['#1a262f0f', '#0d1f2d00']}
-            // style={{
-            //   height: 100,
-            // }}
+            colors={['#354d5f6c', '#0d1f2d06']}
+            style={{
+              height: 100,
+            }}
           />
         ),
       }}
@@ -37,7 +43,7 @@ export default function MyTabs() {
       //         colors={['#0d1f2d1f', '#0d1f2d00']}
       //         start={{ x: 0, y: 0 }}
       //         end={[0, 1]}
-      //         style={{ padding: 30 }}
+      //         // style={{ padding: 30 }}
       //       >
       //         <BottomTabBar
       //           {...props}
@@ -76,6 +82,7 @@ export default function MyTabs() {
         options={{
           tabBarLabelStyle: { fontSize: 15 },
           tabBarBadge: 3,
+          tabBarBadgeStyle: { backgroundColor: '#f05555' },
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="wechat" color={color} size={size} />
           ),

@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
+import EventManager from '../components/events/EventManager';
 // NEW EVENT
 //CHATS
 
@@ -16,12 +17,21 @@ export default function MyTabs() {
       screenOptions={{
         tabBarActiveTintColor: Colors.secondary300,
         tabBarInactiveTintColor: Colors.primary800,
+        headerTintColor: 'white',
+        headerShadowVisible: false,
+        headerTitleStyle: {
+          fontSize: 25,
+          fontFamily: 'Montserrat_500Medium',
+          borderBottomWidth: 0,
+        },
         tabBarStyle: {
           //   backgroundColor: Colors.primary600,
           //   borderRadius: 50,
           //   backgroundColor: 'transparent',
         },
-
+        headerStyle: {
+          backgroundColor: Colors.primary800,
+        },
         tabBarStyle: {
           //   position: 'absolute',
           borderTopWidth: 0,
@@ -65,14 +75,15 @@ export default function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="New"
-        component={HomeScreen}
+        name="Create Event"
+        component={EventManager}
         options={{
           tabBarLabelStyle: { fontSize: 15 },
           tabBarLabel: '',
           tabBarIcon: ({ color }) => (
             <FontAwesome name="plus" size={40} color={color} />
           ),
+          headerShadowVisible: false,
         }}
       />
 

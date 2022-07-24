@@ -7,3 +7,10 @@ export function getDate(date) {
 
   return dateObj;
 }
+
+export function getTime(time) {
+  // let date = new Date();
+  let hours = (time.getHours() < 10 ? '0' : '') + time.getHours();
+  let minutes = (time.getMinutes() < 10 ? '0' : '') + time.getMinutes();
+  return hours + ':' + minutes;
+}

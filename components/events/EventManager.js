@@ -15,10 +15,14 @@ import Input from '../ui/Input';
 
 import Background from '../ui/Background';
 import Title from '../ui/Title';
+import DateAndTimePicker from './DateAndTimePicker';
+import { getTime } from '../../util/date';
+import ShareOptions from './ShareOptions';
 
-const EventManager = () => {
+const EventManager = ({ onEdit }) => {
   //  const authCtx = useContext(AuthenticationContext);
 
+  //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
   const [inputs, setInputs] = useState({
     name: {
       value: '',
@@ -34,6 +38,11 @@ const EventManager = () => {
       isValid: true,
     },
   });
+  const [date, setDate] = useState(onEdit ? '15/11/1993' : new Date());
+  const [time, setTime] = useState(onEdit ? '12:30' : getTime(new Date()));
+  const [shareTasks, setShareTasks] = useState(true);
+  const [shareBills, setShareBills] = useState(false);
+
   const [submitError, setSubmitError] = useState(false);
 
   //   useEffect(() => {
@@ -51,6 +60,13 @@ const EventManager = () => {
         [inputIdentifier]: { value: enteredValue, isValid: true },
       };
     });
+  }
+
+  function onConfirmDate(date) {
+    setDate(date);
+  }
+  function onConfirmTime(time) {
+    setTime(getTime(time));
   }
 
   function submitHandler() {}
@@ -91,7 +107,7 @@ const EventManager = () => {
               inputStyle={styles.inputStyle}
               onUpdateValue={(e) => inputChangeHandler('name', e)}
               value={inputs.name.value}
-              keyboardType="text"
+
               //isInvalid={!inputs.email.isValid}
             />
 
@@ -117,6 +133,21 @@ const EventManager = () => {
                 Login Authentication Failed. Check your data and try again.
               </Text>
             )}
+
+            {/* HAVE TO PASS THEM THE FUNCTIONS FOR SELECT, THE TIME AND THE DATE */}
+            <DateAndTimePicker
+              date={date}
+              time={time}
+              onConfirmDate={onConfirmDate}
+              onConfirmTime={onConfirmTime}
+            />
+
+            <ShareOptions
+              setShareBills={setShareBills}
+              setShareTasks={setShareTasks}
+              shareTasks={shareTasks}
+              shareBills={shareBills}
+            />
 
             <View style={styles.buttons}>
               <Button onPress={submitHandler}>CREATE</Button>
@@ -157,7 +188,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontSize: 16,
-    backgroundColor: Colors.primary600,
+    backgroundColor: Colors.primary500,
     color: 'white',
   },
 });

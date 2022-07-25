@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Keyboard,
+} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '../../constants/styles';
@@ -24,7 +30,10 @@ const DateTimePicker = ({ mode, text, onConfirm, iconName }) => {
     <View>
       <TouchableOpacity
         style={[styles.button, { width: mode === 'date' ? 130 : 100 }]}
-        onPress={showDatePicker}
+        onPress={() => {
+          Keyboard.dismiss();
+          showDatePicker();
+        }}
       >
         <Text style={styles.text}>{text}</Text>
         <Ionicons name={iconName} size={24} color="#e3e2e2" />

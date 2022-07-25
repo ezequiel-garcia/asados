@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +20,7 @@ import Title from '../ui/Title';
 import DateAndTimePicker from './DateAndTimePicker';
 import { getTime } from '../../util/date';
 import ShareOptions from './ShareOptions';
+import ErrorText from '../ui/ErrorText';
 
 const EventManager = ({ onEdit }) => {
   //  const authCtx = useContext(AuthenticationContext);
@@ -69,92 +72,116 @@ const EventManager = ({ onEdit }) => {
     setTime(getTime(time));
   }
 
-  function submitHandler() {}
-
   //   const Navigation = useNavigation();
 
   //   async function submitHandler() {
-  //     // Validate before submit
-  //     const emailIsValid =
-  //       inputs.email.value.includes('@') &&
-  //       inputs.email.value.includes('.') &&
-  //       inputs.email.value.trim().length > 4;
-  //     const passwordIsValid = inputs.password.value.trim().length > 6;
+  function submitHandler() {
+    // Validate before submit
+    //THINK if I want to do optional de description and location
+    const nameIsValid = inputs.name.value.trim().length > 0;
+    const descriptionIsValid = inputs.description.value.trim().length > 0;
+    const locationIsValid = inputs.location.value.trim().length > 2;
 
-  //     if (!emailIsValid || !passwordIsValid) {
-  //       setInputs((currentInputs) => {
-  //         return {
-  //           email: { value: currentInputs.email.value, isValid: emailIsValid },
-  //           password: {
-  //             value: currentInputs.password.value,
-  //             isValid: passwordIsValid,
-  //           },
-  //         };
-  //       });
-  //     } else {
-  //       // If inputs are ok Login
-  //       authCtx.onLogin(inputs.email.value, inputs.password.value);
-  //     }
-  //   }
+    if (!nameIsValid || !descriptionIsValid || !locationIsValid) {
+      setInputs((currentInputs) => {
+        return {
+          name: { value: currentInputs.name.value, isValid: nameIsValid },
+          description: {
+            value: currentInputs.description.value,
+            isValid: descriptionIsValid,
+          },
+          location: {
+            value: currentInputs.location.value,
+            isValid: locationIsValid,
+          },
+        };
+      });
+    } else {
+      //       // If inputs are ok Login
+      //       authCtx.onLogin(inputs.email.value, inputs.password.value);
+      const event = {
+        name: inputs.name.value,
+        description: inputs.description.value,
+        location: inputs.location.value,
+        date,
+        time,
+        shareBills,
+        shareTasks,
+      };
+      console.log(event);
+    }
+  }
 
   return (
     <Background>
-      <View style={styles.container}>
-        <KeyboardAvoidingView behavior="position">
-          <View style={{ width: 300 }}>
-            <Input
-              label="Name"
-              inputStyle={styles.inputStyle}
-              onUpdateValue={(e) => inputChangeHandler('name', e)}
-              value={inputs.name.value}
+      {/* <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled"> */}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <KeyboardAvoidingView behavior="position">
+            <View style={{ width: 300 }}>
+              {(!inputs.description.isValid ||
+                !inputs.name.isValid ||
+                !inputs.location.isValid) && (
+                <ErrorText>Please fill all the data</ErrorText>
+              )}
 
-              //isInvalid={!inputs.email.isValid}
-            />
+              <Input
+                label="Name"
+                inputStyle={styles.inputStyle}
+                onUpdateValue={(e) => inputChangeHandler('name', e)}
+                value={inputs.name.value}
+                isInvalid={!inputs.name.isValid}
+              />
 
-            <Input
-              label="Description"
-              inputStyle={{ ...styles.inputStyle, height: 80 }}
-              onUpdateValue={(e) => inputChangeHandler('description', e)}
-              value={inputs.description.value}
-              style={{ width: 90 }}
-              multiline
-              //isInvalid={!inputs.password.isValid}
-            />
+              <Input
+                label="Description"
+                inputStyle={{ ...styles.inputStyle, height: 80 }}
+                onUpdateValue={(e) => inputChangeHandler('description', e)}
+                value={inputs.description.value}
+                style={{ width: 90 }}
+                multiline
+                isInvalid={!inputs.description.isValid}
+              />
+              <Input
+                label="Location"
+                inputStyle={styles.inputStyle}
+                onUpdateValue={(e) => inputChangeHandler('location', e)}
+                value={inputs.location.value}
+                isInvalid={!inputs.location.isValid}
+              />
+              {/* {submitError && (
+                <Text style={styles.errorText}>
+                  Login Authentication Failed. Check your data and try again.
+                </Text>
+              )} */}
 
-            <Input
-              label="Location"
-              inputStyle={styles.inputStyle}
-              onUpdateValue={(e) => inputChangeHandler('location', e)}
-              value={inputs.location.value}
-              //isInvalid={!inputs.password.isValid}
-            />
-            {submitError && (
-              <Text style={styles.errorText}>
-                Login Authentication Failed. Check your data and try again.
-              </Text>
-            )}
+              {/* HAVE TO PASS THEM THE FUNCTIONS FOR SELECT, THE TIME AND THE DATE */}
+              <DateAndTimePicker
+                date={date}
+                time={time}
+                onConfirmDate={onConfirmDate}
+                onConfirmTime={onConfirmTime}
+              />
 
-            {/* HAVE TO PASS THEM THE FUNCTIONS FOR SELECT, THE TIME AND THE DATE */}
-            <DateAndTimePicker
-              date={date}
-              time={time}
-              onConfirmDate={onConfirmDate}
-              onConfirmTime={onConfirmTime}
-            />
+              <ShareOptions
+                setShareBills={setShareBills}
+                setShareTasks={setShareTasks}
+                shareTasks={shareTasks}
+                shareBills={shareBills}
+              />
 
-            <ShareOptions
-              setShareBills={setShareBills}
-              setShareTasks={setShareTasks}
-              shareTasks={shareTasks}
-              shareBills={shareBills}
-            />
+              <TouchableOpacity style={styles.addPhoto}>
+                <Text style={{ color: 'white' }}>Add Photo</Text>
+              </TouchableOpacity>
 
-            <View style={styles.buttons}>
-              <Button onPress={submitHandler}>CREATE</Button>
+              <View style={styles.buttons}>
+                <Button onPress={submitHandler}>CREATE</Button>
+              </View>
             </View>
-          </View>
-        </KeyboardAvoidingView>
-      </View>
+          </KeyboardAvoidingView>
+        </View>
+        {/* </ScrollView> */}
+      </TouchableWithoutFeedback>
     </Background>
   );
 };
@@ -190,5 +217,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: Colors.primary500,
     color: 'white',
+  },
+  addPhoto: {
+    padding: 10,
+    backgroundColor: Colors.primary500,
+    marginTop: 10,
+    width: 100,
+    borderRadius: 20,
+    alignItems: 'center',
   },
 });

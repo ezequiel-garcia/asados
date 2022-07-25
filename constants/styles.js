@@ -18,7 +18,7 @@ export const Colors = {
   secondary600: '#f57637',
   secondary400: '#F38148',
   secondary300: '#d7845a',
-  error50: '#fcc4e4',
-  error200: '#f39696',
-  error500: '#9b095c',
+  error50: '#fc9191',
+  error200: '#eb4e4e',
+  error500: '#e30f28e1',
 };

@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,6 +20,7 @@ import DateAndTimePicker from './DateAndTimePicker';
 import { getTime } from '../../util/date';
 import ShareOptions from './ShareOptions';
 import ErrorText from '../ui/ErrorText';
+import ImagePickerComp from '../ui/ImagePickerComp';
 
 const EventManager = ({ onEdit }) => {
   //  const authCtx = useContext(AuthenticationContext);
@@ -45,8 +45,11 @@ const EventManager = ({ onEdit }) => {
   const [time, setTime] = useState(onEdit ? '12:30' : getTime(new Date()));
   const [shareTasks, setShareTasks] = useState(true);
   const [shareBills, setShareBills] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [submitError, setSubmitError] = useState(false);
+
+  const Navigation = useNavigation();
 
   //   useEffect(() => {
   //     if (authCtx.error) {
@@ -71,8 +74,6 @@ const EventManager = ({ onEdit }) => {
   function onConfirmTime(time) {
     setTime(getTime(time));
   }
-
-  //   const Navigation = useNavigation();
 
   //   async function submitHandler() {
   function submitHandler() {
@@ -107,14 +108,15 @@ const EventManager = ({ onEdit }) => {
         time,
         shareBills,
         shareTasks,
+        image: selectedImage,
       };
       console.log(event);
+      Navigation.navigate('Home');
     }
   }
 
   return (
     <Background>
-      {/* <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled"> */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <KeyboardAvoidingView behavior="position">
@@ -170,9 +172,11 @@ const EventManager = ({ onEdit }) => {
                 shareBills={shareBills}
               />
 
-              <TouchableOpacity style={styles.addPhoto}>
+              {/* <TouchableOpacity style={styles.addPhoto}>
                 <Text style={{ color: 'white' }}>Add Photo</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+
+              <ImagePickerComp onSetImage={setSelectedImage} />
 
               <View style={styles.buttons}>
                 <Button onPress={submitHandler}>CREATE</Button>
@@ -180,7 +184,6 @@ const EventManager = ({ onEdit }) => {
             </View>
           </KeyboardAvoidingView>
         </View>
-        {/* </ScrollView> */}
       </TouchableWithoutFeedback>
     </Background>
   );

@@ -2,11 +2,13 @@ import { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   View,
+  Image,
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,34 +24,49 @@ import ShareOptions from './ShareOptions';
 import ErrorText from '../ui/ErrorText';
 import ImagePickerComp from '../ui/ImagePickerComp';
 
-const EventManager = ({ onEdit }) => {
+import { events } from '../../dummyData';
+
+const EventManager = ({ onEdit = false, event = events[1] }) => {
   //  const authCtx = useContext(AuthenticationContext);
 
   //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
   const [inputs, setInputs] = useState({
     name: {
-      value: '',
+      value: onEdit ? event?.title : '',
       isValid: true,
     },
 
     description: {
-      value: '',
+      value: onEdit ? event?.description : '',
       isValid: true,
     },
     location: {
-      value: '',
+      value: onEdit ? event?.location : '',
       isValid: true,
     },
   });
-  const [date, setDate] = useState(onEdit ? '15/11/1993' : new Date());
-  const [time, setTime] = useState(onEdit ? '12:30' : getTime(new Date()));
-  const [shareTasks, setShareTasks] = useState(true);
-  const [shareBills, setShareBills] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [date, setDate] = useState(onEdit ? event?.date : new Date());
+  const [time, setTime] = useState(onEdit ? event?.time : getTime(new Date()));
+  const [shareTasks, setShareTasks] = useState(
+    onEdit ? event?.shareTasks : false
+  );
+  const [shareBills, setShareBills] = useState(
+    onEdit ? event?.shareBills : false
+  );
+  const [selectedImage, setSelectedImage] = useState(
+    onEdit
+      ? event?.image
+      : // : 'https://cdn.pixabay.com/photo/2017/06/10/06/39/calender-2389150_1280.png'
+        'https://images.unsplash.com/photo-1499591934245-40b55745b905?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8dHJpcHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60'
+  );
 
   const [submitError, setSubmitError] = useState(false);
 
   const Navigation = useNavigation();
+
+  useEffect(() => {
+    onEdit && Navigation.setOptions({ title: 'Edit Event' });
+  }, [onEdit]);
 
   //   useEffect(() => {
   //     if (authCtx.error) {
@@ -98,8 +115,8 @@ const EventManager = ({ onEdit }) => {
         };
       });
     } else {
-      //       // If inputs are ok Login
-      //       authCtx.onLogin(inputs.email.value, inputs.password.value);
+      // If inputs are ok create the event --> send to firebase also?
+
       const event = {
         name: inputs.name.value,
         description: inputs.description.value,
@@ -111,79 +128,101 @@ const EventManager = ({ onEdit }) => {
         image: selectedImage,
       };
       console.log(event);
-      Navigation.navigate('Home');
+      Navigation.navigate('TopTabs', { event: event });
     }
   }
 
   return (
     <Background>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <KeyboardAvoidingView behavior="position">
-            <View style={{ width: 300 }}>
-              {(!inputs.description.isValid ||
-                !inputs.name.isValid ||
-                !inputs.location.isValid) && (
-                <ErrorText>Please fill all the data</ErrorText>
-              )}
+        <ScrollView contentContainerStyle={styles.scroll}>
+          <View style={styles.container}>
+            <KeyboardAvoidingView behavior="position">
+              <View style={{ width: 300 }}>
+                {(!inputs.description.isValid ||
+                  !inputs.name.isValid ||
+                  !inputs.location.isValid) && (
+                  <ErrorText>Please fill all the data</ErrorText>
+                )}
 
-              <Input
-                label="Name"
-                inputStyle={styles.inputStyle}
-                onUpdateValue={(e) => inputChangeHandler('name', e)}
-                value={inputs.name.value}
-                isInvalid={!inputs.name.isValid}
-              />
+                <Input
+                  label="Name"
+                  inputStyle={styles.inputStyle}
+                  onUpdateValue={(e) => inputChangeHandler('name', e)}
+                  value={inputs.name.value}
+                  isInvalid={!inputs.name.isValid}
+                />
 
-              <Input
-                label="Description"
-                inputStyle={{ ...styles.inputStyle, height: 80 }}
-                onUpdateValue={(e) => inputChangeHandler('description', e)}
-                value={inputs.description.value}
-                style={{ width: 90 }}
-                multiline
-                isInvalid={!inputs.description.isValid}
-              />
-              <Input
-                label="Location"
-                inputStyle={styles.inputStyle}
-                onUpdateValue={(e) => inputChangeHandler('location', e)}
-                value={inputs.location.value}
-                isInvalid={!inputs.location.isValid}
-              />
-              {/* {submitError && (
+                <Input
+                  label="Description"
+                  inputStyle={{ ...styles.inputStyle, height: 100 }}
+                  onUpdateValue={(e) => inputChangeHandler('description', e)}
+                  value={inputs.description.value}
+                  //style={{ width: 90 }}
+                  multiline
+                  isInvalid={!inputs.description.isValid}
+                />
+                <Input
+                  label="Location"
+                  inputStyle={styles.inputStyle}
+                  onUpdateValue={(e) => inputChangeHandler('location', e)}
+                  value={inputs.location.value}
+                  isInvalid={!inputs.location.isValid}
+                />
+                {/* {submitError && (
                 <Text style={styles.errorText}>
                   Login Authentication Failed. Check your data and try again.
                 </Text>
               )} */}
 
-              {/* HAVE TO PASS THEM THE FUNCTIONS FOR SELECT, THE TIME AND THE DATE */}
-              <DateAndTimePicker
-                date={date}
-                time={time}
-                onConfirmDate={onConfirmDate}
-                onConfirmTime={onConfirmTime}
-              />
+                {/* HAVE TO PASS THEM THE FUNCTIONS FOR SELECT, THE TIME AND THE DATE */}
+                <DateAndTimePicker
+                  date={date}
+                  time={time}
+                  onConfirmDate={onConfirmDate}
+                  onConfirmTime={onConfirmTime}
+                />
 
-              <ShareOptions
-                setShareBills={setShareBills}
-                setShareTasks={setShareTasks}
-                shareTasks={shareTasks}
-                shareBills={shareBills}
-              />
+                <ShareOptions
+                  setShareBills={setShareBills}
+                  setShareTasks={setShareTasks}
+                  shareTasks={shareTasks}
+                  shareBills={shareBills}
+                />
 
-              {/* <TouchableOpacity style={styles.addPhoto}>
-                <Text style={{ color: 'white' }}>Add Photo</Text>
-              </TouchableOpacity> */}
+                <View style={styles.imageContainer}>
+                  <Image
+                    style={styles.eventPicture}
+                    // source={{ uri: selectedImage.localUri }}
+                    source={{ uri: selectedImage }}
+                  />
+                  <ImagePickerComp onSetImage={setSelectedImage} />
+                </View>
 
-              <ImagePickerComp onSetImage={setSelectedImage} />
-
-              <View style={styles.buttons}>
-                <Button onPress={submitHandler}>CREATE</Button>
+                {onEdit ? (
+                  <View style={styles.buttonsOnEdit}>
+                    <Button
+                      personalStyle={styles.buttonSave}
+                      onPress={submitHandler}
+                    >
+                      SAVE
+                    </Button>
+                    <Button
+                      personalStyle={styles.buttonCancel}
+                      onPress={submitHandler}
+                    >
+                      DELETE
+                    </Button>
+                  </View>
+                ) : (
+                  <View style={styles.buttons}>
+                    <Button onPress={submitHandler}>CREATE</Button>
+                  </View>
+                )}
               </View>
-            </View>
-          </KeyboardAvoidingView>
-        </View>
+            </KeyboardAvoidingView>
+          </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </Background>
   );
@@ -192,6 +231,12 @@ const EventManager = ({ onEdit }) => {
 export default EventManager;
 
 const styles = StyleSheet.create({
+  scroll: {
+    flex: 1,
+    justifyContent: 'center',
+    // alignItems: 'center',
+    // alignContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -221,6 +266,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary500,
     color: 'white',
   },
+  imageContainer: {
+    marginTop: 20,
+    marginBottom: 10,
+  },
   addPhoto: {
     padding: 10,
     backgroundColor: Colors.primary500,
@@ -228,5 +277,24 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 20,
     alignItems: 'center',
+  },
+  eventPicture: {
+    width: 90,
+    height: 90,
+    borderRadius: 50,
+    marginRight: 20,
+  },
+  buttonsOnEdit: {
+    marginTop: 25,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buttonSave: {
+    flex: 1,
+    marginRight: 10,
+  },
+  buttonCancel: {
+    flex: 1,
+    backgroundColor: Colors.error500,
   },
 });

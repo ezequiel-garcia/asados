@@ -16,12 +16,13 @@ const ImagePickerComp = ({ onSetImage }) => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
     console.log(pickerResult);
 
-    onSetImage({ localUri: pickerResult.uri });
+    // onSetImage({ localUri: pickerResult.uri });
+    onSetImage(pickerResult.uri);
   };
 
   return (
     <TouchableOpacity onPress={openImagePickerAsync} style={styles.addPhoto}>
-      <Text style={styles.buttonText}>Add Photo</Text>
+      <Text style={styles.buttonText}>Change Image</Text>
     </TouchableOpacity>
   );
 };
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.primary500,
     marginTop: 10,
-    width: 100,
+    width: 150,
     borderRadius: 20,
     alignItems: 'center',
   },

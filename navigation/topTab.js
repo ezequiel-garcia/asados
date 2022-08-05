@@ -4,12 +4,15 @@ import { Colors } from '../constants/styles';
 import EventInfo from '../components/events/EventInfo';
 import Settings from '../components/settings/Settings';
 
+//PROBANDO
+import EventFooter from '../components/footer/EventFooter';
+
 const Tab = createMaterialTopTabNavigator();
 
-export default function TopTabs({ route }) {
+export default function TopTabs() {
   return (
     <>
-      <EventHeader uri={route.params.event.image} />
+      <EventHeader />
 
       <Tab.Navigator
         screenOptions={{
@@ -22,6 +25,8 @@ export default function TopTabs({ route }) {
         <Tab.Screen name="Bills" component={Settings} />
         <Tab.Screen name="Chat" component={Settings} />
       </Tab.Navigator>
+
+      <EventFooter />
     </>
   );
 }

@@ -3,6 +3,7 @@ export const events = [
     id: 1,
     date: new Date(2022, 10, 7),
     time: '10:25',
+
     title: 'Asado ',
     location: 'Hertzel 20, Tel Aviv',
 

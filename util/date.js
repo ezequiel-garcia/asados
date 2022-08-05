@@ -8,6 +8,12 @@ export function getDate(date) {
   return dateObj;
 }
 
+export function getDateForInfo(date) {
+  return `${date.getDay()}/${date.getMonth() + 1}/${String(
+    date.getFullYear()
+  ).slice(2)}  `;
+}
+
 export function getTime(time) {
   // let date = new Date();
   let hours = (time.getHours() < 10 ? '0' : '') + time.getHours();

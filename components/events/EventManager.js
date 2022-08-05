@@ -26,8 +26,10 @@ import ImagePickerComp from '../ui/ImagePickerComp';
 
 import { events } from '../../dummyData';
 
-const EventManager = ({ onEdit = false, event = events[1] }) => {
+const EventManager = ({ onEdit = false, event = events[1], route }) => {
   //  const authCtx = useContext(AuthenticationContext);
+
+  route?.params?.onEdit ? (onEdit = true) : null;
 
   //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
   const [inputs, setInputs] = useState({
@@ -128,7 +130,8 @@ const EventManager = ({ onEdit = false, event = events[1] }) => {
         image: selectedImage,
       };
       console.log(event);
-      Navigation.navigate('TopTabs', { event: event });
+      // HERE I HAVE TO PASS THE EVENT TO THE EVENTS AND TO PUT IN CURRENT EVENT
+      Navigation.navigate('TopTabs');
     }
   }
 
@@ -137,7 +140,11 @@ const EventManager = ({ onEdit = false, event = events[1] }) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <View style={styles.container}>
-            <KeyboardAvoidingView behavior="position">
+            <KeyboardAvoidingView
+              // style={{ flex: 1 }}
+              behavior="position"
+              keyboardVerticalOffset={-40}
+            >
               <View style={{ width: 300 }}>
                 {(!inputs.description.isValid ||
                   !inputs.name.isValid ||

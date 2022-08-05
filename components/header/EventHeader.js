@@ -6,35 +6,58 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { AuthenticationContext } from '../../store/auth/auth-context';
-
 import { useNavigation } from '@react-navigation/native';
-
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-//DRAWER
-// import DrawerNavigator from '../../navigation/DrawerNavigator';
-
 import { Colors } from '../../constants/styles';
 
-const EventHeader = ({ uri }) => {
+//HERE I'LL BRING THE REDUX STORE TO BRING THE CURRENT EVENT
+import { events } from '../../dummyData'; //Have to change
+
+const EventHeader = () => {
   const navigation = useNavigation();
-  const { userData } = useContext(AuthenticationContext);
-  console.log(uri);
+  const { user } = useContext(AuthenticationContext); //I can use it to check if is the creator
+
+  const currentEvent = events[0];
+  //const eventOwner = user.uid === ownerId;
+  const eventOwner = true;
+
+  const handlePress = () => {
+    // IF IS THE OWNER GO TO EDIT EVENT
+    if (eventOwner) {
+      Alert.alert('Edit', 'edit event');
+      navigation.navigate('TabBarHome', {
+        screen: 'Create Event',
+        params: { onEdit: true },
+      });
+    } else {
+      //IF IS A GUEST LEAVE THE EVENT
+      Alert.alert('Leave', 'You are leaving the event');
+      navigation.navigate('TabBarHome');
+    }
+  };
+
+  console.log(user);
   return (
     <SafeAreaView style={{ backgroundColor: Colors.primary800 }}>
       <View style={styles.container}>
         <View style={styles.userInfo}>
-          <Image style={styles.profilePicture} source={{ uri: uri }} />
-          <Text style={styles.name}>{userData.name}</Text>
+          <Image
+            style={styles.profilePicture}
+            source={{ uri: currentEvent.image }}
+          />
+          <Text style={styles.name}>{currentEvent.title}</Text>
         </View>
+
         <TouchableOpacity
+          style={styles.button}
           onPress={() => {
-            navigation.navigate('Settings');
+            handlePress();
           }}
         >
-          <Ionicons name="settings-outline" size={28} color="#ffffffdd" />
+          <Text style={styles.buttonText}>{eventOwner ? 'Edit' : 'Leave'}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -59,8 +82,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profilePicture: {
-    width: 90,
-    height: 90,
+    width: 70,
+    height: 70,
     borderRadius: 50,
     marginRight: 20,
   },
@@ -68,5 +91,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Montserrat_400Regular',
     color: 'white',
+  },
+  button: {
+    padding: 10,
+    paddingHorizontal: 20,
+    backgroundColor: Colors.primary500,
+    borderRadius: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 15,
   },
 });

@@ -2,17 +2,19 @@ import { StyleSheet, Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { Colors } from '../../constants/styles';
 
-const CheckBox = ({ onPress, checkBoxState, text }) => {
+const CheckBox = ({ onPress, checkBoxState, text, decoration }) => {
   return (
     <BouncyCheckbox
       onPress={() => onPress(!checkBoxState)}
       text={text}
-      size={30}
+      size={25}
       isChecked={checkBoxState}
-      textStyle={{
-        color: 'white',
-        textDecorationLine: 'none',
-      }}
+      textStyle={[
+        {
+          color: 'white',
+        },
+        !decoration && { textDecorationLine: 'none' },
+      ]}
       iconStyle={{
         backgroundColor: Colors.primary500,
         borderColor: Colors.primary500,

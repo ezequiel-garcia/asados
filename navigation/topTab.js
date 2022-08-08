@@ -4,6 +4,7 @@ import { Colors } from '../constants/styles';
 import EventInfo from '../components/events/EventInfo';
 import Settings from '../components/settings/Settings';
 import TasksScreen from '../components/events/tasks/TasksScreen';
+import BillsScreen from '../components/events/bills/BillsScreen';
 
 //PROBANDO
 import EventFooter from '../components/footer/EventFooter';
@@ -23,7 +24,7 @@ export default function TopTabs() {
       >
         <Tab.Screen name="General" component={EventInfo} />
         <Tab.Screen name="Tasks" component={TasksScreen} />
-        <Tab.Screen name="Bills" component={Settings} />
+        <Tab.Screen name="Bills" component={BillsScreen} />
         <Tab.Screen name="Chat" component={Settings} />
       </Tab.Navigator>
 

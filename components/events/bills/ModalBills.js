@@ -4,45 +4,52 @@ import {
   Text,
   View,
   Modal,
-  Pressable,
   KeyboardAvoidingView,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
 import Input from '../../ui/Input';
+import SelectWhoPaid from './SelectWhoPaid';
 import { Colors } from '../../../constants/styles';
 
-const ModalTask = ({
+const ModalBills = ({
   modalVisible,
   setModalVisible,
-  setTasks,
-  currentTask,
-  setCurrentTask,
+  setBills,
+  currentBill,
+  setCurrentBill,
+  currentEvent,
 }) => {
-  const [taskTitle, setTaskTitle] = useState(
-    currentTask ? currentTask.title : ''
+  const [billTitle, setBillTitle] = useState(
+    currentBill ? currentBill.title : ''
   );
-  const [inCharge, setInCharge] = useState(
-    currentTask ? currentTask.inCharge : ''
-  );
+  const [owner, setOwner] = useState(currentBill ? currentBill.owner : '');
+  const [amount, setAmount] = useState(currentBill ? currentBill.amount : '');
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (currentTask) {
-      setTaskTitle(currentTask.title);
-      setInCharge(currentTask.inCharge);
+    if (currentBill) {
+      setBillTitle(currentBill.title);
+      setOwner(currentBill.owner);
+      setAmount(currentBill.amount);
       setError(false);
     }
-  }, [modalVisible, currentTask]);
+  }, [modalVisible, currentBill]);
 
   function handleAdd() {
-    if (taskTitle.trim() == '' || inCharge.trim() == '') {
+    if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
-      //HAVE TO ADD TO THE TASKS
-      setTasks((prev) => [
-        { id: Math.random(), title: taskTitle, inCharge: inCharge },
+      //HAVE TO ADD TO THE BILLS
+      setBills((prev) => [
+        {
+          id: Math.random(),
+          title: billTitle,
+          owner: owner,
+          date: new Date(),
+          amount: amount,
+        },
         ...prev,
       ]);
 
@@ -51,16 +58,22 @@ const ModalTask = ({
   }
 
   function handleEdit() {
-    if (taskTitle.trim() == '' || inCharge.trim() == '') {
+    if (billTitle.trim() == '' || owner.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
-      //HAVE TO EDIT THE TASK
-      setTasks((prev) =>
-        prev.map((task) => {
-          if (task.id != currentTask.id) {
-            return task;
+      //HAVE TO EDIT THE BILL
+      setBills((prev) =>
+        prev.map((bill) => {
+          if (bill.id != currentBill.id) {
+            return bill;
           } else {
-            return { id: task.id, title: taskTitle, inCharge: inCharge };
+            return {
+              id: bill.id,
+              title: billTitle,
+              owner: owner,
+              amount: amount,
+              date: bill.date,
+            };
           }
         })
       );
@@ -70,9 +83,10 @@ const ModalTask = ({
 
   function onCancel() {
     // initializate the inputs
-    setTaskTitle('');
-    setInCharge('');
-    setCurrentTask(null);
+    setBillTitle('');
+    setOwner('');
+    setAmount('');
+    setCurrentBill(null);
     // Close the modal
     setModalVisible(false);
   }
@@ -98,30 +112,48 @@ const ModalTask = ({
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
                   <Input
-                    label="Task Title"
+                    label="Bill Title"
                     inputStyle={styles.inputStyle}
                     onUpdateValue={(e) => {
-                      setTaskTitle(e);
+                      setBillTitle(e);
                       setError(false);
                     }}
-                    value={taskTitle}
+                    value={billTitle}
                   />
                 </View>
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
                   <Input
-                    label="In Charge"
+                    label="Amount"
+                    keyboardType="numeric"
                     inputStyle={styles.inputStyle}
                     onUpdateValue={(e) => {
-                      setInCharge(e), setError(false);
+                      setAmount(Number(e));
+                      setError(false);
                     }}
-                    value={inCharge}
+                    value={'' + amount}
                   />
                 </View>
               </View>
               <View style={{ flexDirection: 'row' }}>
-                {currentTask ? (
+                <View style={{ flex: 1 }}>
+                  <Input
+                    label="Who paid"
+                    inputStyle={styles.inputStyle}
+                    onUpdateValue={(e) => {
+                      setOwner(e), setError(false);
+                    }}
+                    value={owner.name}
+                  />
+                </View>
+              </View>
+              {/* SELECT WHO PAID */}
+
+              <SelectWhoPaid setOwner={setOwner} currentEvent={currentEvent} />
+
+              <View style={{ flexDirection: 'row' }}>
+                {currentBill ? (
                   <TouchableOpacity style={styles.button} onPress={handleEdit}>
                     <Text>SAVE</Text>
                   </TouchableOpacity>
@@ -143,7 +175,7 @@ const ModalTask = ({
   );
 };
 
-export default ModalTask;
+export default ModalBills;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -153,7 +185,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    backgroundColor: 'rgba(4, 22, 36, 0.747)',
+    backgroundColor: 'rgba(4, 22, 36, 0.88)',
     margin: 20,
     width: '80%',
 
@@ -168,8 +200,9 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontSize: 16,
-    backgroundColor: Colors.primary600,
-    color: 'white',
+    backgroundColor: 'rgba(34, 98, 146, 0.88)',
+    // backgroundColor: Colors.primary600,
+    color: '#ffffffd6',
   },
   button: {
     marginTop: 10,

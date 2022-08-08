@@ -4,11 +4,16 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { getDate } from '../../../util/date';
 
-const Bill = ({ bill }) => {
+const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
   const dateFormat = getDate(bill.date);
 
-  function onEdit() {}
-  function handleDelete() {}
+  function onEdit() {
+    setCurrentBill(bill);
+    setModalVisible(true);
+  }
+  function handleDelete() {
+    setBills((prev) => prev.filter((item) => item.id != bill.id));
+  }
 
   return (
     <View style={styles.container}>
@@ -20,15 +25,14 @@ const Bill = ({ bill }) => {
         <View style={styles.descriptionContainer}>
           <Text style={styles.titleText}>{bill.title}</Text>
           <Text style={styles.description}>
-            {`${bill.owner} paid $${bill.amount}`}
+            {`${bill.owner.name} paid $${bill.amount}`}
           </Text>
         </View>
         <View
           style={{
             flex: 2,
+            paddingRight: 10,
             flexDirection: 'row',
-
-            // width: '80%',
             justifyContent: 'space-between',
           }}
         >

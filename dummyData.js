@@ -13,6 +13,12 @@ export const events = [
       'https://cdn.pixabay.com/photo/2019/07/08/06/41/fire-4323960__480.jpg',
     shareBills: true,
     shareTasks: true,
+    participants: [
+      { name: 'pepe', id: '1' },
+      { name: 'juan', id: '2' },
+      { name: 'Tu vieja', id: '3' },
+      { name: 'ags', id: '4' },
+    ],
   },
   {
     id: 2,

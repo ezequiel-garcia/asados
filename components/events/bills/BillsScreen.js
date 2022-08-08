@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { StyleSheet, Text, View, Modal, Alert, Pressable } from 'react-native';
 import Background from '../../ui/Background';
 import Button from '../../ui/Button';
-// import ModalTask from './ModalTask';
+import ModalBills from './ModalBills';
 import BillsContainer from './BillsContainer';
+
+//noo
+import { events } from '../../../dummyData';
 
 const billsStam = [
   {
@@ -11,21 +14,21 @@ const billsStam = [
     date: new Date(12, 11, 2022),
     title: 'Comprar carne',
     amount: 50,
-    owner: 'Ezequiel',
+    owner: { name: 'Ezequiel' },
   },
   {
     id: 2,
     date: new Date(9, 11, 2022),
     title: 'Verduras',
     amount: 120,
-    owner: 'pepe',
+    owner: { name: 'pepe' },
   },
   {
     id: 3,
     date: new Date(5, 6, 2022),
     title: 'Comprar carne',
     amount: 50,
-    owner: 'Ezequiel',
+    owner: { name: 'Ezequiel' },
   },
 ];
 
@@ -34,16 +37,20 @@ const BillsScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currenBill, setCurrentBill] = useState(null);
 
+  //ME TRAIGO EL CURRENTEVENT DE REDUX
+  const currentEvent = events[0];
+
   return (
     <Background>
       <View style={styles.container}>
-        {/* <ModalTask
+        <ModalBills
+          currentEvent={currentEvent}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          currentTask={currentTask}
-          setCurrentTask={setCurrentTask}
-          setTasks={setTasks}
-        /> */}
+          currentBill={currenBill}
+          setCurrentBill={setCurrentBill}
+          setBills={setBills}
+        />
 
         {/* receive all this stuff so from the task i can open the modal with edit and delete */}
         <BillsContainer
@@ -75,5 +82,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '40%',
+    marginTop: 5,
   },
 });

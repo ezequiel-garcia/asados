@@ -58,7 +58,7 @@ const ModalBills = ({
   }
 
   function handleEdit() {
-    if (billTitle.trim() == '' || owner.trim() == '' || isNaN(amount)) {
+    if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
       //HAVE TO EDIT THE BILL
@@ -142,7 +142,7 @@ const ModalBills = ({
                     label="Who paid"
                     inputStyle={styles.inputStyle}
                     onUpdateValue={(e) => {
-                      setOwner(e), setError(false);
+                      setOwner({ name: e }), setError(false);
                     }}
                     value={owner.name}
                   />

@@ -28,14 +28,7 @@ const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
             {`${bill.owner.name} paid $${bill.amount}`}
           </Text>
         </View>
-        <View
-          style={{
-            flex: 2,
-            paddingRight: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
+        <View style={styles.iconsContainer}>
           <TouchableOpacity onPress={onEdit}>
             <MaterialIcons name="mode-edit" size={24} color="white" />
           </TouchableOpacity>
@@ -54,18 +47,26 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: '100%',
-    height: 70,
-    backgroundColor: Colors.primary500,
-    borderRadius: 25,
-    marginTop: 10,
-    marginBottom: 10,
+    paddingVertical: 7,
+    // borderBottomColor: '#ffffff9a',
+    // borderBottomWidth: 1,
+    // height: 60,
+    // backgroundColor: Colors.primary500,
+    // borderRadius: 25,
+    // marginTop: 10,
+    // marginBottom: 10,
   },
   date: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 70,
-    backgroundColor: Colors.primary800,
-    borderRadius: 20,
+    marginRight: 10,
+    paddingRight: 5,
+    borderRightColor: '#ffffff9a',
+    borderRightWidth: 1,
+
+    // width: 70,
+    // backgroundColor: Colors.primary800,
+    // borderRadius: 20,
   },
   dateText: {
     color: 'white',
@@ -79,19 +80,14 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    paddingBottom: 15,
-    paddingTop: 15,
-    paddingLeft: 5,
-    paddingRight: 5,
+    // paddingBottom: 15,
+    // paddingTop: 15,
+    // paddingLeft: 5,
+    // paddingRight: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  picture: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    marginRight: 8,
-  },
+
   descriptionContainer: {
     flex: 6,
     justifyContent: 'center',
@@ -99,5 +95,11 @@ const styles = StyleSheet.create({
   description: {
     color: 'white',
     fontFamily: 'Montserrat_300Light',
+  },
+  iconsContainer: {
+    flex: 2,
+    paddingRight: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

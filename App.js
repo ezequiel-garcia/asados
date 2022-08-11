@@ -23,6 +23,9 @@ import {
   Montserrat_900Black,
 } from '@expo-google-fonts/montserrat';
 
+import { Provider } from 'react-redux';
+import store from './store/redux';
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     Montserrat_100Thin,
@@ -43,7 +46,9 @@ export default function App() {
       <>
         <StatusBar style="light" />
         <AuthenticationContextProvider>
-          <Navigation />
+          <Provider store={store}>
+            <Navigation />
+          </Provider>
         </AuthenticationContextProvider>
       </>
     );

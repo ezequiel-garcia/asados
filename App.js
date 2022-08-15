@@ -45,11 +45,11 @@ export default function App() {
     return (
       <>
         <StatusBar style="light" />
-        <AuthenticationContextProvider>
-          <Provider store={store}>
+        <Provider store={store}>
+          <AuthenticationContextProvider>
             <Navigation />
-          </Provider>
-        </AuthenticationContextProvider>
+          </AuthenticationContextProvider>
+        </Provider>
       </>
     );
   }

@@ -16,6 +16,7 @@ function Input({
         style={[styles.input, isInvalid && styles.inputInvalid]}
         placeholder={label}
         autoCapitalize="none"
+        placeholderTextColor="#12324aaf"
         keyboardType={keyboardType}
         secureTextEntry={secure}
         onChangeText={onUpdateValue}
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   inputInvalid: {
     backgroundColor: Colors.error50,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: Colors.error500,
   },
 });

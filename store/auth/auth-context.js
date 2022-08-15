@@ -7,6 +7,11 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
+
+import { setCurrentUser } from '../redux/currentUserSlice';
+
 //USER DATA
 import users from '../../users';
 
@@ -30,12 +35,16 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
+  //db data
+  const db = getDatabase();
+
   // USER DATAAA
   const userData = users[Math.round(Math.random())];
 
   onAuthStateChanged(getAuth(), (usr) => {
     if (usr) {
       setUser(usr);
+      setCurrentUser(usr.uid);
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -62,7 +71,31 @@ export const AuthenticationContextProvider = ({ children }) => {
 
     try {
       const user = await registerRequest(email, password);
+
+      // set new user in the db in firebase
+      const addUserToDB = (user) => {
+        const reference = ref(db, 'users/' + user.uid);
+        set(reference, {
+          uid: user.uid,
+          name:
+            user.displayName ||
+            user.email.substring(0, user.email.indexOf('@')),
+          profilePic: null,
+          events: {},
+        });
+      };
+      addUserToDB(user.user);
+
+      // const firestore = getFirestore();
+      // await setDoc(doc(firestore, 'users', user.uid), {
+      //   uid: user.uid,
+      //   name: user.displayName,
+      //   profilePic: null,
+      //   events: {},
+      // });
+
       setUser(user.user);
+
       setIsLoading(false);
       setError(null);
     } catch (e) {

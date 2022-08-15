@@ -3,21 +3,22 @@ import { createSlice } from '@reduxjs/toolkit';
 const eventsSlice = createSlice({
   name: 'events',
   initialState: {
-    events: [],
-    totalQuantity: 0,
-    totalAmount: 0,
-    changed: false,
+    events: {},
+    currentEvent: null,
   },
   reducers: {
-    replaceCart(state, action) {
-      state.totalQuantity = action.payload.totalQuantity;
-      state.items = action.payload.items;
+    setEvents(state, action) {
+      state.events = action.payload;
     },
     addEvent(state, action) {
-      state.events = [action.payload, ...state.events];
+      state.events = { [action.payload.id]: action.payload, ...state.events };
     },
     removeEvent(state, action) {
       state.events = state.events.filter((item) => item.id !== id);
+      //If it's deleted for the creator have to delete it to all the users that are in
+    },
+    setCurrentEvent(state, action) {
+      state.currentEvent = action.payload || null;
     },
   },
 });

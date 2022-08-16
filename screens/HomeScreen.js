@@ -2,6 +2,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../store/auth/auth-context';
+
 import Header from '../components/header/Header';
 import Title from '../components/ui/Title';
 

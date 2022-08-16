@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const currentUserSlice = createSlice({
-  name: 'events',
+  name: 'users',
   initialState: {
-    currentUser: null,
+    currentUser: {},
   },
   reducers: {
     setCurrentUser(state, action) {

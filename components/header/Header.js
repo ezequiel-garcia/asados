@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { AuthenticationContext } from '../../store/auth/auth-context';
+import { useSelector } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -20,7 +21,10 @@ import { Colors } from '../../constants/styles';
 
 const Header = () => {
   const navigation = useNavigation();
+  const currentUser = useSelector((state) => state.users.currentUser);
+
   const { userData } = useContext(AuthenticationContext);
+  console.log(currentUser);
 
   return (
     <SafeAreaView style={{ backgroundColor: Colors.primary800 }}>
@@ -30,7 +34,7 @@ const Header = () => {
             style={styles.profilePicture}
             source={userData.profilePicture}
           />
-          <Text style={styles.name}>{userData.name}</Text>
+          <Text style={styles.name}>{currentUser.name}</Text>
         </View>
         <TouchableOpacity
           onPress={() => {

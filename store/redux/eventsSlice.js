@@ -4,7 +4,12 @@ const eventsSlice = createSlice({
   name: 'events',
   initialState: {
     events: {},
-    currentEvent: null,
+    currentEvent: {
+      eventInfo: {},
+      tasks: [],
+      bills: [],
+      messages: [],
+    },
   },
   reducers: {
     setEvents(state, action) {
@@ -23,5 +28,6 @@ const eventsSlice = createSlice({
   },
 });
 
-export const { replaceCart, addEvent, removeEvent } = eventsSlice.actions;
+export const { replaceCart, addEvent, removeEvent, setEvents } =
+  eventsSlice.actions;
 export default eventsSlice;

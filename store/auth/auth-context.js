@@ -73,8 +73,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       const user = await registerRequest(email, password);
 
       // set new user in the db in firebase
-
-      addUserToDB(user.user);
+      await addUserToDB(user.user);
       dispatch(fetchCurrentUser(user.user.uid));
       setUser(user.user);
 

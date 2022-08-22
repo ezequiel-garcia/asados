@@ -3,16 +3,19 @@ import { createSlice } from '@reduxjs/toolkit';
 const currentUserSlice = createSlice({
   name: 'users',
   initialState: {
-    currentUser: {},
+    currentUser: null,
   },
   reducers: {
     setCurrentUser(state, action) {
-      state.currentUser = action.payload;
+      state.currentUser = action.payload || null;
     },
 
     //receive the event ID
     addEventToUser(state, action) {
-      state.currentUser.events = { [action.payload]: true, ...state.events };
+      state.currentUser.events = {
+        [action.payload]: true,
+        ...state.currentUser.events,
+      };
       //Have to add the participant to the event
     },
     //receive the event ID

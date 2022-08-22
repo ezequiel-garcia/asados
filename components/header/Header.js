@@ -21,7 +21,7 @@ import { Colors } from '../../constants/styles';
 
 const Header = () => {
   const navigation = useNavigation();
-  const currentUser = useSelector((state) => state.users.currentUser);
+  const currentUser = useSelector((state) => state.user.currentUser) || {};
 
   const { userData } = useContext(AuthenticationContext);
   console.log(currentUser);

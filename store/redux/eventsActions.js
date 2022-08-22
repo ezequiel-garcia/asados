@@ -1,37 +1,101 @@
-// import { replaceCart, addEvent, removeEvent, setEvents } from './eventsSlice';
-// import app from '../../config/firebase';
-// import { getDatabase, ref, set, onValue, get } from 'firebase/database';
+import { replaceCart, addEvent, removeEvent, setEvents } from './eventsSlice';
+import { addEventToUser } from './currentUserSlice';
+import app from '../../config/firebase';
 
-// const db = getDatabase();
+import {
+  getFirestore,
+  getDoc,
+  setDoc,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 
-// export const fetchEvents = (uid) => {
-//   return async (dispatch) => {
-//     const fetchData = async () => {
-//       console.log('fetching user events');
-//       const dbRef = ref(db, 'users/' + uid);
-//       onValue(dbRef, (snapshot) => {
-//         const data = snapshot.val();
-//         console.log('current User: ' + data);
-//         if (data) {
-//           dispatch(setCurrentUser(data));
-//         }
-//       });
-//     };
+const db = getFirestore(app);
 
-//     try {
-//       await fetchData();
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-// };
+export const fetchEvents = (currentUser) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      console.log('fetching user events');
 
-// export const addUserToDB = (user) => {
-//   const reference = ref(db, 'users/' + user.uid);
-//   set(reference, {
-//     uid: user.uid,
-//     name: user.displayName || user.email.substring(0, user.email.indexOf('@')),
-//     profilePic: null,
-//     events: {},
-//   });
-// };
+      const events = [];
+      currentUser.events?.map(async (eventId) => {
+        const docRef = doc(db, 'events', eventId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          events = [docSnap.data(), ...events];
+          console.log('Document data:', docSnap.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log('No such document!');
+        }
+      });
+
+      dispatch(setEvents(events || []));
+    };
+
+    try {
+      await fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const addEventToDB = (event, user) => {
+  const eventId = event.eid;
+  const uid = user.uid;
+
+  return async (dispatch) => {
+    const add = async () => {
+      console.log('eventooo' + event);
+      console.log('ecentooo ID' + eventId);
+      try {
+        // const docRef = await setDoc(doc(db, 'users', user.uid), {
+        await setDoc(doc(db, 'events', eventId), {
+          eid: event.eid,
+          name: event.name,
+          description: event.description,
+          location: event.location,
+          date: event.date,
+          time: event.time,
+          shareTasks: event.shareTasks,
+          shareBills: event.shareBills,
+          imageURL: event.imageURL,
+          chat: '',
+          participants: { [uid]: true },
+        });
+
+        console.log('succesfully added');
+      } catch (e) {
+        console.error('Error adding document: ', e);
+      }
+    };
+    try {
+      await add();
+      dispatch(addEventToUserDB(user, eventId));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const addEventToUserDB = (user, eventId) => {
+  const uid = user.uid;
+  const userEvents = user.events;
+  console.log('eventos del uruario' + JSON.stringify(userEvents));
+  return async (dispatch) => {
+    try {
+      const userRef = doc(db, 'users', uid);
+
+      await updateDoc(userRef, {
+        events: { ...userEvents, [eventId]: true },
+      });
+
+      console.log('succesfully added event to user in db');
+      dispatch(addEventToUser(eventId));
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+  };
+};

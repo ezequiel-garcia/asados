@@ -6,7 +6,7 @@ import currentUserSlice from './currentUserSlice';
 // import cartSlice from './cart-slice';
 
 const store = configureStore({
-  reducer: { events: eventsSlice.reducer, users: currentUserSlice.reducer },
+  reducer: { events: eventsSlice.reducer, user: currentUserSlice.reducer },
 });
 
 export default store;

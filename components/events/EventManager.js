@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
+
 import {
   StyleSheet,
   View,
@@ -11,6 +12,8 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import uuid from 'react-native-uuid';
 
 import { Colors } from '../../constants/styles';
 import Button from '../ui/Button';
@@ -26,10 +29,16 @@ import ImagePickerComp from '../ui/ImagePickerComp';
 
 import { events } from '../../dummyData';
 
+// to save in the DB
+import { useDispatch, useSelector } from 'react-redux';
+import { addEventToDB } from '../../store/redux/eventsActions';
+
 const EventManager = ({ onEdit = false, event = events[1], route }) => {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.currentUser);
   //  const authCtx = useContext(AuthenticationContext);
 
-  route?.params?.onEdit ? (onEdit = true) : null;
+  route?.params?.onEdit ? (onEdit = true) : (onEdit = false);
 
   //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
   const [inputs, setInputs] = useState({
@@ -64,10 +73,21 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
 
   const [submitError, setSubmitError] = useState(false);
 
-  const Navigation = useNavigation();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    onEdit && Navigation.setOptions({ title: 'Edit Event' });
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      // Call any action
+      console.log('entrando');
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    onEdit && navigation.setOptions({ title: 'Edit Event' });
   }, [onEdit]);
 
   //   useEffect(() => {
@@ -120,6 +140,7 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
       // If inputs are ok create the event --> send to firebase also?
 
       const event = {
+        eid: uuid.v4(),
         name: inputs.name.value,
         description: inputs.description.value,
         location: inputs.location.value,
@@ -127,11 +148,18 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
         time,
         shareBills,
         shareTasks,
-        image: selectedImage,
+        imageURL: selectedImage,
       };
-      console.log(event);
+
       // HERE I HAVE TO PASS THE EVENT TO THE EVENTS AND TO PUT IN CURRENT EVENT
-      Navigation.navigate('TopTabs');
+
+      try {
+        dispatch(addEventToDB(event, currentUser));
+
+        navigation.navigate('TopTabs');
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 

@@ -1,7 +1,10 @@
 import { Text, StyleSheet, View } from 'react-native';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../store/auth/auth-context';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchEvents } from '../store/redux/eventsActions';
+import { fetchCurrentUser } from '../store/redux/usersActions';
 
 import Header from '../components/header/Header';
 import Title from '../components/ui/Title';
@@ -13,7 +16,24 @@ import Background from '../components/ui/Background';
 export default function HomeScreen() {
   const authCtx = useContext(AuthenticationContext);
   const navigation = useNavigation();
-  console.log(authCtx.user);
+  const dispatch = useDispatch();
+  // console.log(authCtx.user);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const userEvents = useSelector((state) => state.events.events);
+
+  useEffect(() => {
+    if (!currentUser) {
+      dispatch(fetchCurrentUser(authCtx.user.uid));
+      console.log('VACIOO');
+    }
+  }, [authCtx]);
+
+  useEffect(() => {
+    if (userEvents.length > 0) {
+      dispatch(fetchEvents(currentUser));
+      console.log(userEvents);
+    }
+  }, [currentUser]);
 
   return (
     <Background>

@@ -4,13 +4,10 @@ import {
   removeEventFromUser,
 } from './currentUserSlice';
 import app from '../../config/firebase';
-import { getDatabase, ref, set, onValue, get } from 'firebase/database';
 
 import { getFirestore, setDoc, doc, onSnapshot } from 'firebase/firestore';
 
 const db = getFirestore(app);
-
-//const db = getDatabase();
 
 export const fetchCurrentUser = (uid) => {
   return async (dispatch) => {
@@ -20,15 +17,6 @@ export const fetchCurrentUser = (uid) => {
       });
 
       console.log('fetching current user' + uid);
-
-      // const dbRef = ref(db, 'users/' + uid);
-      // onValue(dbRef, (snapshot) => {
-      //   const data = snapshot.val();
-      //   console.log('current User: ' + data);
-      //   if (data) {
-      //     dispatch(setCurrentUser(data));
-      //   }
-      // });
     };
 
     try {

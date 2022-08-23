@@ -6,7 +6,7 @@ import { Colors } from '../../constants/styles';
 import { getDate } from '../../util/date';
 
 const Event = ({ event }) => {
-  const { date, name, description, image } = event;
+  const { date, name, description, imageURL } = event;
   const dateFormat = getDate(date);
   return (
     <View style={styles.container}>
@@ -17,7 +17,7 @@ const Event = ({ event }) => {
       <View style={styles.infoContainer}>
         <Image
           source={{
-            uri: image,
+            uri: imageURL,
           }}
           style={styles.picture}
         />

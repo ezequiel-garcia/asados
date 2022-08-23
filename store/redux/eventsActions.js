@@ -25,7 +25,7 @@ export const fetchEvents = (currentUser) => {
 
         if (docSnap.exists()) {
           const currentEvent = docSnap.data();
-
+          console.log('agregando' + currentEvent);
           dispatch(
             addEvent({
               ...currentEvent,

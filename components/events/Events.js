@@ -2,6 +2,7 @@ import { View, FlatList } from 'react-native';
 import Event from './Event';
 
 const Events = ({ dataEvents }) => {
+  console.log(dataEvents);
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <View style={{ flex: 1 }}>

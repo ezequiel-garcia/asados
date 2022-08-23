@@ -21,7 +21,8 @@ const eventsSlice = createSlice({
     // },
 
     addEvent(state, action) {
-      state.events = { ...state.events, ...action.payload };
+      const event = action.payload;
+      state.events = { ...state.events, [event.eid]: event };
     },
 
     removeEvent(state, action) {

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const eventsSlice = createSlice({
   name: 'events',
   initialState: {
-    events: [],
+    events: {},
     currentEvent: {
       eventInfo: {},
       tasks: [],
@@ -15,9 +15,15 @@ const eventsSlice = createSlice({
     setEvents(state, action) {
       state.events = action.payload;
     },
+
+    // addEvent(state, action) {
+    //   state.events = { [action.payload.id]: action.payload, ...state.events };
+    // },
+
     addEvent(state, action) {
-      state.events = { [action.payload.id]: action.payload, ...state.events };
+      state.events = { ...state.events, ...action.payload };
     },
+
     removeEvent(state, action) {
       state.events = state.events.filter((item) => item.id !== id);
       //If it's deleted for the creator have to delete it to all the users that are in

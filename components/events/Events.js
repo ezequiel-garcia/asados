@@ -7,7 +7,7 @@ const Events = ({ dataEvents }) => {
       <View style={{ flex: 1 }}>
         <FlatList
           data={dataEvents}
-          keyExtractor={(event) => event.id}
+          keyExtractor={(event) => event.eid}
           renderItem={(eventData) => {
             return <Event event={eventData.item} />;
           }}

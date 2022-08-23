@@ -6,7 +6,7 @@ import { Colors } from '../../constants/styles';
 import { getDate } from '../../util/date';
 
 const Event = ({ event }) => {
-  const { date, title, description, image } = event;
+  const { date, name, description, image } = event;
   const dateFormat = getDate(date);
   return (
     <View style={styles.container}>
@@ -22,7 +22,7 @@ const Event = ({ event }) => {
           style={styles.picture}
         />
         <View style={styles.descriptionContainer}>
-          <Title>{title}</Title>
+          <Title>{name}</Title>
           <Text style={styles.description}>
             {description?.length < 55
               ? description

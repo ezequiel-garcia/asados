@@ -17,25 +17,38 @@ export const fetchEvents = (currentUser) => {
     const fetchData = async () => {
       console.log('fetching user events');
 
-      const events = [];
-      currentUser.events?.map(async (eventId) => {
+      console.log('CURRENT USEEEER' + currentUser);
+      console.log('eventos desde detch' + JSON.stringify(currentUser.events));
+      Object.keys(currentUser?.events).map(async (eventId) => {
         const docRef = doc(db, 'events', eventId);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          events = [docSnap.data(), ...events];
-          console.log('Document data:', docSnap.data());
+          const currentEvent = docSnap.data();
+
+          dispatch(
+            addEvent({
+              ...currentEvent,
+              date: new Date(
+                currentEvent.date.seconds * 1000 +
+                  currentEvent.date.nanoseconds / 1000000
+              ),
+            })
+          );
+          //console.log('Document data:', docSnap.data());
         } else {
           // doc.data() will be undefined in this case
           console.log('No such document!');
         }
       });
-
-      dispatch(setEvents(events || []));
+      //   return events;
     };
 
     try {
       await fetchData();
+      //   const evnt = await fetchData();
+      //   console.log('EVENTOOOS DESDE FETCH' + evnt);
+      //   dispatch(setEvents(events || []));
     } catch (err) {
       console.log(err);
     }

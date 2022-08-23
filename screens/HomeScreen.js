@@ -17,23 +17,29 @@ export default function HomeScreen() {
   const authCtx = useContext(AuthenticationContext);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  // console.log(authCtx.user);
+
   const currentUser = useSelector((state) => state.user.currentUser);
-  const userEvents = useSelector((state) => state.events.events);
+  const userEvents =
+    useSelector((state) => state.user.currentUser?.events) || {};
+
+  //console.log('EVENTOS DEL USUARIO DESDE HOME' + JSON.stringify(userEvents));
+  console.log('CURRENT USER FROM HOME' + currentUser);
+  console.log('CURRENT events FROM HOME' + JSON.stringify(userEvents));
 
   useEffect(() => {
     if (!currentUser) {
       dispatch(fetchCurrentUser(authCtx.user.uid));
       console.log('VACIOO');
     }
-  }, [authCtx]);
+  }, [authCtx, dispatch]);
 
   useEffect(() => {
-    if (userEvents.length > 0) {
+    if (Object.keys(userEvents).length > 0) {
       dispatch(fetchEvents(currentUser));
+      console.log('dispatch events');
       console.log(userEvents);
     }
-  }, [currentUser]);
+  }, [userEvents, dispatch]);
 
   return (
     <Background>

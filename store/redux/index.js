@@ -7,6 +7,10 @@ import currentUserSlice from './currentUserSlice';
 
 const store = configureStore({
   reducer: { events: eventsSlice.reducer, user: currentUserSlice.reducer },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

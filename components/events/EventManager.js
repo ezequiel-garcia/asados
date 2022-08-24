@@ -31,7 +31,10 @@ import { events } from '../../dummyData';
 
 // to save in the DB
 import { useDispatch, useSelector } from 'react-redux';
-import { addEventToDB } from '../../store/redux/eventsActions';
+import {
+  addEventToDB,
+  fetchCurrentEvent,
+} from '../../store/redux/eventsActions';
 
 const EventManager = ({ onEdit = false, event = events[1], route }) => {
   const dispatch = useDispatch();
@@ -155,8 +158,9 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
 
       try {
         dispatch(addEventToDB(event, currentUser));
+        dispatch(fetchCurrentEvent(event.eid));
 
-        navigation.navigate('TopTabs');
+        navigation.navigate('TopTabs', { eid: event.eid });
       } catch (e) {
         console.log(e);
       }

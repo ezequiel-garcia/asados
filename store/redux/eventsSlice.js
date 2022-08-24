@@ -29,9 +29,25 @@ const eventsSlice = createSlice({
       state.events = state.events.filter((item) => item.id !== id);
       //If it's deleted for the creator have to delete it to all the users that are in
     },
-    setCurrentEvent(state, action) {
+
+    // current event actions
+    setCurrentEventInfo(state, action) {
       state.currentEvent = action.payload || null;
     },
+
+    setCurrentEventInfo(state, action) {
+      state.currentEvent.eventInfo = action.payload;
+    },
+    setCurrentEventTasks(state, action) {
+      state.currentEvent.tasks = action.payload;
+    },
+    setCurrentEventBills(state, action) {
+      state.currentEvent.bills = action.payload;
+    },
+    setCurrentEventMessages(state, action) {
+      state.currentEvent.messages = action.payload;
+    },
+
     clearEventState(state, actions) {
       //clear the state at logout
       state.events = {};
@@ -40,6 +56,15 @@ const eventsSlice = createSlice({
   },
 });
 
-export const { replaceCart, addEvent, removeEvent, setEvents, clearState } =
-  eventsSlice.actions;
+export const {
+  replaceCart,
+  addEvent,
+  removeEvent,
+  setEvents,
+  clearState,
+  setCurrentEventInfo,
+  setCurrentEventBills,
+  setCurrentEventMessages,
+  setCurrentEventTasks,
+} = eventsSlice.actions;
 export default eventsSlice;

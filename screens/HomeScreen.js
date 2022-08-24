@@ -24,8 +24,8 @@ export default function HomeScreen() {
     useSelector((state) => state.user.currentUser?.events) || {};
 
   //console.log('EVENTOS DEL USUARIO DESDE HOME' + JSON.stringify(userEvents));
-  console.log('CURRENT USER FROM HOME' + currentUser);
-  console.log('CURRENT events FROM HOME' + JSON.stringify(userEvents));
+  // console.log('CURRENT USER FROM HOME' + currentUser);
+  // console.log('CURRENT events FROM HOME' + JSON.stringify(userEvents));
 
   useEffect(() => {
     if (!currentUser) {

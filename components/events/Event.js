@@ -1,6 +1,10 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { fetchCurrentEvent } from '../../store/redux/eventsActions';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Title from '../ui/Title';
+
 import { Colors } from '../../constants/styles';
 
 import { getDate } from '../../util/date';
@@ -8,29 +12,39 @@ import { getDate } from '../../util/date';
 const Event = ({ event }) => {
   const { date, name, description, imageURL } = event;
   const dateFormat = getDate(date);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    dispatch(fetchCurrentEvent(event.eid));
+    navigation.navigate('TopTabs');
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.date}>
-        <Text style={styles.dateText}>{dateFormat.day}</Text>
-        <Text style={styles.dateText}>{dateFormat.month} </Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Image
-          source={{
-            uri: imageURL,
-          }}
-          style={styles.picture}
-        />
-        <View style={styles.descriptionContainer}>
-          <Title>{name}</Title>
-          <Text style={styles.description}>
-            {description?.length < 55
-              ? description
-              : description.slice(0, 55) + ' ...'}
-          </Text>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.container}>
+        <View style={styles.date}>
+          <Text style={styles.dateText}>{dateFormat.day}</Text>
+          <Text style={styles.dateText}>{dateFormat.month} </Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Image
+            source={{
+              uri: imageURL,
+            }}
+            style={styles.picture}
+          />
+          <View style={styles.descriptionContainer}>
+            <Title>{name}</Title>
+            <Text style={styles.description}>
+              {description?.length < 55
+                ? description
+                : description.slice(0, 55) + ' ...'}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

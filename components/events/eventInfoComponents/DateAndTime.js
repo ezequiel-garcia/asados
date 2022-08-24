@@ -9,11 +9,11 @@ const DateAndTime = ({ currentEvent }) => {
     <View style={styles.dateAndHour}>
       <View style={styles.infoContainer}>
         <Ionicons name="calendar-outline" size={30} color="white" />
-        <Text style={styles.text}>{getDateForInfo(currentEvent.date)}</Text>
+        <Text style={styles.text}>{getDateForInfo(currentEvent?.date)}</Text>
       </View>
       <View style={styles.infoContainer}>
         <MaterialCommunityIcons name="clock-outline" size={30} color="white" />
-        <Text style={styles.text}>{currentEvent.time}</Text>
+        <Text style={styles.text}>{currentEvent?.time}</Text>
       </View>
     </View>
   );

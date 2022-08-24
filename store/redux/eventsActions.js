@@ -1,4 +1,13 @@
-import { replaceCart, addEvent, removeEvent, setEvents } from './eventsSlice';
+import {
+  replaceCart,
+  addEvent,
+  removeEvent,
+  setEvents,
+  setCurrentEventInfo,
+  setCurrentEventMessages,
+  setCurrentEventBills,
+  setCurrentEventTasks,
+} from './eventsSlice';
 import { addEventToUser } from './currentUserSlice';
 import app from '../../config/firebase';
 
@@ -8,6 +17,7 @@ import {
   setDoc,
   doc,
   updateDoc,
+  onSnapshot,
 } from 'firebase/firestore';
 
 const db = getFirestore(app);
@@ -17,16 +27,12 @@ export const fetchEvents = (currentUser) => {
     const fetchData = async () => {
       console.log('fetching user events');
 
-      console.log('CURRENT USEEEER' + currentUser);
-      console.log('eventos desde detch' + JSON.stringify(currentUser.events));
-
       Object.keys(currentUser?.events).map(async (eventId) => {
         const docRef = doc(db, 'events', eventId);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const currentEvent = docSnap.data();
-          console.log('agregando' + currentEvent);
           dispatch(
             addEvent({
               ...currentEvent,
@@ -62,8 +68,6 @@ export const addEventToDB = (event, user) => {
 
   return async (dispatch) => {
     const add = async () => {
-      console.log('eventooo' + event);
-      console.log('ecentooo ID' + eventId);
       try {
         // const docRef = await setDoc(doc(db, 'users', user.uid), {
         await setDoc(doc(db, 'events', eventId), {
@@ -97,7 +101,6 @@ export const addEventToDB = (event, user) => {
 export const addEventToUserDB = (user, eventId) => {
   const uid = user.uid;
   const userEvents = user.events;
-  console.log('eventos del uruario' + JSON.stringify(userEvents));
   return async (dispatch) => {
     try {
       const userRef = doc(db, 'users', uid);
@@ -111,5 +114,108 @@ export const addEventToUserDB = (user, eventId) => {
     } catch (e) {
       console.error('Error adding document: ', e);
     }
+  };
+};
+
+//Current event actions
+
+export const fetchEventInfo = (eventId) => {
+  return async (dispatch) => {
+    const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
+      console.log('Current data: ', doc.data());
+      // dispatch to the tasks
+
+      if (doc.data()) {
+        const currentEventInfo = doc.data();
+        dispatch(
+          setCurrentEventInfo({
+            ...currentEventInfo,
+            date: new Date(
+              currentEventInfo.date.seconds * 1000 +
+                currentEventInfo.date.nanoseconds / 1000000
+            ),
+          })
+        );
+        //dispatch(setCurrentEventInfo(doc.data()));
+      }
+    });
+  };
+};
+
+export const fetchTasks = (eventId) => {
+  return async (dispatch) => {
+    const unsub = onSnapshot(doc(db, 'tasks', eventId), (doc) => {
+      //console.log('Current data: ', doc.data());
+      // dispatch to the tasks
+      if (doc.data()) {
+        dispatch(setCurrentEventTasks(doc.data()));
+      }
+    });
+  };
+};
+
+export const fetchMessages = (eventId) => {
+  return async (dispatch) => {
+    const unsub = onSnapshot(doc(db, 'messages', eventId), (doc) => {
+      //console.log('Current data: ', doc.data());
+      if (doc.data()) {
+        dispatch(setCurrentEventMessages(doc.data()));
+      }
+    });
+  };
+};
+
+export const fetchBills = (eventId) => {
+  return async (dispatch) => {
+    const unsub = onSnapshot(doc(db, 'bills', eventId), (doc) => {
+      if (doc.data()) {
+        dispatch(setCurrentEventBills(doc.data()));
+      }
+    });
+  };
+};
+
+export const setTasks = (eventId, tasks) => {
+  return async () => {
+    try {
+      await setDoc(doc(db, 'tasks', eventId), {
+        tasks,
+      });
+    } catch (e) {
+      console.error('Error adding tasks: ', e);
+    }
+  };
+};
+
+export const setBills = (eventId, bills) => {
+  return async () => {
+    try {
+      await setDoc(doc(db, 'bills', eventId), {
+        bills,
+      });
+    } catch (e) {
+      console.error('Error adding bills: ', e);
+    }
+  };
+};
+
+export const setMessages = (eventId, tasks) => {
+  return async () => {
+    try {
+      await setDoc(doc(db, 'tasks', eventId), {
+        tasks,
+      });
+    } catch (e) {
+      console.error('Error adding message: ', e);
+    }
+  };
+};
+
+export const fetchCurrentEvent = (eventId) => {
+  return async (dispatch) => {
+    dispatch(fetchEventInfo(eventId));
+    dispatch(fetchMessages(eventId));
+    dispatch(fetchTasks(eventId));
+    dispatch(fetchBills(eventId));
   };
 };

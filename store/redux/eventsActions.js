@@ -19,6 +19,7 @@ export const fetchEvents = (currentUser) => {
 
       console.log('CURRENT USEEEER' + currentUser);
       console.log('eventos desde detch' + JSON.stringify(currentUser.events));
+
       Object.keys(currentUser?.events).map(async (eventId) => {
         const docRef = doc(db, 'events', eventId);
         const docSnap = await getDoc(docRef);

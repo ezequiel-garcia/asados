@@ -32,9 +32,14 @@ const eventsSlice = createSlice({
     setCurrentEvent(state, action) {
       state.currentEvent = action.payload || null;
     },
+    clearEventState(state, actions) {
+      //clear the state at logout
+      state.events = {};
+      state.currentEvent = {};
+    },
   },
 });
 
-export const { replaceCart, addEvent, removeEvent, setEvents } =
+export const { replaceCart, addEvent, removeEvent, setEvents, clearState } =
   eventsSlice.actions;
 export default eventsSlice;

@@ -12,7 +12,6 @@ const PreviousEvents = () => {
 
     arrayEvents = Object.values(events);
 
-    console.log(arrayEvents[0]);
     const previous = arrayEvents
       .filter((e) => e.date < new Date())
       .sort((a, b) => a.date - b.date);
@@ -25,7 +24,7 @@ const PreviousEvents = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
       <Text style={{ color: '#ffffffb7', fontSize: 20 }}>
-        {'No upcoming events'}
+        {'No previous events'}
       </Text>
     </View>
   );

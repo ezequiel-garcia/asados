@@ -9,14 +9,12 @@ import { Text, View } from 'react-native';
 
 const UpcomingEvents = () => {
   const events = useSelector((state) => state.events.events);
-  console.log('EVENTOS DESDE UPCOMING' + JSON.stringify(events));
 
   if (Object.keys(events).length > 0) {
     let arrayEvents = [];
 
     arrayEvents = Object.values(events);
 
-    console.log(arrayEvents[0]);
     const upcoming = arrayEvents
       .filter((e) => e.date >= new Date())
       .sort((a, b) => a.date - b.date);

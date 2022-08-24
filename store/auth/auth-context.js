@@ -8,8 +8,8 @@ import {
 } from 'firebase/auth';
 
 import { fetchCurrentUser, addUserToDB } from '../redux/usersActions';
-
-import { setCurrentUser } from '../redux/currentUserSlice';
+import { clearState } from '../redux/eventsSlice';
+import { clearUser, setCurrentUser } from '../redux/currentUserSlice';
 import { useDispatch } from 'react-redux';
 //USER DATA
 import users from '../../users';
@@ -89,6 +89,8 @@ export const AuthenticationContextProvider = ({ children }) => {
   const onLogout = async () => {
     console.log('byee');
     await signOut(getAuth());
+    dispatch(clearState({}));
+    dispatch(clearUser());
     setUser(null);
   };
 

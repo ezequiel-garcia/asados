@@ -25,9 +25,17 @@ const currentUserSlice = createSlice({
       ).filter(([key, value]) => key != action.payload);
       //If it's deleted for the creator have to delete it to all the users that are in
     },
+    clearUser(state, actions) {
+      //clear the state at logout
+      state.currentUser = {};
+    },
   },
 });
 
-export const { setCurrentUser, addEventToUser, removeEventFromUser } =
-  currentUserSlice.actions;
+export const {
+  setCurrentUser,
+  addEventToUser,
+  removeEventFromUser,
+  clearUser,
+} = currentUserSlice.actions;
 export default currentUserSlice;

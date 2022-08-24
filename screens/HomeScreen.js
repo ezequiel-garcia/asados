@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View } from 'react-native';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../store/auth/auth-context';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,6 +12,7 @@ import Title from '../components/ui/Title';
 import PreviousEvents from '../components/events/PreviousEvents';
 import UpcomingEvents from '../components/events/UpcomingEvents';
 import Background from '../components/ui/Background';
+import { setEvents } from '../store/redux/eventsSlice';
 
 export default function HomeScreen() {
   const authCtx = useContext(AuthenticationContext);
@@ -33,11 +34,9 @@ export default function HomeScreen() {
     }
   }, [authCtx, dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (Object.keys(userEvents).length > 0) {
       dispatch(fetchEvents(currentUser));
-      console.log('dispatch events');
-      console.log(userEvents);
     }
   }, [userEvents, dispatch]);
 

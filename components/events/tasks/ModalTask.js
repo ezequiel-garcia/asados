@@ -13,6 +13,9 @@ import {
 import Input from '../../ui/Input';
 import { Colors } from '../../../constants/styles';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentEventTasks } from '../../../store/redux/eventsSlice';
+
 const ModalTask = ({
   modalVisible,
   setModalVisible,
@@ -20,6 +23,9 @@ const ModalTask = ({
   currentTask,
   setCurrentTask,
 }) => {
+  const tasks = useSelector((state) => state.events.currentEvent.tasks);
+  const dispatch = useDispatch();
+
   const [taskTitle, setTaskTitle] = useState(
     currentTask ? currentTask.title : ''
   );
@@ -36,15 +42,32 @@ const ModalTask = ({
     }
   }, [modalVisible, currentTask]);
 
+  // function handleAdd() {
+  //   if (taskTitle.trim() == '' || inCharge.trim() == '') {
+  //     setError(true);
+  //   } else {
+  //     //HAVE TO ADD TO THE TASKS
+  //     setTasks((prev) => [
+  //       { id: Math.random(), title: taskTitle, inCharge: inCharge },
+  //       ...prev,
+  //     ]);
+
+  //     onCancel();
+  //   }
+  // }
+
+  // testing add with redux
   function handleAdd() {
     if (taskTitle.trim() == '' || inCharge.trim() == '') {
       setError(true);
     } else {
       //HAVE TO ADD TO THE TASKS
-      setTasks((prev) => [
-        { id: Math.random(), title: taskTitle, inCharge: inCharge },
-        ...prev,
-      ]);
+      dispatch(
+        setCurrentEventTasks([
+          { id: Math.random(), title: taskTitle, inCharge: inCharge },
+          ...tasks,
+        ])
+      );
 
       onCancel();
     }

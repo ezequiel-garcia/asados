@@ -26,7 +26,9 @@ const eventsSlice = createSlice({
     },
 
     removeEvent(state, action) {
-      state.events = state.events.filter((item) => item.id !== id);
+      //state.events = state.events.filter((item) => item.id !== id);
+      // because it's an object -->
+      state.events = state.events.remove[action.payload];
       //If it's deleted for the creator have to delete it to all the users that are in
     },
 
@@ -36,16 +38,16 @@ const eventsSlice = createSlice({
     },
 
     setCurrentEventInfo(state, action) {
-      state.currentEvent.eventInfo = action.payload;
+      state.currentEvent.eventInfo = action.payload || {};
     },
     setCurrentEventTasks(state, action) {
-      state.currentEvent.tasks = action.payload;
+      state.currentEvent.tasks = action.payload || [];
     },
     setCurrentEventBills(state, action) {
-      state.currentEvent.bills = action.payload;
+      state.currentEvent.bills = action.payload || [];
     },
     setCurrentEventMessages(state, action) {
-      state.currentEvent.messages = action.payload;
+      state.currentEvent.messages = action.payload || [];
     },
 
     clearEventState(state, actions) {

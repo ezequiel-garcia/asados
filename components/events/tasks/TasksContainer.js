@@ -1,12 +1,27 @@
+import { useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Task from './Task';
 
+import { setTasks } from '../../../store/redux/eventsActions';
+import { useSelector, useDispatch } from 'react-redux';
+
 const TasksContainer = ({
-  tasks,
+  //tasks,
   setCurrentTask,
   setModalVisible,
-  setTasks,
+  // setTasks,
 }) => {
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.events.currentEvent.tasks);
+  const { eid } = useSelector((state) => state.events.currentEvent.eventInfo);
+  console.log('current' + JSON.stringify(tasks));
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      dispatch(setTasks(eid, tasks));
+    }
+  }, [tasks]);
+
   return (
     <View style={styles.container}>
       {tasks?.length == 0 && <Text>No tasks</Text>}

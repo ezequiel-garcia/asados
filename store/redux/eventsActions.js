@@ -137,6 +137,8 @@ export const fetchEventInfo = (eventId) => {
           })
         );
         //dispatch(setCurrentEventInfo(doc.data()));
+      } else {
+        setCurrentEventInfo({});
       }
     });
   };
@@ -148,8 +150,10 @@ export const fetchTasks = (eventId) => {
       //console.log('Current data: ', doc.data());
       // dispatch to the tasks
       if (doc.data()) {
-        dispatch(setCurrentEventTasks(doc.data()));
-      }
+        const { tasks } = doc.data();
+        console.log(tasks) + 'Tasks desde db';
+        dispatch(setCurrentEventTasks(tasks));
+      } else dispatch(setCurrentEventTasks([]));
     });
   };
 };
@@ -160,7 +164,7 @@ export const fetchMessages = (eventId) => {
       //console.log('Current data: ', doc.data());
       if (doc.data()) {
         dispatch(setCurrentEventMessages(doc.data()));
-      }
+      } else dispatch(setCurrentEventMessages([]));
     });
   };
 };
@@ -170,7 +174,7 @@ export const fetchBills = (eventId) => {
     const unsub = onSnapshot(doc(db, 'bills', eventId), (doc) => {
       if (doc.data()) {
         dispatch(setCurrentEventBills(doc.data()));
-      }
+      } else dispatch(setCurrentEventBills([]));
     });
   };
 };
@@ -186,6 +190,19 @@ export const setTasks = (eventId, tasks) => {
     }
   };
 };
+
+// export const updateTasks = (eventId, tasks) => {
+//   return async () => {
+//     try {
+//       const tasksRef = doc(db, 'tasks', eventId);
+//       await updateDoc(tasksRef, {
+//         tasks,
+//       });
+//     } catch (e) {
+//       console.error('Error adding tasks: ', e);
+//     }
+//   };
+// };
 
 export const setBills = (eventId, bills) => {
   return async () => {

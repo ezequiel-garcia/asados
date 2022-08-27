@@ -20,3 +20,7 @@ export function getTime(time) {
   let minutes = (time?.getMinutes() < 10 ? '0' : '') + time?.getMinutes();
   return hours + ':' + minutes;
 }
+
+export function dateFromDB(dbDate) {
+  return new Date(dbDate.seconds * 1000 + dbDate.nanoseconds / 1000000);
+}

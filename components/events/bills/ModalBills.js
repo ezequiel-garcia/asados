@@ -13,6 +13,9 @@ import Input from '../../ui/Input';
 import SelectWhoPaid from './SelectWhoPaid';
 import { Colors } from '../../../constants/styles';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentEventBills } from '../../../store/redux/eventsSlice';
+
 const ModalBills = ({
   modalVisible,
   setModalVisible,
@@ -21,6 +24,9 @@ const ModalBills = ({
   setCurrentBill,
   currentEvent,
 }) => {
+  const bills = useSelector((state) => state.events.currentEvent.bills);
+  const dispatch = useDispatch();
+
   const [billTitle, setBillTitle] = useState(
     currentBill ? currentBill.title : ''
   );
@@ -37,21 +43,43 @@ const ModalBills = ({
     }
   }, [modalVisible, currentBill]);
 
+  // function handleAdd() {
+  //   if (billTitle.trim() == '' || isNaN(amount)) {
+  //     setError(true);
+  //   } else {
+  //     //HAVE TO ADD TO THE BILLS
+  //     setBills((prev) => [
+  //       {
+  //         id: Math.random(),
+  //         title: billTitle,
+  //         owner: owner,
+  //         date: new Date(),
+  //         amount: amount,
+  //       },
+  //       ...prev,
+  //     ]);
+
+  //     onCancel();
+  //   }
+  // }
+
   function handleAdd() {
     if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
-      //HAVE TO ADD TO THE BILLS
-      setBills((prev) => [
-        {
-          id: Math.random(),
-          title: billTitle,
-          owner: owner,
-          date: new Date(),
-          amount: amount,
-        },
-        ...prev,
-      ]);
+      //HAVE TO ADD TO THE TASKS
+      dispatch(
+        setCurrentEventBills([
+          {
+            id: Math.random(),
+            title: billTitle,
+            owner: owner,
+            date: new Date(),
+            amount: amount,
+          },
+          ...bills,
+        ])
+      );
 
       onCancel();
     }

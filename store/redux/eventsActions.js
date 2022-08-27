@@ -20,6 +20,8 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
+import { dateFromDB } from '../../util/date';
+
 const db = getFirestore(app);
 
 export const fetchEvents = (currentUser) => {
@@ -130,10 +132,12 @@ export const fetchEventInfo = (eventId) => {
         dispatch(
           setCurrentEventInfo({
             ...currentEventInfo,
-            date: new Date(
-              currentEventInfo.date.seconds * 1000 +
-                currentEventInfo.date.nanoseconds / 1000000
-            ),
+            date: dateFromDB(currentEventInfo.date),
+
+            // date: new Date(
+            //   currentEventInfo.date.seconds * 1000 +
+            //     currentEventInfo.date.nanoseconds / 1000000
+            // ),
           })
         );
         //dispatch(setCurrentEventInfo(doc.data()));
@@ -151,7 +155,6 @@ export const fetchTasks = (eventId) => {
       // dispatch to the tasks
       if (doc.data()) {
         const { tasks } = doc.data();
-        console.log(tasks) + 'Tasks desde db';
         dispatch(setCurrentEventTasks(tasks));
       } else dispatch(setCurrentEventTasks([]));
     });
@@ -173,7 +176,8 @@ export const fetchBills = (eventId) => {
   return async (dispatch) => {
     const unsub = onSnapshot(doc(db, 'bills', eventId), (doc) => {
       if (doc.data()) {
-        dispatch(setCurrentEventBills(doc.data()));
+        const { bills } = doc.data();
+        dispatch(setCurrentEventBills(bills));
       } else dispatch(setCurrentEventBills([]));
     });
   };
@@ -190,19 +194,6 @@ export const setTasks = (eventId, tasks) => {
     }
   };
 };
-
-// export const updateTasks = (eventId, tasks) => {
-//   return async () => {
-//     try {
-//       const tasksRef = doc(db, 'tasks', eventId);
-//       await updateDoc(tasksRef, {
-//         tasks,
-//       });
-//     } catch (e) {
-//       console.error('Error adding tasks: ', e);
-//     }
-//   };
-// };
 
 export const setBills = (eventId, bills) => {
   return async () => {

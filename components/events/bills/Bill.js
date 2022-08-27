@@ -2,10 +2,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Colors } from '../../../constants/styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { getDate } from '../../../util/date';
+import { getDate, dateFromDB } from '../../../util/date';
 
 const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
-  const dateFormat = getDate(bill.date);
+  const dateFormat = getDate(dateFromDB(bill.date));
 
   function onEdit() {
     setCurrentBill(bill);

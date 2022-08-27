@@ -1,12 +1,27 @@
+import { useEffect } from 'react';
+
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Bill from './Bill';
 
+import { setBills } from '../../../store/redux/eventsActions';
+import { useSelector, useDispatch } from 'react-redux';
+
 const BillsContainer = ({
-  bills,
+  // bills,
   setCurrentBill,
   setModalVisible,
-  setBills,
+  // setBills,
 }) => {
+  const dispatch = useDispatch();
+  const bills = useSelector((state) => state.events.currentEvent.bills);
+  const { eid } = useSelector((state) => state.events.currentEvent.eventInfo);
+
+  useEffect(() => {
+    if (bills.length > 0) {
+      dispatch(setBills(eid, bills));
+    }
+  }, [bills]);
+
   return (
     <View style={styles.container}>
       {bills?.length == 0 && <Text>No bills</Text>}

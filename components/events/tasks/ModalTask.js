@@ -26,12 +26,8 @@ const ModalTask = ({
   const tasks = useSelector((state) => state.events.currentEvent.tasks);
   const dispatch = useDispatch();
 
-  const [taskTitle, setTaskTitle] = useState(
-    currentTask ? currentTask.title : ''
-  );
-  const [inCharge, setInCharge] = useState(
-    currentTask ? currentTask.inCharge : ''
-  );
+  const [taskTitle, setTaskTitle] = useState('');
+  const [inCharge, setInCharge] = useState('');
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -41,20 +37,6 @@ const ModalTask = ({
       setError(false);
     }
   }, [modalVisible, currentTask]);
-
-  // function handleAdd() {
-  //   if (taskTitle.trim() == '' || inCharge.trim() == '') {
-  //     setError(true);
-  //   } else {
-  //     //HAVE TO ADD TO THE TASKS
-  //     setTasks((prev) => [
-  //       { id: Math.random(), title: taskTitle, inCharge: inCharge },
-  //       ...prev,
-  //     ]);
-
-  //     onCancel();
-  //   }
-  // }
 
   // testing add with redux
   function handleAdd() {
@@ -78,15 +60,15 @@ const ModalTask = ({
       setError(true);
     } else {
       //HAVE TO EDIT THE TASK
-      setTasks((prev) =>
-        prev.map((task) => {
-          if (task.id != currentTask.id) {
-            return task;
-          } else {
-            return { id: task.id, title: taskTitle, inCharge: inCharge };
-          }
-        })
-      );
+      const editedTasks = tasks.map((task) => {
+        if (task.id != currentTask.id) {
+          return task;
+        } else {
+          return { id: task.id, title: taskTitle, inCharge: inCharge };
+        }
+      });
+
+      dispatch(setCurrentEventTasks(editedTasks));
       onCancel();
     }
   }

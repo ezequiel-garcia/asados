@@ -5,12 +5,7 @@ import Task from './Task';
 import { setTasks } from '../../../store/redux/eventsActions';
 import { useSelector, useDispatch } from 'react-redux';
 
-const TasksContainer = ({
-  //tasks,
-  setCurrentTask,
-  setModalVisible,
-  // setTasks,
-}) => {
+const TasksContainer = ({ setCurrentTask, setModalVisible }) => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.events.currentEvent.tasks);
   const { eid } = useSelector((state) => state.events.currentEvent.eventInfo);

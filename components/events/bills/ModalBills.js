@@ -43,26 +43,6 @@ const ModalBills = ({
     }
   }, [modalVisible, currentBill]);
 
-  // function handleAdd() {
-  //   if (billTitle.trim() == '' || isNaN(amount)) {
-  //     setError(true);
-  //   } else {
-  //     //HAVE TO ADD TO THE BILLS
-  //     setBills((prev) => [
-  //       {
-  //         id: Math.random(),
-  //         title: billTitle,
-  //         owner: owner,
-  //         date: new Date(),
-  //         amount: amount,
-  //       },
-  //       ...prev,
-  //     ]);
-
-  //     onCancel();
-  //   }
-  // }
-
   function handleAdd() {
     if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
@@ -85,26 +65,49 @@ const ModalBills = ({
     }
   }
 
+  // function handleEdit() {
+  //   if (billTitle.trim() == '' || isNaN(amount)) {
+  //     setError(true);
+  //   } else {
+  //     //HAVE TO EDIT THE BILL
+  //     setBills((prev) =>
+  //       prev.map((bill) => {
+  //         if (bill.id != currentBill.id) {
+  //           return bill;
+  //         } else {
+  //           return {
+  //             id: bill.id,
+  //             title: billTitle,
+  //             owner: owner,
+  //             amount: amount,
+  //             date: bill.date,
+  //           };
+  //         }
+  //       })
+  //     );
+  //     onCancel();
+  //   }
+  // }
+
   function handleEdit() {
     if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
-      //HAVE TO EDIT THE BILL
-      setBills((prev) =>
-        prev.map((bill) => {
-          if (bill.id != currentBill.id) {
-            return bill;
-          } else {
-            return {
-              id: bill.id,
-              title: billTitle,
-              owner: owner,
-              amount: amount,
-              date: bill.date,
-            };
-          }
-        })
-      );
+      const editedBills = bills.map((bill) => {
+        if (bill.id != currentBill.id) {
+          return bill;
+        } else {
+          return {
+            id: bill.id,
+            title: billTitle,
+            owner: owner,
+            amount: amount,
+            date: bill.date,
+          };
+        }
+      });
+
+      dispatch(setCurrentEventBills(editedBills));
       onCancel();
     }
   }

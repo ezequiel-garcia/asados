@@ -5,12 +5,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentEventTasks } from '../../../store/redux/eventsSlice';
+import { deleteTasksFromDB } from '../../../store/redux/eventsActions';
 
-const Task = ({ task, setCurrentTask, setModalVisible, setTasks }) => {
+const Task = ({ task, setCurrentTask, setModalVisible }) => {
   // const [task, setTask] = useState();
   // const [inCharge, setInCharge] = useState()
 
   const tasks = useSelector((state) => state.events.currentEvent.tasks);
+  const { eid } = useSelector((state) => state.events.currentEvent.eventInfo);
   const dispatch = useDispatch();
 
   function handlePress() {
@@ -40,6 +42,13 @@ const Task = ({ task, setCurrentTask, setModalVisible, setTasks }) => {
     const newTasks = tasks.filter((item) => item.id != task.id);
 
     dispatch(setCurrentEventTasks(newTasks));
+
+    //CHECK IF IS EMPTY NOW TO UPDATE THE DB FOR NOTHING
+    if (newTasks.length == 0) {
+      console.log('BORRANDO BAS DE DATOS' + JSON.stringify(eid));
+
+      dispatch(deleteTasksFromDB(eid));
+    }
   }
 
   return (

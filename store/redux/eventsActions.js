@@ -18,6 +18,7 @@ import {
   doc,
   updateDoc,
   onSnapshot,
+  deleteDoc,
 } from 'firebase/firestore';
 
 import { dateFromDB } from '../../util/date';
@@ -158,6 +159,16 @@ export const fetchTasks = (eventId) => {
         dispatch(setCurrentEventTasks(tasks));
       } else dispatch(setCurrentEventTasks([]));
     });
+  };
+};
+
+export const deleteTasksFromDB = (eid) => {
+  return async () => {
+    try {
+      await deleteDoc(doc(db, 'tasks', eid));
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 

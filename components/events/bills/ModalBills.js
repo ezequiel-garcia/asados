@@ -65,30 +65,6 @@ const ModalBills = ({
     }
   }
 
-  // function handleEdit() {
-  //   if (billTitle.trim() == '' || isNaN(amount)) {
-  //     setError(true);
-  //   } else {
-  //     //HAVE TO EDIT THE BILL
-  //     setBills((prev) =>
-  //       prev.map((bill) => {
-  //         if (bill.id != currentBill.id) {
-  //           return bill;
-  //         } else {
-  //           return {
-  //             id: bill.id,
-  //             title: billTitle,
-  //             owner: owner,
-  //             amount: amount,
-  //             date: bill.date,
-  //           };
-  //         }
-  //       })
-  //     );
-  //     onCancel();
-  //   }
-  // }
-
   function handleEdit() {
     if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);

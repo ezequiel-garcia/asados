@@ -46,7 +46,12 @@ const ModalTask = ({
       //HAVE TO ADD TO THE TASKS
       dispatch(
         setCurrentEventTasks([
-          { id: Math.random(), title: taskTitle, inCharge: inCharge },
+          {
+            id: Math.random(),
+            title: taskTitle,
+            inCharge: inCharge,
+            isDone: false,
+          },
           ...tasks,
         ])
       );

@@ -4,15 +4,22 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { getDate, dateFromDB } from '../../../util/date';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentEventBills } from '../../../store/redux/eventsSlice';
+
 const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
   const dateFormat = getDate(dateFromDB(bill.date));
+  const bills = useSelector((state) => state.events.currentEvent.bills);
+  const dispatch = useDispatch();
 
   function onEdit() {
     setCurrentBill(bill);
     setModalVisible(true);
   }
   function handleDelete() {
-    setBills((prev) => prev.filter((item) => item.id != bill.id));
+    const newTasks = bills.filter((item) => item.id != bill.id);
+
+    dispatch(setCurrentEventBills(newTasks));
   }
 
   return (

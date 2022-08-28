@@ -185,6 +185,9 @@ export const fetchBills = (eventId) => {
 
 export const setTasks = (eventId, tasks) => {
   return async () => {
+    if (!tasks) {
+      tasks = { tasks: [] };
+    }
     try {
       await setDoc(doc(db, 'tasks', eventId), {
         tasks,

@@ -83,6 +83,7 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
       // The screen is focused
       // Call any action
       console.log('entrando');
+      console.log(currentUser);
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -152,6 +153,7 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
         shareBills,
         shareTasks,
         imageURL: selectedImage,
+        admin: currentUser.uid,
       };
 
       // HERE I HAVE TO PASS THE EVENT TO THE EVENTS AND TO PUT IN CURRENT EVENT

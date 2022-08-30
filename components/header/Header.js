@@ -22,8 +22,10 @@ import { Colors } from '../../constants/styles';
 const Header = () => {
   const navigation = useNavigation();
   const currentUser = useSelector((state) => state.user.currentUser) || {};
+  const currentEvent = useSelector((state) => state.events.currentEvent || {});
 
   const { userData } = useContext(AuthenticationContext);
+
   console.log(currentUser);
 
   return (
@@ -32,7 +34,8 @@ const Header = () => {
         <View style={styles.userInfo}>
           <Image
             style={styles.profilePicture}
-            source={userData.profilePicture}
+            // source={userData.profilePicture}
+            source={currentUser.profilePic || userData.profilePicture}
           />
           <Text style={styles.name}>{currentUser.name}</Text>
         </View>

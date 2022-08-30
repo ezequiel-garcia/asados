@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { AuthenticationContext } from '../../store/auth/auth-context';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -19,10 +20,16 @@ import { events } from '../../dummyData'; //Have to change
 const EventHeader = () => {
   const navigation = useNavigation();
   const { user } = useContext(AuthenticationContext); //I can use it to check if is the creator
+  const currentEventInfo = useSelector(
+    (state) => state.events.currentEvent?.eventInfo || {}
+  );
 
-  const currentEvent = events[0];
+  // const currentEvent = events[0];
   //const eventOwner = user.uid === ownerId;
-  const eventOwner = true;
+  const eventOwner = currentEventInfo.admin == user.uid ? true : false;
+  console.log('event owner' + eventOwner);
+  console.log('admin' + currentEventInfo.admin);
+  console.log('userid' + user.uid);
 
   const handlePress = () => {
     // IF IS THE OWNER GO TO EDIT EVENT
@@ -46,9 +53,9 @@ const EventHeader = () => {
         <View style={styles.userInfo}>
           <Image
             style={styles.profilePicture}
-            source={{ uri: currentEvent.image }}
+            source={{ uri: currentEventInfo.imageURL }}
           />
-          <Text style={styles.name}>{currentEvent.title}</Text>
+          <Text style={styles.name}>{currentEventInfo.name}</Text>
         </View>
 
         <TouchableOpacity
@@ -91,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Montserrat_400Regular',
     color: 'white',
+    textTransform: 'capitalize',
   },
   button: {
     padding: 10,

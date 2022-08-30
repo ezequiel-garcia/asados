@@ -84,6 +84,7 @@ export const addEventToDB = (event, user) => {
           shareBills: event.shareBills,
           imageURL: event.imageURL,
           chat: '',
+          admin: event.admin,
           participants: { [uid]: true },
         });
 

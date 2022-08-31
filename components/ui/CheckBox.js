@@ -20,6 +20,9 @@ const CheckBox = ({ onPress, checkBoxState, text, decoration }) => {
         borderColor: Colors.primary500,
         borderRadius: 5,
       }}
+      style={{
+        overflow: 'hidden',
+      }}
     />
   );
 };

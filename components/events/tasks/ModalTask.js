@@ -163,7 +163,9 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    backgroundColor: 'rgba(4, 22, 36, 0.747)',
+    //backgroundColor: 'rgba(4, 22, 36, 0.747)',
+    backgroundColor: 'rgba(4, 22, 36, 0.88)',
+
     margin: 20,
     width: '80%',
 
@@ -177,9 +179,13 @@ const styles = StyleSheet.create({
     },
   },
   inputStyle: {
+    // fontSize: 16,
+    // backgroundColor: Colors.primary600,
+    // color: 'white',
     fontSize: 16,
-    backgroundColor: Colors.primary600,
-    color: 'white',
+    backgroundColor: 'rgba(34, 98, 146, 0.88)',
+    // backgroundColor: Colors.primary600,
+    color: '#ffffffd6',
   },
   button: {
     marginTop: 10,

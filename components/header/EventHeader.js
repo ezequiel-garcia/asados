@@ -37,7 +37,7 @@ const EventHeader = () => {
       Alert.alert('Edit', 'edit event');
       navigation.navigate('TabBarHome', {
         screen: 'Create Event',
-        params: { onEdit: true },
+        params: { onEdit: true, event: currentEventInfo },
       });
     } else {
       //IF IS A GUEST LEAVE THE EVENT
@@ -50,12 +50,14 @@ const EventHeader = () => {
   return (
     <SafeAreaView style={{ backgroundColor: Colors.primary800 }}>
       <View style={styles.container}>
-        <View style={styles.userInfo}>
+        <View style={styles.eventInfo}>
           <Image
             style={styles.profilePicture}
             source={{ uri: currentEventInfo.imageURL }}
           />
-          <Text style={styles.name}>{currentEventInfo.name}</Text>
+          <View style={{ flexDirection: 'row', flex: 1 }}>
+            <Text style={styles.eventTitle}>{currentEventInfo.name}</Text>
+          </View>
         </View>
 
         <TouchableOpacity
@@ -83,8 +85,10 @@ const styles = StyleSheet.create({
     paddingRight: 25,
     paddingBottom: 15,
     paddingTop: 5,
+    width: '100%',
   },
-  userInfo: {
+  eventInfo: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginRight: 20,
   },
-  name: {
+  eventTitle: {
     fontSize: 20,
     fontFamily: 'Montserrat_400Regular',
     color: 'white',
@@ -105,6 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: Colors.primary500,
     borderRadius: 20,
+    marginLeft: 5,
   },
   buttonText: {
     color: 'white',

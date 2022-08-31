@@ -22,8 +22,8 @@ function Input({
         ]}
         multiline={multiline ? true : false}
         placeholder={label}
-        // placeholderTextColor="#ffffffea"
-        placeholderTextColor="black"
+        placeholderTextColor="#ffffffea"
+        //placeholderTextColor="black"
         autoCapitalize="none"
         keyboardType={keyboardType}
         onChangeText={onUpdateValue}

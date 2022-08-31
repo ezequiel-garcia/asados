@@ -56,7 +56,7 @@ const Task = ({ task, setCurrentTask, setModalVisible }) => {
       <View
         style={{
           flexDirection: 'row',
-          //   justifyContent: 'space-between',
+
           alignItems: 'center',
         }}
       >
@@ -68,7 +68,7 @@ const Task = ({ task, setCurrentTask, setModalVisible }) => {
             decoration="line-through"
           />
         </View>
-        <View style={{ flex: 2, marginLeft: 10 }}>
+        <View style={{ flex: 2 }}>
           <Text style={styles.text}>( {task.inCharge} )</Text>
           <View
             style={{

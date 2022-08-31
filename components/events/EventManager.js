@@ -27,8 +27,6 @@ import ShareOptions from './ShareOptions';
 import ErrorText from '../ui/ErrorText';
 import ImagePickerComp from '../ui/ImagePickerComp';
 
-import { events } from '../../dummyData';
-
 // to save in the DB
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -36,40 +34,44 @@ import {
   fetchCurrentEvent,
 } from '../../store/redux/eventsActions';
 
-const EventManager = ({ onEdit = false, event = events[1], route }) => {
+const EventManager = ({ onEdit = false, route }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
   //  const authCtx = useContext(AuthenticationContext);
 
   route?.params?.onEdit ? (onEdit = true) : (onEdit = false);
 
+  const eventForEdit = route?.params?.event || {};
+
   //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
   const [inputs, setInputs] = useState({
     name: {
-      value: onEdit ? event?.title : '',
+      value: onEdit ? eventForEdit?.name : '',
       isValid: true,
     },
 
     description: {
-      value: onEdit ? event?.description : '',
+      value: onEdit ? eventForEdit?.description : '',
       isValid: true,
     },
     location: {
-      value: onEdit ? event?.location : '',
+      value: onEdit ? eventForEdit?.location : '',
       isValid: true,
     },
   });
-  const [date, setDate] = useState(onEdit ? event?.date : new Date());
-  const [time, setTime] = useState(onEdit ? event?.time : getTime(new Date()));
+  const [date, setDate] = useState(onEdit ? eventForEdit?.date : new Date());
+  const [time, setTime] = useState(
+    onEdit ? eventForEdit?.time : getTime(new Date())
+  );
   const [shareTasks, setShareTasks] = useState(
-    onEdit ? event?.shareTasks : false
+    onEdit ? eventForEdit?.shareTasks : false
   );
   const [shareBills, setShareBills] = useState(
-    onEdit ? event?.shareBills : false
+    onEdit ? eventForEdit?.shareBills : false
   );
   const [selectedImage, setSelectedImage] = useState(
     onEdit
-      ? event?.image
+      ? eventForEdit?.imageURL
       : // : 'https://cdn.pixabay.com/photo/2017/06/10/06/39/calender-2389150_1280.png'
         'https://images.unsplash.com/photo-1499591934245-40b55745b905?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8dHJpcHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60'
   );
@@ -83,7 +85,7 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
       // The screen is focused
       // Call any action
       console.log('entrando');
-      console.log(currentUser);
+      console.log(onEdit);
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -141,10 +143,10 @@ const EventManager = ({ onEdit = false, event = events[1], route }) => {
         };
       });
     } else {
-      // If inputs are ok create the event --> send to firebase also?
+      // If inputs are ok create the event
 
       const event = {
-        eid: uuid.v4(),
+        eid: onEdit ? eventForEdit?.eid : uuid.v4(),
         name: inputs.name.value,
         description: inputs.description.value,
         location: inputs.location.value,

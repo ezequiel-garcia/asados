@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { GoogleLogin } from '../../store/auth/auth-google';
 import React from 'react';
 
 const SocialMediaLogin = () => {
@@ -28,7 +29,7 @@ const SocialMediaLogin = () => {
             />
           </TouchableOpacity>
         </View>
-        <View>
+        {/* <View>
           <TouchableOpacity
             style={{
               backgroundColor: '#ffffff',
@@ -42,7 +43,8 @@ const SocialMediaLogin = () => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <GoogleLogin />
       </View>
     </View>
   );

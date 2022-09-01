@@ -63,7 +63,7 @@ export const {
   addEvent,
   removeEvent,
   setEvents,
-  clearState,
+  clearEventState,
   setCurrentEventInfo,
   setCurrentEventBills,
   setCurrentEventMessages,

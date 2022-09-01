@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 
 import { fetchCurrentUser, addUserToDB } from '../redux/usersActions';
-import { clearState } from '../redux/eventsSlice';
+import { clearEventState } from '../redux/eventsSlice';
 import { clearUser, setCurrentUser } from '../redux/currentUserSlice';
 import { useDispatch } from 'react-redux';
 //USER DATA
@@ -36,9 +36,6 @@ export const AuthenticationContextProvider = ({ children }) => {
 
   const dispatch = useDispatch();
 
-  // USER DATAAA
-  const userData = users[Math.round(Math.random())];
-
   onAuthStateChanged(getAuth(), (usr) => {
     if (usr) {
       setUser(usr);
@@ -59,7 +56,6 @@ export const AuthenticationContextProvider = ({ children }) => {
 
       setIsLoading(false);
       setError(null);
-      console.log(userData);
     } catch (error) {
       setIsLoading(false);
       setError(error.toString());
@@ -89,7 +85,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   const onLogout = async () => {
     console.log('byee');
     await signOut(getAuth());
-    dispatch(clearState({}));
+    dispatch(clearEventState({}));
     dispatch(clearUser());
     setUser(null);
   };
@@ -122,7 +118,6 @@ export const AuthenticationContextProvider = ({ children }) => {
         user,
         isLoading,
         error,
-        userData,
         onLogin,
         onRegister,
         onLogout,

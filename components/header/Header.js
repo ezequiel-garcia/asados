@@ -34,7 +34,7 @@ const Header = () => {
           <Image
             style={styles.profilePicture}
             // source={userData.profilePicture}
-            source={currentUser.profilePic || userData.profilePicture}
+            source={currentUser.profilePic || userData?.profilePicture}
           />
           <Text style={styles.name}>{currentUser.name}</Text>
         </View>

@@ -11,6 +11,8 @@ import {
 import { addEventToUser } from './currentUserSlice';
 import app from '../../config/firebase';
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 import {
   getFirestore,
   getDoc,
@@ -24,6 +26,7 @@ import {
 import { dateFromDB } from '../../util/date';
 
 const db = getFirestore(app);
+const storage = getStorage();
 
 export const fetchEvents = (currentUser) => {
   return async (dispatch) => {
@@ -241,4 +244,30 @@ export const fetchCurrentEvent = (eventId) => {
     dispatch(fetchTasks(eventId));
     dispatch(fetchBills(eventId));
   };
+};
+
+//upload event picture
+export const uploadEventImage = async (imageURI, eventId) => {
+  const storageRef = ref(storage, `eventImages/${eventId}`);
+
+  const response = await fetch(imageURI);
+  const blob = await response.blob();
+
+  uploadBytes(storageRef, blob)
+    .then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+      //RETURN THE IMAGE PATH
+      getDownloadURL(`${ref}.jpeg`)
+        .then((url) => {
+          console.log(url + '-----> url');
+          return url;
+          // Insert url into an <img> tag to "download"
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 };

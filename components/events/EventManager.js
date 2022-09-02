@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addEventToDB,
   fetchCurrentEvent,
+  uploadEventImage,
 } from '../../store/redux/eventsActions';
 
 const EventManager = ({ onEdit = false, route }) => {
@@ -72,8 +73,7 @@ const EventManager = ({ onEdit = false, route }) => {
   const [selectedImage, setSelectedImage] = useState(
     onEdit
       ? eventForEdit?.imageURL
-      : // : 'https://cdn.pixabay.com/photo/2017/06/10/06/39/calender-2389150_1280.png'
-        'https://images.unsplash.com/photo-1499591934245-40b55745b905?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8dHJpcHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60'
+      : 'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.png?alt=media&token=1a5c37a3-dbdb-40f0-8ec6-90111873f201'
   );
 
   const [submitError, setSubmitError] = useState(false);
@@ -157,6 +157,8 @@ const EventManager = ({ onEdit = false, route }) => {
         imageURL: selectedImage,
         admin: currentUser.uid,
       };
+
+      uploadEventImage(event.imageURL, event.eid);
 
       // HERE I HAVE TO PASS THE EVENT TO THE EVENTS AND TO PUT IN CURRENT EVENT
 

@@ -29,7 +29,7 @@ const SocialMediaLogin = () => {
             />
           </TouchableOpacity>
         </View>
-        {/* <View>
+        <View>
           <TouchableOpacity
             style={{
               backgroundColor: '#ffffff',
@@ -43,8 +43,8 @@ const SocialMediaLogin = () => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-        </View> */}
-        <GoogleLogin />
+        </View>
+        {/* <GoogleLogin /> */}
       </View>
     </View>
   );

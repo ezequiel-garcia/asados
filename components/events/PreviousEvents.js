@@ -23,7 +23,13 @@ const PreviousEvents = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-      <Text style={{ color: '#ffffffb7', fontSize: 20 }}>
+      <Text
+        style={{
+          color: '#ffffffb7',
+          fontSize: 20,
+          fontFamily: 'Montserrat_400Regular',
+        }}
+      >
         {'No previous events'}
       </Text>
     </View>

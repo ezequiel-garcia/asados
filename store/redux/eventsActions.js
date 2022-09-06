@@ -257,15 +257,15 @@ export const uploadEventImage = async (imageURI, eventId) => {
     .then((snapshot) => {
       console.log('Uploaded a blob or file!');
       //RETURN THE IMAGE PATH
-      getDownloadURL(`${ref}.jpeg`)
-        .then((url) => {
-          console.log(url + '-----> url');
-          return url;
-          // Insert url into an <img> tag to "download"
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // getDownloadURL({ storageRef })
+      //   .then((url) => {
+      //     console.log(url + '-----> url');
+      //     return url;
+      //     // Insert url into an <img> tag to "download"
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     })
     .catch((e) => {
       console.log(e);

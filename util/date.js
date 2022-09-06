@@ -9,7 +9,7 @@ export function getDate(date) {
 }
 
 export function getDateForInfo(date) {
-  return `${date?.getDay()}/${date?.getMonth() + 1}/${String(
+  return `${date?.getDate()}/${date?.getMonth() + 1}/${String(
     date?.getFullYear()
   ).slice(2)}  `;
 }

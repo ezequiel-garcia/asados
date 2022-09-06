@@ -24,7 +24,7 @@ const BillsContainer = ({
 
   return (
     <View style={styles.container}>
-      {bills?.length == 0 && <Text>No bills</Text>}
+      {bills?.length == 0 && <Text style={styles.noBills}>No bills</Text>}
       <FlatList
         data={bills}
         keyExtractor={(bill) => bill.id}
@@ -46,5 +46,10 @@ export default BillsContainer;
 const styles = StyleSheet.create({
   container: {
     height: '90%',
+  },
+  noBills: {
+    color: '#eeebebb7',
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 30,
   },
 });

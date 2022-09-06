@@ -60,7 +60,9 @@ const EventManager = ({ onEdit = false, route }) => {
       isValid: true,
     },
   });
-  const [date, setDate] = useState(onEdit ? eventForEdit?.date : new Date());
+  const [date, setDate] = useState(
+    onEdit ? new Date(eventForEdit?.date) : new Date()
+  );
   const [time, setTime] = useState(
     onEdit ? eventForEdit?.time : getTime(new Date())
   );
@@ -158,7 +160,11 @@ const EventManager = ({ onEdit = false, route }) => {
         admin: currentUser.uid,
       };
 
-      uploadEventImage(event.imageURL, event.eid);
+      // try {
+      //   uploadEventImage(event.imageURL, event.eid);
+      // } catch (e) {
+      //   console.log(e);
+      // }
 
       // HERE I HAVE TO PASS THE EVENT TO THE EVENTS AND TO PUT IN CURRENT EVENT
 

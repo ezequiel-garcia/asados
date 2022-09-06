@@ -8,7 +8,7 @@ const TabElement = ({ icon, label, size }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    const navTo = label == '' ? 'New Event' : label;
+    const navTo = label;
     navigation.navigate('TabBarHome', { screen: navTo });
   };
   return (

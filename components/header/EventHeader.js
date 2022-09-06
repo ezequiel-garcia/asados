@@ -27,17 +27,19 @@ const EventHeader = () => {
   // const currentEvent = events[0];
   //const eventOwner = user.uid === ownerId;
   const eventOwner = currentEventInfo.admin == user.uid ? true : false;
-  console.log('event owner' + eventOwner);
-  console.log('admin' + currentEventInfo.admin);
-  console.log('userid' + user.uid);
 
   const handlePress = () => {
     // IF IS THE OWNER GO TO EDIT EVENT
     if (eventOwner) {
-      Alert.alert('Edit', 'edit event');
       navigation.navigate('TabBarHome', {
         screen: 'Create Event',
-        params: { onEdit: true, event: currentEventInfo },
+        params: {
+          onEdit: true,
+          event: {
+            ...currentEventInfo,
+            date: currentEventInfo.date.toISOString(),
+          },
+        },
       });
     } else {
       //IF IS A GUEST LEAVE THE EVENT

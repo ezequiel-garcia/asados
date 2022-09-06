@@ -10,7 +10,7 @@ const EventFooter = () => {
         style={styles.tabsContainer}
       >
         <TabElement icon="home" label="Home" size={27} />
-        <TabElement icon="plus" size={40} />
+        <TabElement icon="plus" label="Create Event" size={40} />
         <TabElement icon="wechat" label="Chats" size={27} />
       </LinearGradient>
     </View>

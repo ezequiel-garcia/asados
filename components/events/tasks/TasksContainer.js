@@ -19,7 +19,7 @@ const TasksContainer = ({ setCurrentTask, setModalVisible }) => {
 
   return (
     <View style={styles.container}>
-      {tasks?.length == 0 && <Text>No tasks</Text>}
+      {tasks?.length == 0 && <Text style={styles.noTasks}>No tasks</Text>}
       <FlatList
         data={tasks}
         keyExtractor={(task) => task.id}
@@ -41,5 +41,10 @@ export default TasksContainer;
 const styles = StyleSheet.create({
   container: {
     height: '90%',
+  },
+  noTasks: {
+    color: '#eeebebb7',
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 30,
   },
 });

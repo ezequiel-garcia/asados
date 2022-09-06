@@ -7,10 +7,7 @@ import DateAndTime from './eventInfoComponents/DateAndTime';
 import Description from './eventInfoComponents/Description';
 import Participants from './eventInfoComponents/Participants';
 
-//HERE I'LL BRING THE REDUX STORE TO BRING THE CURRENT EVENT
-import { events } from '../../dummyData'; //Have to change
-
-const EventInfo = ({ route }) => {
+const EventInfo = () => {
   //const currentEvent = events[0];
 
   const currentEvent = useSelector(

@@ -35,8 +35,14 @@ export default function HomeScreen() {
   }, [authCtx, dispatch]);
 
   useLayoutEffect(() => {
-    if (Object.keys(userEvents).length > 0) {
-      dispatch(fetchEvents(currentUser));
+    if (userEvents) {
+      if (Object.keys(userEvents).length > 0) {
+        dispatch(fetchEvents(currentUser));
+      } else {
+        dispatch(fetchEvents({}));
+      }
+    } else {
+      dispatch(fetchEvents({}));
     }
   }, [userEvents, dispatch]);
 

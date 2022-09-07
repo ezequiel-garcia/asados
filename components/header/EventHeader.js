@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { leaveEvent } from '../../store/redux/eventsActions';
 import { AuthenticationContext } from '../../store/auth/auth-context';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -19,14 +20,22 @@ import { events } from '../../dummyData'; //Have to change
 
 const EventHeader = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const { user } = useContext(AuthenticationContext); //I can use it to check if is the creator
+  const currentEvent = useSelector((state) => state.events.currentEvent || {});
+  const currentUser = useSelector((state) => state.user.currentUser);
   const currentEventInfo = useSelector(
     (state) => state.events.currentEvent?.eventInfo || {}
   );
+  const [eventOwner, setEventOwner] = useState(
+    currentEventInfo.admin == user.uid
+  );
 
-  // const currentEvent = events[0];
-  //const eventOwner = user.uid === ownerId;
-  const eventOwner = currentEventInfo.admin == user.uid ? true : false;
+  useState(() => {
+    setEventOwner(currentEventInfo.admin == user.uid);
+    console.log(eventOwner + 'event owner');
+    console.log(JSON.stringify(currentEventInfo));
+  }, [currentEventInfo]);
 
   const handlePress = () => {
     // IF IS THE OWNER GO TO EDIT EVENT
@@ -43,12 +52,12 @@ const EventHeader = () => {
       });
     } else {
       //IF IS A GUEST LEAVE THE EVENT
-      Alert.alert('Leave', 'You are leaving the event');
+      dispatch(leaveEvent(currentUser, currentEvent));
+
       navigation.navigate('TabBarHome');
     }
   };
 
-  console.log(user);
   return (
     <SafeAreaView style={{ backgroundColor: Colors.primary800 }}>
       <View style={styles.container}>

@@ -26,7 +26,7 @@ const PreviousEvents = () => {
       <Text
         style={{
           color: '#ffffffb7',
-          fontSize: 20,
+          fontSize: 17,
           fontFamily: 'Montserrat_400Regular',
         }}
       >

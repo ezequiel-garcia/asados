@@ -26,7 +26,13 @@ const UpcomingEvents = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-      <Text style={{ color: '#ffffffb7', fontSize: 20 }}>
+      <Text
+        style={{
+          color: '#ffffff8c',
+          fontSize: 17,
+          fontFamily: 'Montserrat_400Regular',
+        }}
+      >
         {'No upcoming events'}
       </Text>
     </View>

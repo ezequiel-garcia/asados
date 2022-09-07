@@ -21,6 +21,7 @@ import {
   updateDoc,
   onSnapshot,
   deleteDoc,
+  deleteField,
 } from 'firebase/firestore';
 
 import { dateFromDB } from '../../util/date';
@@ -32,6 +33,11 @@ export const fetchEvents = (currentUser) => {
   return async (dispatch) => {
     const fetchData = async () => {
       console.log('fetching user events');
+
+      if (!currentUser?.events) {
+        dispatch(setEvents({}));
+        return;
+      }
 
       Object.keys(currentUser?.events).map(async (eventId) => {
         const docRef = doc(db, 'events', eventId);
@@ -115,11 +121,40 @@ export const addEventToUserDB = (user, eventId) => {
       await updateDoc(userRef, {
         events: { ...userEvents, [eventId]: true },
       });
-
       console.log('succesfully added event to user in db');
       dispatch(addEventToUser(eventId));
     } catch (e) {
       console.error('Error adding document: ', e);
+    }
+  };
+};
+
+export const leaveEvent = (user, currentEvent) => {
+  const eventId = currentEvent?.eventInfo?.eid;
+  const uid = user.uid;
+  return async (dispatch) => {
+    //delete event from user
+    try {
+      const userRef = doc(db, 'users', uid);
+      await updateDoc(userRef, {
+        //delete the specific eventId
+        [`events.${eventId}`]: deleteField(),
+      });
+      console.log('succesfully deleted the event from user in db');
+      //dispatch(delete(eventId));
+    } catch (e) {
+      console.error('Error deleting event from user: ', e);
+    }
+
+    // delete user from event
+    try {
+      const userRef = doc(db, 'events', eventId);
+      await updateDoc(userRef, {
+        [`participants.${uid}`]: deleteField(),
+      });
+      //dispatch(delete(eventId));
+    } catch (e) {
+      console.error('Error deleting user from event db: ', e);
     }
   };
 };

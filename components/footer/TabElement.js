@@ -9,7 +9,10 @@ const TabElement = ({ icon, label, size }) => {
 
   const handlePress = () => {
     const navTo = label;
-    navigation.navigate('TabBarHome', { screen: navTo });
+    navigation.navigate('TabBarHome', {
+      screen: navTo,
+      params: { onEdit: false },
+    });
   };
   return (
     <TouchableOpacity style={styles.container} onPress={handlePress}>

@@ -3,6 +3,7 @@ import {
   addEvent,
   removeEvent,
   setEvents,
+  clearCurrentEvent,
   setCurrentEventInfo,
   setCurrentEventMessages,
   setCurrentEventBills,
@@ -129,37 +130,59 @@ export const addEventToUserDB = (user, eventId) => {
   };
 };
 
-export const leaveEvent = (user, currentEvent) => {
-  const eventId = currentEvent?.eventInfo?.eid;
-  const uid = user.uid;
+export const leaveEvent = (uid, eid) => {
   return async (dispatch) => {
     //delete event from user
     try {
       const userRef = doc(db, 'users', uid);
       await updateDoc(userRef, {
         //delete the specific eventId
-        [`events.${eventId}`]: deleteField(),
+        [`events.${eid}`]: deleteField(),
       });
       console.log('succesfully deleted the event from user in db');
-      //dispatch(delete(eventId));
     } catch (e) {
       console.error('Error deleting event from user: ', e);
     }
 
     // delete user from event
     try {
-      const userRef = doc(db, 'events', eventId);
+      const userRef = doc(db, 'events', eid);
       await updateDoc(userRef, {
         [`participants.${uid}`]: deleteField(),
       });
-      //dispatch(delete(eventId));
+      dispatch(clearCurrentEvent());
     } catch (e) {
       console.error('Error deleting user from event db: ', e);
     }
   };
 };
 
-//Current event actions
+export const deleteEvent = (uid, currentEvent) => {
+  return async (dispatch) => {
+    // first delete the event from users
+    Object.keys(currentEvent?.participants).map(async (userId) => {
+      // dispatch(leaveEvent(uid, currentEvent.eid));
+      try {
+        const userRef = doc(db, 'users', userId);
+        await updateDoc(userRef, {
+          //delete the specific eventId
+          [`events.${currentEvent.eid}`]: deleteField(),
+        });
+        console.log('succesfully deleted the event from user in db');
+      } catch (e) {
+        console.error('Error deleting event from user: ', e);
+      }
+    });
+
+    // delete event from db
+    try {
+      await deleteDoc(doc(db, 'events', currentEvent.eid));
+      dispatch(clearCurrentEvent());
+    } catch (e) {
+      console.error('Error deleting event from event db: ', e);
+    }
+  };
+};
 
 export const fetchEventInfo = (eventId) => {
   return async (dispatch) => {

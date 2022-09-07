@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,9 +15,6 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '../../constants/styles';
 
-//HERE I'LL BRING THE REDUX STORE TO BRING THE CURRENT EVENT
-import { events } from '../../dummyData'; //Have to change
-
 const EventHeader = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -31,10 +28,8 @@ const EventHeader = () => {
     currentEventInfo.admin == user.uid
   );
 
-  useState(() => {
+  useEffect(() => {
     setEventOwner(currentEventInfo.admin == user.uid);
-    console.log(eventOwner + 'event owner');
-    console.log(JSON.stringify(currentEventInfo));
   }, [currentEventInfo]);
 
   const handlePress = () => {
@@ -52,7 +47,7 @@ const EventHeader = () => {
       });
     } else {
       //IF IS A GUEST LEAVE THE EVENT
-      dispatch(leaveEvent(currentUser, currentEvent));
+      dispatch(leaveEvent(currentUser.uid, currentEvent?.eventInfo?.eid));
 
       navigation.navigate('TabBarHome');
     }

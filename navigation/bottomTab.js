@@ -85,6 +85,7 @@ export default function MyTabs() {
           ),
           headerShadowVisible: false,
         }}
+        initialParams={{ onEdit: false }}
       />
 
       <Tab.Screen

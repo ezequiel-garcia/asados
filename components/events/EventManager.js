@@ -33,30 +33,34 @@ import {
   addEventToDB,
   fetchCurrentEvent,
   uploadEventImage,
+  deleteEvent,
 } from '../../store/redux/eventsActions';
 
-const EventManager = ({ onEdit = false, route }) => {
+const EventManager = ({ onEdit, route }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const currentUser = useSelector((state) => state.user.currentUser);
-  //  const authCtx = useContext(AuthenticationContext);
+  const [eventForEdit, setEventForEdit] = useState(route?.params?.event || {});
+  const [edit, setEdit] = useState(route.params?.onEdit);
 
-  route?.params?.onEdit ? (onEdit = true) : (onEdit = false);
+  // route?.params?.onEdit ? (onEdit = true) : (onEdit = false);
 
-  const eventForEdit = route?.params?.event || {};
+  // const eventForEdit = route?.params?.event || {};
 
   //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
   const [inputs, setInputs] = useState({
     name: {
-      value: onEdit ? eventForEdit?.name : '',
+      value: edit ? eventForEdit?.name : '',
       isValid: true,
     },
 
     description: {
-      value: onEdit ? eventForEdit?.description : '',
+      value: edit ? eventForEdit?.description : '',
       isValid: true,
     },
     location: {
-      value: onEdit ? eventForEdit?.location : '',
+      value: edit ? eventForEdit?.location : '',
       isValid: true,
     },
   });
@@ -64,47 +68,39 @@ const EventManager = ({ onEdit = false, route }) => {
     onEdit ? new Date(eventForEdit?.date) : new Date()
   );
   const [time, setTime] = useState(
-    onEdit ? eventForEdit?.time : getTime(new Date())
+    edit ? eventForEdit?.time : getTime(new Date())
   );
   const [shareTasks, setShareTasks] = useState(
-    onEdit ? eventForEdit?.shareTasks : false
+    edit ? eventForEdit?.shareTasks : false
   );
   const [shareBills, setShareBills] = useState(
-    onEdit ? eventForEdit?.shareBills : false
+    edit ? eventForEdit?.shareBills : false
   );
   const [selectedImage, setSelectedImage] = useState(
-    onEdit
+    edit
       ? eventForEdit?.imageURL
       : 'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.png?alt=media&token=1a5c37a3-dbdb-40f0-8ec6-90111873f201'
   );
 
   const [submitError, setSubmitError] = useState(false);
 
-  const navigation = useNavigation();
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       // The screen is focused
       // Call any action
+      setEdit(route?.params?.onEdit);
       console.log('entrando');
-      console.log(onEdit);
+      console.log(JSON.stringify(route.params) + 'paramss');
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, route]);
 
   useEffect(() => {
-    onEdit && navigation.setOptions({ title: 'Edit Event' });
-  }, [onEdit]);
-
-  //   useEffect(() => {
-  //     if (authCtx.error) {
-  //       setSubmitError(true);
-  //     } else {
-  //       setSubmitError(false);
-  //     }
-  //   }, [authCtx.error]);
+    // setEdit(route.params?.onEdit || false);
+    edit && navigation.setOptions({ title: 'Edit Event' });
+  }, [route]);
 
   function inputChangeHandler(inputIdentifier, enteredValue) {
     setInputs((currenInputs) => {
@@ -120,6 +116,17 @@ const EventManager = ({ onEdit = false, route }) => {
   }
   function onConfirmTime(time) {
     setTime(getTime(time));
+  }
+
+  function handleDelete() {
+    try {
+      dispatch(deleteEvent(currentUser?.uid, eventForEdit));
+      setEdit(false);
+
+      navigation.navigate('Home');
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   //   async function submitHandler() {
@@ -148,7 +155,7 @@ const EventManager = ({ onEdit = false, route }) => {
       // If inputs are ok create the event
 
       const event = {
-        eid: onEdit ? eventForEdit?.eid : uuid.v4(),
+        eid: edit ? eventForEdit?.eid : uuid.v4(),
         name: inputs.name.value,
         description: inputs.description.value,
         location: inputs.location.value,
@@ -171,7 +178,7 @@ const EventManager = ({ onEdit = false, route }) => {
       try {
         dispatch(addEventToDB(event, currentUser));
         dispatch(fetchCurrentEvent(event.eid));
-
+        setEdit(false);
         navigation.navigate('TopTabs', { eid: event.eid });
       } catch (e) {
         console.log(e);
@@ -250,7 +257,7 @@ const EventManager = ({ onEdit = false, route }) => {
                   <ImagePickerComp onSetImage={setSelectedImage} />
                 </View>
 
-                {onEdit ? (
+                {edit ? (
                   <View style={styles.buttonsOnEdit}>
                     <Button
                       personalStyle={styles.buttonSave}
@@ -260,7 +267,7 @@ const EventManager = ({ onEdit = false, route }) => {
                     </Button>
                     <Button
                       personalStyle={styles.buttonCancel}
-                      onPress={submitHandler}
+                      onPress={handleDelete}
                     >
                       DELETE
                     </Button>

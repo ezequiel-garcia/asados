@@ -50,6 +50,10 @@ const eventsSlice = createSlice({
       state.currentEvent.messages = action.payload || [];
     },
 
+    clearCurrentEvent(state) {
+      state.currentEvent = {};
+    },
+
     clearEventState(state, actions) {
       //clear the state at logout
       state.events = {};
@@ -64,6 +68,7 @@ export const {
   removeEvent,
   setEvents,
   clearEventState,
+  clearCurrentEvent,
   setCurrentEventInfo,
   setCurrentEventBills,
   setCurrentEventMessages,

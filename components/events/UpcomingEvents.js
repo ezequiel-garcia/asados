@@ -29,7 +29,7 @@ const UpcomingEvents = () => {
       <Text
         style={{
           color: '#ffffff8c',
-          fontSize: 17,
+          fontSize: 15,
           fontFamily: 'Montserrat_400Regular',
         }}
       >

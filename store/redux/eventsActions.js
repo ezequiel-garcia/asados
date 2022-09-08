@@ -9,7 +9,7 @@ import {
   setCurrentEventBills,
   setCurrentEventTasks,
 } from './eventsSlice';
-import { addEventToUser } from './currentUserSlice';
+import { addEventToUser, removeEventFromUser } from './currentUserSlice';
 import app from '../../config/firebase';
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -139,6 +139,7 @@ export const leaveEvent = (uid, eid) => {
         //delete the specific eventId
         [`events.${eid}`]: deleteField(),
       });
+
       console.log('succesfully deleted the event from user in db');
     } catch (e) {
       console.error('Error deleting event from user: ', e);
@@ -206,7 +207,7 @@ export const deleteEvent = (currentEvent) => {
       // delete event from db
       await deleteDoc(doc(db, 'events', currentEvent.eid));
       console.log('succesfully deleted the event from  db');
-
+      dispatch(removeEventFromUser(currentEvent.eid));
       dispatch(clearCurrentEvent());
     }
 

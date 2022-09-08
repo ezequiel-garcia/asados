@@ -20,11 +20,14 @@ const currentUserSlice = createSlice({
     },
     //receive the event ID
     removeEventFromUser(state, action) {
-      state.currentUser.events = Object.entries(
-        state.currentUser.events
-      ).filter(([key, value]) => key != action.payload);
-      //If it's deleted for the creator have to delete it to all the users that are in
+      console.log(action.payload + '---payload para eliminar');
+      console.log(state.currentUser.events);
+      // state.currentUser.events = Object.entries(
+      //   state.currentUser.events
+      // ).filter(([key, value]) => key != action.payload);
+      delete state.currentUser.events.eventId;
     },
+
     clearUser(state, actions) {
       //clear the state at logout
       state.currentUser = {};

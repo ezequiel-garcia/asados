@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useLayoutEffect } from 'react';
 
 import {
   StyleSheet,
@@ -87,23 +87,56 @@ const EventManager = ({ onEdit, route }) => {
 
   const [submitError, setSubmitError] = useState(false);
 
+  function inputValues() {
+    setInputs({
+      name: {
+        value: edit ? eventForEdit?.name : '',
+        isValid: true,
+      },
+
+      description: {
+        value: edit ? eventForEdit?.description : '',
+        isValid: true,
+      },
+      location: {
+        value: edit ? eventForEdit?.location : '',
+        isValid: true,
+      },
+    });
+    setDate(onEdit ? new Date(eventForEdit?.date) : new Date());
+    setTime(edit ? eventForEdit?.time : getTime(new Date()));
+    setShareBills(edit ? eventForEdit?.shareTasks : false);
+    setShareTasks(edit ? eventForEdit?.shareBills : false);
+    setSelectedImage(
+      edit
+        ? eventForEdit?.imageURL
+        : 'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.png?alt=media&token=1a5c37a3-dbdb-40f0-8ec6-90111873f201'
+    );
+  }
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      // The screen is focused
-      // Call any action
-      setEdit(route?.params?.onEdit);
-      console.log('entrando');
-      console.log(JSON.stringify(route.params) + 'paramss');
+      setEdit(route.params?.onEdit);
     });
-
     // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation, route]);
 
+  // when goes out from this tab take out the edit so next time when open won't be in edit mode
   useEffect(() => {
-    // setEdit(route.params?.onEdit || false);
+    const unsubscribe = navigation.addListener('blur', () => {
+      navigation.setParams({ onEdit: false });
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation, route]);
+
+  useLayoutEffect(() => {
     edit && navigation.setOptions({ title: 'Edit Event' });
-  }, [route]);
+    !edit && navigation.setOptions({ title: 'Create Event' });
+    inputValues();
+    console.log(JSON.stringify(route.params) + 'paramss');
+  }, [edit, navigation, route]);
 
   function inputChangeHandler(inputIdentifier, enteredValue) {
     setInputs((currenInputs) => {
@@ -124,7 +157,6 @@ const EventManager = ({ onEdit, route }) => {
   function handleDelete() {
     try {
       dispatch(deleteEvent(eventForEdit));
-      setEdit(false);
 
       navigation.navigate('Home');
     } catch (e) {
@@ -181,7 +213,8 @@ const EventManager = ({ onEdit, route }) => {
       try {
         dispatch(addEventToDB(event, currentUser));
         dispatch(fetchCurrentEvent(event.eid));
-        setEdit(false);
+
+        // navigation.setParams({ onEdit: false });
         navigation.navigate('TopTabs', { eid: event.eid });
       } catch (e) {
         console.log(e);

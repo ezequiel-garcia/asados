@@ -14,11 +14,13 @@ const BillsContainer = ({
 }) => {
   const dispatch = useDispatch();
   const bills = useSelector((state) => state.events.currentEvent.bills);
-  const { eid } = useSelector((state) => state.events.currentEvent.eventInfo);
+  const eventInfo = useSelector(
+    (state) => state.events?.currentEvent?.eventInfo
+  );
 
   useEffect(() => {
     if (bills.length > 0) {
-      dispatch(setBills(eid, bills));
+      dispatch(setBills(eventInfo.id, bills));
     }
   }, [bills]);
 

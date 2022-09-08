@@ -41,7 +41,9 @@ const EventManager = ({ onEdit, route }) => {
   const navigation = useNavigation();
 
   const currentUser = useSelector((state) => state.user.currentUser);
-  const [eventForEdit, setEventForEdit] = useState(route?.params?.event || {});
+  // const [eventForEdit, setEventForEdit] = useState(route?.params?.event || {});
+  const eventForEdit =
+    useSelector((state) => state.events?.currentEvent?.eventInfo) || null;
   const [edit, setEdit] = useState(route.params?.onEdit);
 
   // route?.params?.onEdit ? (onEdit = true) : (onEdit = false);
@@ -49,6 +51,7 @@ const EventManager = ({ onEdit, route }) => {
   // const eventForEdit = route?.params?.event || {};
 
   //SI SE ESTA EDITANTO TENGO Q TRAER TODOOOS LOS DATOS ACAA!!!
+
   const [inputs, setInputs] = useState({
     name: {
       value: edit ? eventForEdit?.name : '',
@@ -120,7 +123,7 @@ const EventManager = ({ onEdit, route }) => {
 
   function handleDelete() {
     try {
-      dispatch(deleteEvent(currentUser?.uid, eventForEdit));
+      dispatch(deleteEvent(eventForEdit));
       setEdit(false);
 
       navigation.navigate('Home');

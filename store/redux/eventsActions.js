@@ -157,29 +157,64 @@ export const leaveEvent = (uid, eid) => {
   };
 };
 
-export const deleteEvent = (uid, currentEvent) => {
+// export const deleteEvent = (currentEvent) => {
+//   console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
+//   return async (dispatch) => {
+//     // first delete the event from users
+//     Object.keys(currentEvent?.participants).map(async (userId) => {
+//       // dispatch(leaveEvent(uid, currentEvent.eid));
+//       try {
+//         const userRef = doc(db, 'users', userId);
+//         await updateDoc(userRef, {
+//           //delete the specific eventId
+//           [`events.${currentEvent.eid}`]: deleteField(),
+//         });
+//         console.log('succesfully deleted the event from user in db');
+//       } catch (e) {
+//         console.error('Error deleting event from user: ', e);
+//       }
+//     });
+
+//     // delete event from db
+//     try {
+//       await deleteDoc(doc(db, 'events', currentEvent.eid));
+//       dispatch(clearCurrentEvent());
+//     } catch (e) {
+//       console.error('Error deleting event from event db: ', e);
+//     }
+//   };
+// };
+
+export const deleteEvent = (currentEvent) => {
+  console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
   return async (dispatch) => {
-    // first delete the event from users
-    Object.keys(currentEvent?.participants).map(async (userId) => {
-      // dispatch(leaveEvent(uid, currentEvent.eid));
-      try {
+    async function deleteEventsFromUser() {
+      // first delete the event from users
+      Object.keys(currentEvent?.participants).map(async (userId) => {
+        // dispatch(leaveEvent(uid, currentEvent.eid));
+
         const userRef = doc(db, 'users', userId);
         await updateDoc(userRef, {
           //delete the specific eventId
           [`events.${currentEvent.eid}`]: deleteField(),
         });
         console.log('succesfully deleted the event from user in db');
-      } catch (e) {
-        console.error('Error deleting event from user: ', e);
-      }
-    });
+      });
+    }
 
-    // delete event from db
-    try {
+    async function deleteEventFromDB() {
+      // delete event from db
       await deleteDoc(doc(db, 'events', currentEvent.eid));
+      console.log('succesfully deleted the event from  db');
+
       dispatch(clearCurrentEvent());
+    }
+
+    try {
+      await deleteEventsFromUser();
+      await deleteEventFromDB();
     } catch (e) {
-      console.error('Error deleting event from event db: ', e);
+      console.log(e);
     }
   };
 };

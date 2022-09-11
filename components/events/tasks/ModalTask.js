@@ -10,6 +10,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import uuid from 'react-native-uuid';
+
 import Input from '../../ui/Input';
 import { Colors } from '../../../constants/styles';
 
@@ -47,7 +49,7 @@ const ModalTask = ({
       dispatch(
         setCurrentEventTasks([
           {
-            id: Math.random(),
+            id: uuid.v4(),
             title: taskTitle,
             inCharge: inCharge,
             isDone: false,

@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import uuid from 'react-native-uuid';
 import Input from '../../ui/Input';
 import SelectWhoPaid from './SelectWhoPaid';
 import { Colors } from '../../../constants/styles';
@@ -51,7 +52,7 @@ const ModalBills = ({
       dispatch(
         setCurrentEventBills([
           {
-            id: Math.random(),
+            id: uuid.v4(),
             title: billTitle,
             owner: owner,
             date: new Date(),

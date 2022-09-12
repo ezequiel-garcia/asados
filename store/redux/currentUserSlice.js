@@ -25,7 +25,7 @@ const currentUserSlice = createSlice({
       // state.currentUser.events = Object.entries(
       //   state.currentUser.events
       // ).filter(([key, value]) => key != action.payload);
-      delete state.currentUser.events.eventId;
+      // delete state.currentUser.events.eventId;
     },
 
     clearUser(state, actions) {

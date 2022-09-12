@@ -8,12 +8,25 @@ const Logout = () => {
   const authCtx = useContext(AuthenticationContext);
 
   return (
-    <TouchableOpacity onPress={() => authCtx.onLogout()}>
-      <MaterialCommunityIcons name="logout" size={24} color="white" />
+    <TouchableOpacity style={styles.logout} onPress={() => authCtx.onLogout()}>
+      <MaterialCommunityIcons name="logout" size={30} color="#ffffffe7" />
+      <Text style={styles.text}>LOGOUT</Text>
     </TouchableOpacity>
   );
 };
 
 export default Logout;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  logout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 25,
+    marginLeft: 5,
+  },
+  text: {
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 15,
+    color: 'white',
+  },
+});

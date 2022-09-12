@@ -19,7 +19,7 @@ const BillsContainer = ({
   );
 
   useEffect(() => {
-    if (bills.length > 0) {
+    if (bills?.length > 0) {
       dispatch(setBills(eventInfo.id, bills));
     }
   }, [bills]);

@@ -6,8 +6,8 @@ const eventsSlice = createSlice({
     events: {},
     currentEvent: {
       eventInfo: {},
-      tasks: [],
-      bills: [],
+      tasks: {},
+      bills: {},
       messages: [],
     },
   },
@@ -16,20 +16,13 @@ const eventsSlice = createSlice({
       state.events = action.payload;
     },
 
-    // addEvent(state, action) {
-    //   state.events = { [action.payload.id]: action.payload, ...state.events };
-    // },
-
     addEvent(state, action) {
       const event = action.payload;
       state.events = { ...state.events, [event.eid]: event };
     },
 
     removeEvent(state, action) {
-      //state.events = state.events.filter((item) => item.id !== id);
-      // because it's an object -->
-      state.events = state.events.remove[action.payload];
-      //If it's deleted for the creator have to delete it to all the users that are in
+      delete state.events?.[action.payload];
     },
 
     // current event actions

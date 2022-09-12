@@ -20,8 +20,7 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
 
   const currentUser = useSelector((state) => state.user.currentUser);
-  const userEvents =
-    useSelector((state) => state.user.currentUser?.events) || {};
+  const userEvents = useSelector((state) => state.user.currentUser?.events);
 
   //console.log('EVENTOS DEL USUARIO DESDE HOME' + JSON.stringify(userEvents));
   // console.log('CURRENT USER FROM HOME' + currentUser);
@@ -34,17 +33,11 @@ export default function HomeScreen() {
     }
   }, [authCtx, dispatch]);
 
-  useLayoutEffect(() => {
-    if (userEvents) {
-      if (Object.keys(userEvents).length > 0) {
-        dispatch(fetchEvents(currentUser));
-      } else {
-        dispatch(fetchEvents({}));
-      }
-    } else {
-      dispatch(fetchEvents({}));
-    }
-  }, [userEvents, dispatch]);
+  useEffect(() => {
+    console.log(JSON.stringify(userEvents));
+
+    dispatch(fetchEvents(currentUser));
+  }, [userEvents]);
 
   return (
     <Background>

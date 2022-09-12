@@ -5,7 +5,13 @@ import {
 } from './currentUserSlice';
 import app from '../../config/firebase';
 
-import { getFirestore, setDoc, doc, onSnapshot } from 'firebase/firestore';
+import {
+  getFirestore,
+  setDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from 'firebase/firestore';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 const db = getFirestore(app);
@@ -48,6 +54,21 @@ export const addUserToDB = async (user) => {
   } catch (e) {
     console.error('Error adding document: ', e);
   }
+};
+
+export const updateUserInfo = (user) => {
+  return async () => {
+    try {
+      const userRef = doc(db, 'users', user.uid);
+
+      await updateDoc(userRef, {
+        ...user,
+      });
+      console.log('succesfully user updated  ');
+    } catch (e) {
+      console.error('Error updating user', e);
+    }
+  };
 };
 
 const addProfileImage = async (ref) => {

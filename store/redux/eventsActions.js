@@ -55,7 +55,6 @@ export const fetchEvents = (currentUser) => {
               ),
             })
           );
-          //console.log('Document data:', docSnap.data());
         } else {
           // doc.data() will be undefined in this case
           console.log('No such document!');
@@ -207,13 +206,14 @@ export const deleteEvent = (currentEvent) => {
       // delete event from db
       await deleteDoc(doc(db, 'events', currentEvent.eid));
       console.log('succesfully deleted the event from  db');
-      dispatch(removeEventFromUser(currentEvent.eid));
+      // dispatch(removeEventFromUser(currentEvent.eid));
       dispatch(clearCurrentEvent());
     }
 
     try {
       await deleteEventsFromUser();
       await deleteEventFromDB();
+      dispatch(removeEvent(currentEvent.eid));
     } catch (e) {
       console.log(e);
     }

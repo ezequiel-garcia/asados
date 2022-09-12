@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Montserrat_600SemiBold',
+    // fontFamily: 'Montserrat_600SemiBold',
+    fontFamily: 'Montserrat_400Regular',
   },
 });

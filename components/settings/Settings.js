@@ -13,8 +13,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import uuid from 'react-native-uuid';
+import { updateUserInfo } from '../../store/redux/usersActions';
 
 import { Colors } from '../../constants/styles';
 import Button from '../ui/Button';
@@ -65,8 +64,9 @@ const Settings = () => {
         };
       });
     } else {
-      // If inputs are ok create the event
-      null;
+      // If inputs are ok update the user info
+      console.log('updating...');
+      dispatch(updateUserInfo({ ...currentUser, name: inputs.name.value }));
       //MODIFICAR EL USUARIO EN LA BD con el NAME.VALUE y LA IMAGEN
     }
   }
@@ -121,6 +121,7 @@ const Settings = () => {
                     DELETE ACCOUNT
                   </Button>
                 </View>
+                <Logout />
               </View>
             </KeyboardAvoidingView>
           </View>

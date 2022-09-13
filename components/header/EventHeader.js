@@ -59,7 +59,7 @@ const EventHeader = () => {
         <View style={styles.eventInfo}>
           <Image
             style={styles.profilePicture}
-            source={{ uri: currentEventInfo.profilePic }}
+            source={{ uri: currentEventInfo.imageURL }}
           />
           <View style={{ flexDirection: 'row', flex: 1 }}>
             <Text style={styles.eventTitle}>{currentEventInfo.name}</Text>

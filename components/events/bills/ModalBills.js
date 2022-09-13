@@ -26,19 +26,20 @@ const ModalBills = ({
   currentEvent,
 }) => {
   const bills = useSelector((state) => state.events.currentEvent.bills);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
   const [billTitle, setBillTitle] = useState(
     currentBill ? currentBill.title : ''
   );
-  const [owner, setOwner] = useState(currentBill ? currentBill.owner : '');
+  // const [owner, setOwner] = useState(currentBill ? currentBill.owner : '');
   const [amount, setAmount] = useState(currentBill ? currentBill.amount : '');
   const [error, setError] = useState(false);
 
   useEffect(() => {
     if (currentBill) {
       setBillTitle(currentBill.title);
-      setOwner(currentBill.owner);
+      // setOwner(currentBill.owner);
       setAmount(currentBill.amount);
       setError(false);
     }
@@ -48,13 +49,13 @@ const ModalBills = ({
     if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
-      //HAVE TO ADD TO THE TASKS
+      //HAVE TO ADD TO THE BILLS
       dispatch(
         setCurrentEventBills([
           {
             id: uuid.v4(),
             title: billTitle,
-            owner: owner,
+            owner: { name: currentUser.name, uid: currentUser.uid },
             date: new Date(),
             amount: amount,
           },
@@ -77,7 +78,7 @@ const ModalBills = ({
           return {
             id: bill.id,
             title: billTitle,
-            owner: owner,
+            owner: currentUser.name,
             amount: amount,
             date: bill.date,
           };
@@ -92,7 +93,7 @@ const ModalBills = ({
   function onCancel() {
     // initializate the inputs
     setBillTitle('');
-    setOwner('');
+    // setOwner('');
     setAmount('');
     setCurrentBill(null);
     // Close the modal
@@ -146,19 +147,19 @@ const ModalBills = ({
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
-                  <Input
+                  {/* <Input
                     label="Who paid"
                     inputStyle={styles.inputStyle}
                     onUpdateValue={(e) => {
                       setOwner({ name: e }), setError(false);
                     }}
                     value={owner.name}
-                  />
+                  /> */}
                 </View>
               </View>
               {/* SELECT WHO PAID */}
 
-              <SelectWhoPaid setOwner={setOwner} currentEvent={currentEvent} />
+              {/* <SelectWhoPaid setOwner={setOwner} currentEvent={currentEvent} /> */}
 
               <View style={{ flexDirection: 'row' }}>
                 {currentBill ? (

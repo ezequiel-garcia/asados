@@ -109,6 +109,8 @@ const Settings = () => {
                 )}
 
                 <View style={styles.imageContainer}>
+                  <Text style={styles.text}>Profile picture</Text>
+
                   <Image
                     style={styles.eventPicture}
                     // source={{ uri: selectedImage.localUri }}
@@ -157,8 +159,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   text: {
-    color: 'white',
+    color: '#ffffffd9',
     fontSize: 20,
+    marginBottom: 5,
     fontFamily: 'Montserrat_400Regular',
   },
   errorText: {

@@ -45,8 +45,6 @@ const Task = ({ task, setCurrentTask, setModalVisible }) => {
 
     //CHECK IF IS EMPTY NOW TO UPDATE THE DB FOR NOTHING
     if (newTasks.length == 0) {
-      console.log('BORRANDO BAS DE DATOS' + JSON.stringify(eid));
-
       dispatch(deleteTasksFromDB(eid));
     }
   }

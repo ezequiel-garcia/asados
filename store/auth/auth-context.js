@@ -5,6 +5,7 @@ import {
   getAuth,
   signOut,
   sendPasswordResetEmail,
+  updateProfile,
 } from 'firebase/auth';
 
 import { fetchCurrentUser, addUserToDB } from '../redux/usersActions';
@@ -25,7 +26,7 @@ export const AuthenticationContext = createContext({
   userData: null,
   // ----------------
   onLogin: (email, password) => {},
-  onRegister: (emailIsValid, password) => {},
+  onRegister: (name, emailIsValid, password) => {},
   onLogout: () => {},
 });
 
@@ -62,14 +63,14 @@ export const AuthenticationContextProvider = ({ children }) => {
     }
   };
 
-  const onRegister = async (email, password) => {
-    setIsLoading(true);
+  const onRegister = async (name, email, password) => {
+    //setIsLoading(true);
 
     try {
       const user = await registerRequest(email, password);
 
       // set new user in the db in firebase
-      await addUserToDB(user.user);
+      await addUserToDB(user.user, name);
       dispatch(fetchCurrentUser(user.user.uid));
       setUser(user.user);
 

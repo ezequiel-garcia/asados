@@ -20,6 +20,10 @@ import { AuthenticationContext } from '../../store/auth/auth-context';
 function RegisterForm() {
   const authCtx = useContext(AuthenticationContext);
   const [inputs, setInputs] = useState({
+    name: {
+      value: '',
+      isValid: true,
+    },
     email: {
       value: '',
       isValid: true,
@@ -60,6 +64,7 @@ function RegisterForm() {
 
   function submitHandler() {
     // Validate before submit
+    const nameIsValid = inputs.name.value.trim().length > 1;
     const emailIsValid =
       inputs.email.value.includes('@') &&
       inputs.email.value.includes('.') &&
@@ -71,6 +76,7 @@ function RegisterForm() {
       passwordIsValid && inputs.password.value === inputs.confirmPassword.value;
 
     if (
+      !nameIsValid ||
       !emailIsValid ||
       !passwordIsValid ||
       !emailsAreEqual ||
@@ -78,6 +84,7 @@ function RegisterForm() {
     ) {
       setInputs((currentInputs) => {
         return {
+          name: { value: currentInputs.name.value, isValid: nameIsValid },
           email: { value: currentInputs.email.value, isValid: emailIsValid },
           confirmEmail: {
             value: currentInputs.confirmEmail.value,
@@ -95,7 +102,11 @@ function RegisterForm() {
       });
     } else {
       // If inputs are ok, register
-      authCtx.onRegister(inputs.email.value, inputs.password.value);
+      authCtx.onRegister(
+        inputs.name.value,
+        inputs.email.value,
+        inputs.password.value
+      );
     }
   }
 
@@ -107,6 +118,13 @@ function RegisterForm() {
         <Text style={styles.title}> Register</Text>
 
         <View style={{ width: 300 }}>
+          <Input
+            label="User Name"
+            onUpdateValue={(e) => inputChangeHandler('name', e)}
+            value={inputs.name.value}
+            keyboardType="email-address"
+            isInvalid={!inputs.email.isValid}
+          />
           <Input
             label="Email Address"
             onUpdateValue={(e) => inputChangeHandler('email', e)}

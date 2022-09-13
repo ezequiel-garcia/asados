@@ -70,10 +70,9 @@ const Settings = () => {
       // If inputs are ok update the user info
       console.log('updating...');
       try {
-        const url = await uploadProfileImage(selectedImage, currentUser.uid);
+        await uploadProfileImage(selectedImage, currentUser.uid);
         dispatch(updateUserInfo({ ...currentUser, name: inputs.name.value }));
-
-        console.log(url);
+        navigation.navigate('TabBarHome');
       } catch (e) {
         console.log(e);
       }

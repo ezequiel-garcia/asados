@@ -13,7 +13,10 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { updateUserInfo } from '../../store/redux/usersActions';
+import {
+  updateUserInfo,
+  uploadProfileImage,
+} from '../../store/redux/usersActions';
 
 import { Colors } from '../../constants/styles';
 import Button from '../ui/Button';
@@ -54,7 +57,7 @@ const Settings = () => {
     });
   }
 
-  function submitHandler() {
+  async function submitHandler() {
     const nameIsValid = inputs.name.value.trim().length > 0;
 
     if (!nameIsValid) {
@@ -66,7 +69,14 @@ const Settings = () => {
     } else {
       // If inputs are ok update the user info
       console.log('updating...');
-      dispatch(updateUserInfo({ ...currentUser, name: inputs.name.value }));
+      try {
+        const url = await uploadProfileImage(selectedImage, currentUser.uid);
+        dispatch(updateUserInfo({ ...currentUser, name: inputs.name.value }));
+
+        console.log(url);
+      } catch (e) {
+        console.log(e);
+      }
       //MODIFICAR EL USUARIO EN LA BD con el NAME.VALUE y LA IMAGEN
     }
   }

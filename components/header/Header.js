@@ -25,8 +25,6 @@ const Header = () => {
 
   const { userData } = useContext(AuthenticationContext);
 
-  console.log(currentUser);
-
   return (
     <SafeAreaView style={{ backgroundColor: Colors.primary800 }}>
       <View style={styles.container}>
@@ -34,7 +32,7 @@ const Header = () => {
           <Image
             style={styles.profilePicture}
             // source={userData.profilePicture}
-            source={{ uri: currentUser.imageURL }}
+            source={{ uri: currentUser.profilePic }}
           />
           <Text style={styles.name}>{currentUser.name}</Text>
         </View>

@@ -82,7 +82,7 @@ const EventManager = ({ onEdit, route }) => {
   const [selectedImage, setSelectedImage] = useState(
     edit
       ? eventForEdit?.imageURL
-      : 'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.png?alt=media&token=1a5c37a3-dbdb-40f0-8ec6-90111873f201'
+      : `https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.jpg?alt=media&token=7a5a8d1e-4df5-497c-a10a-0f948bfffdd6`
   );
 
   const [submitError, setSubmitError] = useState(false);
@@ -103,14 +103,14 @@ const EventManager = ({ onEdit, route }) => {
         isValid: true,
       },
     });
-    setDate(onEdit ? new Date(eventForEdit?.date) : new Date());
+    setDate(edit ? new Date(eventForEdit?.date) : new Date());
     setTime(edit ? eventForEdit?.time : getTime(new Date()));
     setShareBills(edit ? eventForEdit?.shareTasks : false);
     setShareTasks(edit ? eventForEdit?.shareBills : false);
     setSelectedImage(
       edit
         ? eventForEdit?.imageURL
-        : 'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.png?alt=media&token=1a5c37a3-dbdb-40f0-8ec6-90111873f201'
+        : `https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/eventImages%2Fdefault.jpg?alt=media&token=7a5a8d1e-4df5-497c-a10a-0f948bfffdd6`
     );
   }
 
@@ -165,7 +165,7 @@ const EventManager = ({ onEdit, route }) => {
   }
 
   //   async function submitHandler() {
-  function submitHandler() {
+  async function submitHandler() {
     // Validate before submit
     //THINK if I want to do optional de description and location
     const nameIsValid = inputs.name.value.trim().length > 0;
@@ -188,9 +188,9 @@ const EventManager = ({ onEdit, route }) => {
       });
     } else {
       // If inputs are ok create the event
-
+      const id = edit ? eventForEdit?.eid : uuid.v4();
       const event = {
-        eid: edit ? eventForEdit?.eid : uuid.v4(),
+        eid: id,
         name: inputs.name.value,
         description: inputs.description.value,
         location: inputs.location.value,
@@ -202,11 +202,12 @@ const EventManager = ({ onEdit, route }) => {
         admin: currentUser.uid,
       };
 
-      // try {
-      //   uploadEventImage(event.imageURL, event.eid);
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        const url = await uploadEventImage(selectedImage, event.eid);
+        console.log(url);
+      } catch (e) {
+        console.log(e);
+      }
 
       // HERE I HAVE TO PASS THE EVENT TO THE EVENTS AND TO PUT IN CURRENT EVENT
 

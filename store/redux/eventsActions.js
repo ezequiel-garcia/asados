@@ -157,34 +157,6 @@ export const leaveEvent = (uid, eid) => {
   };
 };
 
-// export const deleteEvent = (currentEvent) => {
-//   console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
-//   return async (dispatch) => {
-//     // first delete the event from users
-//     Object.keys(currentEvent?.participants).map(async (userId) => {
-//       // dispatch(leaveEvent(uid, currentEvent.eid));
-//       try {
-//         const userRef = doc(db, 'users', userId);
-//         await updateDoc(userRef, {
-//           //delete the specific eventId
-//           [`events.${currentEvent.eid}`]: deleteField(),
-//         });
-//         console.log('succesfully deleted the event from user in db');
-//       } catch (e) {
-//         console.error('Error deleting event from user: ', e);
-//       }
-//     });
-
-//     // delete event from db
-//     try {
-//       await deleteDoc(doc(db, 'events', currentEvent.eid));
-//       dispatch(clearCurrentEvent());
-//     } catch (e) {
-//       console.error('Error deleting event from event db: ', e);
-//     }
-//   };
-// };
-
 export const deleteEvent = (currentEvent) => {
   console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
   return async (dispatch) => {
@@ -348,20 +320,33 @@ export const uploadEventImage = async (imageURI, eventId) => {
   const blob = await response.blob();
 
   uploadBytes(storageRef, blob)
-    .then((snapshot) => {
+    .then(async (snapshot) => {
       console.log('Uploaded a blob or file!');
-      //RETURN THE IMAGE PATH
-      // getDownloadURL({ storageRef })
-      //   .then((url) => {
-      //     console.log(url + '-----> url');
-      //     return url;
-      //     // Insert url into an <img> tag to "download"
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+      try {
+        const url = await getDownloadURL(storageRef);
+        updateEventImage(url, eventId);
+        console.log(url);
+      } catch (e) {
+        console.log(e);
+      }
     })
     .catch((e) => {
       console.log(e);
     });
+
+  blob.close();
+};
+
+// export const getImgUrl(){
+
+// }
+const updateEventImage = async (url, eventId) => {
+  try {
+    const userRef = doc(db, 'events', eventId);
+    await updateDoc(userRef, {
+      imageURL: url,
+    });
+  } catch (e) {
+    console.error('Error editing document: ', e);
+  }
 };

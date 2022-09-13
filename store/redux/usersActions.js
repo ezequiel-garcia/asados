@@ -4,6 +4,7 @@ import {
   removeEventFromUser,
 } from './currentUserSlice';
 import app from '../../config/firebase';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import {
   getFirestore,
@@ -12,11 +13,8 @@ import {
   onSnapshot,
   updateDoc,
 } from 'firebase/firestore';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 const db = getFirestore(app);
-
-// Create a reference to the file we want to download
 const storage = getStorage();
 
 export const fetchCurrentUser = (uid) => {
@@ -45,7 +43,7 @@ export const addUserToDB = async (user) => {
       uid: user.uid,
       name:
         user.displayName || user.email.substring(0, user.email.indexOf('@')),
-      imageURL:
+      profilePic:
         'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/profileImages%2Fdefault.png?alt=media&token=cacfd608-5179-4826-acc1-1b747681eb92',
       events: {},
     });
@@ -107,4 +105,38 @@ const addProfileImage = async (ref) => {
           break;
       }
     });
+};
+
+//upload profile picture
+export const uploadProfileImage = async (imageURI, userId) => {
+  const storageRef = ref(storage, `profileImages/${userId}`);
+
+  const response = await fetch(imageURI);
+  const blob = await response.blob();
+
+  uploadBytes(storageRef, blob)
+    .then(async (snapshot) => {
+      try {
+        const url = await getDownloadURL(storageRef);
+        updateProfileImage(url, userId);
+      } catch (e) {
+        console.log(e);
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+
+  blob.close();
+};
+
+const updateProfileImage = async (url, userId) => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      profilePic: url,
+    });
+  } catch (e) {
+    console.error('Error editing document: ', e);
+  }
 };

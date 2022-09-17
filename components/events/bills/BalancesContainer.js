@@ -1,21 +1,24 @@
 import { useEffect } from 'react';
 
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-
-import { setBills } from '../../../store/redux/eventsActions';
 import { useSelector } from 'react-redux';
+import Background from '../../ui/Background';
+import Button from '../../ui/Button';
+import { useNavigation } from '@react-navigation/native';
+import users from '../../../users';
 
 const BalancesContainer = () => {
+  const navigation = useNavigation();
   const bills = useSelector((state) => state.events.currentEvent.bills);
   const eventParticipants = useSelector(
-    (state) => state.events?.currentEvent?.participants
+    (state) => state.events?.currentEvent?.eventInfo?.participants
   );
 
   function totalAmount() {
     if (bills.length == 0) {
       return 0;
     } else {
-      const total = 0;
+      let total = 0;
       bills.forEach((bill) => {
         total += bill.amount;
       });
@@ -24,14 +27,81 @@ const BalancesContainer = () => {
   }
 
   function calculateExpenses() {
+    let usersBills = { djsadijhsoid: { amount: 0, name: 'pepe' } };
+    bills.forEach((bill) => {
+      if (usersBills[bill.owner.uid]) {
+        usersBills[bill.owner.uid].amount =
+          usersBills[bill.owner.uid].amount + bill.amount;
+      } else {
+        usersBills[bill.owner.uid] = {
+          amount: bill.amount,
+          name: bill.owner.name,
+        };
+      }
+    });
+    let orderedBills = Object.values(usersBills).sort(
+      (a, b) => b.amount - a.amount
+    );
+
+    let expenses = [];
+    orderedBills.map(
+      (bill) =>
+        (bill.amount =
+          bill.amount - totalAmount() / Object.keys(eventParticipants).length)
+    );
+    while (orderedBills.length > 1) {
+      if (orderedBills[0].amount == 0) {
+        orderedBills.shift();
+      }
+      if (orderedBills[orderedBills.length - 1].amount == 0) {
+        orderedBills.pop();
+      }
+      if (orderedBills.length > 1) {
+        if (
+          orderedBills[orderedBills.length - 1].amount * -1 <=
+          orderedBills[0].amount
+        ) {
+          expenses.unshift(
+            `${
+              orderedBills[orderedBills.length - 1].name
+            } have to pay ${-orderedBills[orderedBills.length - 1].amount} to ${
+              orderedBills[0].name
+            }`
+          );
+          orderedBills[orderedBills.length - 1].amount -=
+            orderedBills[orderedBills.length - 1].amount;
+          orderedBills[0].amount -= orderedBills[0].amount;
+        }
+      }
+    }
+
+    console.log(expenses);
+
     return null;
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.noBills}>Total event expenses: {totalAmount}</Text>
-      {Object.keys(eventParticipants)?.length > 1 && calculateExpenses}
-    </View>
+    <Background>
+      <View style={styles.container}>
+        <View style={styles.expensesContainer}>
+          <Text style={styles.totalAmount}>
+            Total event expenses: ${totalAmount()}
+          </Text>
+          <Text style={styles.everyoneAmount}>
+            Everyone has to pay $
+            {totalAmount() / Object.keys(eventParticipants).length}
+          </Text>
+          {/* DSP BORRAR */ calculateExpenses()}
+          {Object.keys(eventParticipants)?.length > 1 && calculateExpenses()}
+        </View>
+        <Button
+          personalStyle={styles.button}
+          onPress={() => navigation.navigate('BillsScreen')}
+        >
+          BILLS
+        </Button>
+      </View>
+    </Background>
   );
 };
 
@@ -39,11 +109,25 @@ export default BalancesContainer;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    paddingVertical: 20,
+    paddingHorizontal: 40,
+  },
+  expensesContainer: {
     height: '90%',
   },
-  noBills: {
-    color: '#eeebebb7',
+  totalAmount: {
+    color: '#fdfdfddc',
     fontFamily: 'Montserrat_400Regular',
-    fontSize: 30,
+    fontSize: 25,
+  },
+  everyoneAmount: {
+    color: '#fdfdfddc',
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 15,
+  },
+  button: {
+    width: '40%',
+    marginTop: 5,
   },
 });

@@ -20,10 +20,9 @@ import { setCurrentEventBills } from '../../../store/redux/eventsSlice';
 const ModalBills = ({
   modalVisible,
   setModalVisible,
-  setBills,
+
   currentBill,
   setCurrentBill,
-  currentEvent,
 }) => {
   const bills = useSelector((state) => state.events.currentEvent.bills);
   const currentUser = useSelector((state) => state.user.currentUser);

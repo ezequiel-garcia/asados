@@ -135,7 +135,6 @@ const EventManager = ({ onEdit, route }) => {
     edit && navigation.setOptions({ title: 'Edit Event' });
     !edit && navigation.setOptions({ title: 'Create Event' });
     inputValues();
-    console.log(JSON.stringify(route.params) + 'paramss');
   }, [edit, navigation, route]);
 
   function inputChangeHandler(inputIdentifier, enteredValue) {
@@ -198,6 +197,10 @@ const EventManager = ({ onEdit, route }) => {
         time,
         shareBills,
         shareTasks,
+        participants: edit
+          ? eventForEdit.participants
+          : { [currentUser.uid]: true },
+
         imageURL: selectedImage,
         admin: currentUser.uid,
       };

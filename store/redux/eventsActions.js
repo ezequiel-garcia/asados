@@ -94,7 +94,7 @@ export const addEventToDB = (event, user) => {
           imageURL: event.imageURL,
           chat: '',
           admin: event.admin,
-          participants: { [uid]: true },
+          participants: event.participants,
         });
 
         console.log('succesfully added');
@@ -337,9 +337,6 @@ export const uploadEventImage = async (imageURI, eventId) => {
   blob.close();
 };
 
-// export const getImgUrl(){
-
-// }
 const updateEventImage = async (url, eventId) => {
   try {
     const userRef = doc(db, 'events', eventId);

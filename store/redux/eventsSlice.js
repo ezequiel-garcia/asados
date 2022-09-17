@@ -8,6 +8,7 @@ const eventsSlice = createSlice({
       eventInfo: {},
       tasks: {},
       bills: {},
+      participants: {},
       messages: [],
     },
   },

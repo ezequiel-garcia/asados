@@ -41,7 +41,7 @@ export const addUserToDB = async (user, name) => {
     // const docRef = await setDoc(doc(db, 'users', user.uid), {
     await setDoc(doc(db, 'users', user.uid), {
       uid: user.uid,
-      name: name,
+      name: name.capitalize(),
       profilePic:
         'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/profileImages%2Fdefault.png?alt=media&token=cacfd608-5179-4826-acc1-1b747681eb92',
       events: {},

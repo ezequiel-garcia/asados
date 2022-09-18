@@ -6,6 +6,7 @@ import Background from '../../ui/Background';
 import Button from '../../ui/Button';
 import { useNavigation } from '@react-navigation/native';
 import users from '../../../users';
+import Balance from './Balance';
 
 const BalancesContainer = () => {
   const navigation = useNavigation();
@@ -27,7 +28,7 @@ const BalancesContainer = () => {
   }
 
   function calculateExpenses() {
-    let usersBills = { djsadijhsoid: { amount: 0, name: 'pepe' } };
+    let usersBills = {};
     bills.forEach((bill) => {
       if (usersBills[bill.owner.uid]) {
         usersBills[bill.owner.uid].amount =
@@ -39,16 +40,30 @@ const BalancesContainer = () => {
         };
       }
     });
+
+    // add the users that didn't put money to the list with amount of 0.
+    Object.entries(eventParticipants).forEach((participant) => {
+      if (!usersBills[participant[0]]) {
+        usersBills[participant[0]] = {
+          amount: 0,
+          name: participant[1],
+        };
+      }
+    });
+
+    //Order the bills from max to min
     let orderedBills = Object.values(usersBills).sort(
       (a, b) => b.amount - a.amount
     );
 
+    //Calculate how much everyone have to receive / add
     let expenses = [];
     orderedBills.map(
       (bill) =>
         (bill.amount =
           bill.amount - totalAmount() / Object.keys(eventParticipants).length)
     );
+
     while (orderedBills.length > 1) {
       if (orderedBills[0].amount == 0) {
         orderedBills.shift();
@@ -64,20 +79,29 @@ const BalancesContainer = () => {
           expenses.unshift(
             `${
               orderedBills[orderedBills.length - 1].name
-            } have to pay ${-orderedBills[orderedBills.length - 1].amount} to ${
+            } have to pay $${-orderedBills[
+              orderedBills.length - 1
+            ].amount.toFixed(2)} to ${orderedBills[0].name}`
+          );
+          orderedBills[0].amount +=
+            orderedBills[orderedBills.length - 1].amount;
+          orderedBills[orderedBills.length - 1].amount = 0;
+        } else {
+          expenses.unshift(
+            `${
+              orderedBills[orderedBills.length - 1].name
+            } have to pay $${orderedBills[0].amount.toFixed(2)} to ${
               orderedBills[0].name
             }`
           );
-          orderedBills[orderedBills.length - 1].amount -=
-            orderedBills[orderedBills.length - 1].amount;
-          orderedBills[0].amount -= orderedBills[0].amount;
+          orderedBills[orderedBills.length - 1].amount +=
+            orderedBills[0].amount;
+          orderedBills[0].amount = 0;
         }
       }
     }
 
-    console.log(expenses);
-
-    return null;
+    return <Balance balances={expenses} />;
   }
 
   return (
@@ -87,11 +111,11 @@ const BalancesContainer = () => {
           <Text style={styles.totalAmount}>
             Total event expenses: ${totalAmount()}
           </Text>
-          <Text style={styles.everyoneAmount}>
+          {/* <Text style={styles.everyoneAmount}>
             Everyone has to pay $
             {totalAmount() / Object.keys(eventParticipants).length}
-          </Text>
-          {/* DSP BORRAR */ calculateExpenses()}
+          </Text> */}
+
           {Object.keys(eventParticipants)?.length > 1 && calculateExpenses()}
         </View>
         <Button
@@ -122,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   everyoneAmount: {
+    marginVertical: 10,
     color: '#fdfdfddc',
     fontFamily: 'Montserrat_400Regular',
     fontSize: 15,

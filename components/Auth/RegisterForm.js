@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
@@ -111,79 +113,81 @@ function RegisterForm() {
   }
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView behavior="position">
-        <Animation />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <KeyboardAvoidingView behavior="position">
+          <Animation />
 
-        <Text style={styles.title}> Register</Text>
+          <Text style={styles.title}> Register</Text>
 
-        <View style={{ width: 300 }}>
-          <Input
-            label="User Name"
-            onUpdateValue={(e) => inputChangeHandler('name', e)}
-            value={inputs.name.value}
-            keyboardType="email-address"
-            isInvalid={!inputs.email.isValid}
-          />
-          <Input
-            label="Email Address"
-            onUpdateValue={(e) => inputChangeHandler('email', e)}
-            value={inputs.email.value}
-            keyboardType="email-address"
-            isInvalid={!inputs.email.isValid}
-          />
+          <View style={{ width: 300 }}>
+            <Input
+              label="User Name"
+              onUpdateValue={(e) => inputChangeHandler('name', e)}
+              value={inputs.name.value}
+              keyboardType="email-address"
+              isInvalid={!inputs.email.isValid}
+            />
+            <Input
+              label="Email Address"
+              onUpdateValue={(e) => inputChangeHandler('email', e)}
+              value={inputs.email.value}
+              keyboardType="email-address"
+              isInvalid={!inputs.email.isValid}
+            />
 
-          <Input
-            label="Confirm Email Address"
-            onUpdateValue={(e) => inputChangeHandler('confirmEmail', e)}
-            value={inputs.confirmEmail?.value}
-            keyboardType="email-address"
-            isInvalid={!inputs.confirmEmail?.isValid}
-          />
+            <Input
+              label="Confirm Email Address"
+              onUpdateValue={(e) => inputChangeHandler('confirmEmail', e)}
+              value={inputs.confirmEmail?.value}
+              keyboardType="email-address"
+              isInvalid={!inputs.confirmEmail?.isValid}
+            />
 
-          <Input
-            label="Password"
-            onUpdateValue={(p) => inputChangeHandler('password', p)}
-            secure
-            value={inputs.password.value}
-            isInvalid={!inputs.password.isValid}
-          />
+            <Input
+              label="Password"
+              onUpdateValue={(p) => inputChangeHandler('password', p)}
+              secure
+              value={inputs.password.value}
+              isInvalid={!inputs.password.isValid}
+            />
 
-          <Input
-            label="Confirm Password"
-            onUpdateValue={(p) => inputChangeHandler('confirmPassword', p)}
-            secure
-            value={inputs.confirmPassword?.value}
-            isInvalid={!inputs.confirmPassword?.isValid}
-          />
+            <Input
+              label="Confirm Password"
+              onUpdateValue={(p) => inputChangeHandler('confirmPassword', p)}
+              secure
+              value={inputs.confirmPassword?.value}
+              isInvalid={!inputs.confirmPassword?.isValid}
+            />
 
-          {submitError && (
-            <Text style={styles.errorText}>
-              Register Failed. Check your data and try again.
-            </Text>
-          )}
+            {submitError && (
+              <Text style={styles.errorText}>
+                Register Failed. Check your data and try again.
+              </Text>
+            )}
 
-          <View style={styles.buttons}>
-            <Button onPress={submitHandler}>SIGNUP</Button>
+            <View style={styles.buttons}>
+              <Button onPress={submitHandler}>SIGNUP</Button>
+            </View>
           </View>
-        </View>
-        {/*  <SocialMediaLogin /> */}
-      </KeyboardAvoidingView>
+          {/*  <SocialMediaLogin /> */}
+        </KeyboardAvoidingView>
 
-      <View style={styles.signupContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            authCtx.resetError();
-            Navigation.navigate('Login');
-          }}
-        >
-          <Text style={styles.text}>
-            Do you have an account?
-            <Text style={styles.signup}> LOGIN</Text>
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.signupContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              authCtx.resetError();
+              Navigation.navigate('Login');
+            }}
+          >
+            <Text style={styles.text}>
+              Do you have an account?
+              <Text style={styles.signup}> LOGIN</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

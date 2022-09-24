@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
 import EventManager from '../components/events/EventManager';
+import Chats from '../screens/Chats';
 // NEW EVENT
 //CHATS
 
@@ -89,7 +90,7 @@ export default function MyTabs() {
 
       <Tab.Screen
         name="Chats"
-        component={HomeScreen}
+        component={Chats}
         options={{
           tabBarLabelStyle: { fontSize: 15 },
           tabBarBadge: 3,

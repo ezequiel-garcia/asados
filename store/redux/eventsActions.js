@@ -41,25 +41,30 @@ export const fetchEvents = (currentUser) => {
       }
 
       Object.keys(currentUser?.events).map(async (eventId) => {
-        const docRef = doc(db, 'events', eventId);
-        const docSnap = await getDoc(docRef);
+        // const docRef = doc(db, 'events', eventId);
+        // const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const currentEvent = docSnap.data();
-          dispatch(
-            addEvent({
-              ...currentEvent,
-              date: new Date(
-                currentEvent.date.seconds * 1000 +
-                  currentEvent.date.nanoseconds / 1000000
-              ),
-            })
-          );
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!');
-        }
+        // if (docSnap.exists()) {
+        //   const currentEvent = docSnap.data();
+        const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
+          if (doc.data()) {
+            const currentEvent = doc.data();
+            dispatch(
+              addEvent({
+                ...currentEvent,
+                date: new Date(
+                  currentEvent.date.seconds * 1000 +
+                    currentEvent.date.nanoseconds / 1000000
+                ),
+              })
+            );
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        });
       });
+
       //   return events;
     };
 
@@ -92,7 +97,7 @@ export const addEventToDB = (event, user) => {
           shareTasks: event.shareTasks,
           shareBills: event.shareBills,
           imageURL: event.imageURL,
-          chat: '',
+          chat: {},
           admin: event.admin,
           participants: event.participants,
         });
@@ -192,6 +197,20 @@ export const deleteEvent = (currentEvent) => {
   };
 };
 
+export const setLastMessage = (eventId, message) => {
+  return async () => {
+    try {
+      const eventRef = doc(db, 'events', eventId);
+
+      await updateDoc(eventRef, {
+        chat: { lastMessage: message },
+      });
+    } catch (e) {
+      console.error('Error adding last chat: ', e);
+    }
+  };
+};
+
 export const fetchEventInfo = (eventId) => {
   return async (dispatch) => {
     const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
@@ -204,11 +223,6 @@ export const fetchEventInfo = (eventId) => {
           setCurrentEventInfo({
             ...currentEventInfo,
             date: dateFromDB(currentEventInfo.date),
-
-            // date: new Date(
-            //   currentEventInfo.date.seconds * 1000 +
-            //     currentEventInfo.date.nanoseconds / 1000000
-            // ),
           })
         );
         //dispatch(setCurrentEventInfo(doc.data()));
@@ -247,7 +261,7 @@ export const fetchMessages = (eventId) => {
     const unsub = onSnapshot(doc(db, 'messages', eventId), (doc) => {
       //console.log('Current data: ', doc.data());
       if (doc.data()) {
-        dispatch(setCurrentEventMessages(doc.data()));
+        dispatch(setCurrentEventMessages(doc.data().messages));
       } else dispatch(setCurrentEventMessages([]));
     });
   };
@@ -291,11 +305,11 @@ export const setBills = (eventId, bills) => {
   };
 };
 
-export const setMessages = (eventId, tasks) => {
+export const setMessages = (eventId, messages) => {
   return async () => {
     try {
-      await setDoc(doc(db, 'tasks', eventId), {
-        tasks,
+      await setDoc(doc(db, 'messages', eventId), {
+        messages,
       });
     } catch (e) {
       console.error('Error adding message: ', e);

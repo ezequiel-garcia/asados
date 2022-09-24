@@ -1,23 +1,29 @@
+import { useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Background from '../components/ui/Background';
 import ChatRow from '../components/chats/ChatRow';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const Chats = () => {
+  const navigation = useNavigation();
   const events = useSelector((state) => state.events.events);
-  let orderedEvents = [];
+  const [orderedEvents, setOrderedEvents] = useState([]);
 
-  if (Object.keys(events).length > 0) {
-    let arrayEvents = [];
+  useLayoutEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (Object.keys(events).length > 0) {
+        let arrayEvents = [];
+        arrayEvents = Object.values(events);
+        setOrderedEvents(arrayEvents.sort((a, b) => a.date - b.date));
+      }
+      console.log('actualizando lpm');
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation, events]);
 
-    arrayEvents = Object.values(events);
-
-    orderedEvents = arrayEvents.sort((a, b) => a.date - b.date);
-
-    // if (upcoming.length > 0) {
-    //   return <Events dataEvents={upcoming} />;
-    // }
-  }
+  useLayoutEffect(() => {}, [events]);
 
   return (
     <Background>
@@ -26,7 +32,7 @@ const Chats = () => {
           data={orderedEvents}
           keyExtractor={(event) => event.eid}
           renderItem={(eventData) => {
-            return <ChatRow event={eventData.item} />;
+            return <ChatRow key={eventData.item.eid} event={eventData.item} />;
           }}
         />
       </View>

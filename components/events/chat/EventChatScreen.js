@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,7 @@ import {
 import Background from '../../ui/Background';
 import { Colors } from '../../../constants/styles';
 import EventChatRow from './EventChatRow';
+import SenderChatRow from './SenderChatRow';
 
 import { useNavigation } from '@react-navigation/native';
 import { serverTimestamp } from 'firebase/firestore';
@@ -31,8 +32,22 @@ const EventChatScreen = () => {
     (state) => state.events?.currentEvent?.eventInfo
   );
   const currentUser = useSelector((state) => state.user.currentUser) || {};
+  const [orderedMessages, setOrderedMessages] = useState([]);
 
   const [input, setInput] = useState('');
+  const flatlistRef = useRef();
+
+  useLayoutEffect(() => {
+    if (Object.keys(messages).length > 0) {
+      setOrderedMessages(
+        Object.values(messages).sort(
+          (a, b) => b.timestamp?.toDate() - a.timestamp?.toDate()
+        )
+      );
+    } else {
+      setOrderedMessages([]);
+    }
+  }, [messages]);
 
   const sendMessage = () => {
     if (input.trim() == '') {
@@ -62,7 +77,9 @@ const EventChatScreen = () => {
   return (
     <Background>
       <View style={styles.container}>
-        <Text>{Object.values(messages).length ? '' : 'No hay msj'}</Text>
+        <Text style={styles.noMessages}>
+          {Object.values(messages).length ? '' : 'No Messages'}
+        </Text>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
@@ -71,11 +88,19 @@ const EventChatScreen = () => {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             {/* Messages */}
             <FlatList
-              data={Object.values(messages)}
-              keyExtractor={(item) => item.eid}
-              renderItem={({ item: message }) => (
-                <EventChatRow key={message.id} message={message} />
-              )}
+              ref={flatlistRef}
+              // reverse
+              inverted={-1}
+              // data={Object.values(messages)}
+              data={orderedMessages}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item: message }) =>
+                message.userId == currentUser.uid ? (
+                  <SenderChatRow message={message} />
+                ) : (
+                  <EventChatRow message={message} />
+                )
+              }
             />
           </TouchableWithoutFeedback>
 
@@ -126,5 +151,11 @@ const styles = StyleSheet.create({
     // padding: 10,
     // backgroundColor: '#ffffffa5',
     // borderRadius: 10,
+  },
+  noMessages: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 22,
+    fontFamily: 'Montserrat_300Light',
   },
 });

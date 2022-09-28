@@ -23,6 +23,8 @@ import {
   onSnapshot,
   deleteDoc,
   deleteField,
+  query,
+  orderBy,
 } from 'firebase/firestore';
 
 import { dateFromDB } from '../../util/date';
@@ -259,9 +261,9 @@ export const deleteTasksFromDB = (eid) => {
 export const fetchMessages = (eventId) => {
   return async (dispatch) => {
     const unsub = onSnapshot(doc(db, 'messages', eventId), (doc) => {
-      //console.log('Current data: ', doc.data());
+      // console.log('Current data: ', doc.data());
       if (doc.data()) {
-        dispatch(setCurrentEventMessages(doc.data().messages));
+        dispatch(setCurrentEventMessages(doc.data()));
       } else dispatch(setCurrentEventMessages([]));
     });
   };
@@ -309,7 +311,7 @@ export const setMessages = (eventId, messages) => {
   return async () => {
     try {
       await setDoc(doc(db, 'messages', eventId), {
-        messages,
+        ...messages,
       });
     } catch (e) {
       console.error('Error adding message: ', e);

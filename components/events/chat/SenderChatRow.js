@@ -2,43 +2,30 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getTime } from '../../../util/date';
 
-const EventChatRow = ({ message }) => {
+const SenderChatRow = ({ message }) => {
   return (
     <View style={styles.background}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image
-          style={styles.profilePicture}
-          source={{ uri: message.photoURL }}
-        />
-        <View>
-          <Text style={styles.displayName}>{message.displayName}</Text>
-          <Text style={styles.message}>{message.message}</Text>
-        </View>
-      </View>
       <Text style={styles.time}>{getTime(message?.timestamp?.toDate())}</Text>
+      <View style={{ flex: 1, alignItems: 'flex-end' }}>
+        <Text style={styles.displayName}>You</Text>
+        <Text style={styles.message}>{message.message}</Text>
+      </View>
     </View>
   );
 };
 
-export default EventChatRow;
+export default SenderChatRow;
 
 const styles = StyleSheet.create({
   background: {
     marginBottom: 10,
-
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'top',
-    backgroundColor: '#6d8fc284',
+    backgroundColor: '#5d7395fd',
     padding: 5,
     borderRadius: 10,
   },
-  profilePicture: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    marginRight: 20,
-  },
+
   message: {
     color: 'white',
     marginTop: 5,

@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'top',
     backgroundColor: '#6d8fc284',
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 10,
   },
   profilePicture: {

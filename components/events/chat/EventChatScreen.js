@@ -143,14 +143,12 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary600,
     padding: 2,
     borderRadius: 10,
-    paddingHorizontal: 5,
-    // paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   input: {
     flex: 1,
-    // padding: 10,
-    // backgroundColor: '#ffffffa5',
-    // borderRadius: 10,
+
+    color: '#0604049d',
   },
   noMessages: {
     textAlign: 'center',

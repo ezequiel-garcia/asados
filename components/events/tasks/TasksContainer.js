@@ -6,17 +6,7 @@ import { setTasks } from '../../../store/redux/eventsActions';
 import { useSelector, useDispatch } from 'react-redux';
 
 const TasksContainer = ({ setCurrentTask, setModalVisible }) => {
-  const dispatch = useDispatch();
   const tasks = useSelector((state) => state.events?.currentEvent?.tasks);
-  const eventInfo = useSelector(
-    (state) => state.events?.currentEvent?.eventInfo
-  );
-
-  useEffect(() => {
-    if (tasks?.length > 0) {
-      dispatch(setTasks(eventInfo.eid, tasks));
-    }
-  }, [tasks]);
 
   return (
     <View style={styles.container}>

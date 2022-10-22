@@ -16,6 +16,7 @@ import { Colors } from '../../../constants/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentEventBills } from '../../../store/redux/eventsSlice';
+import { setBills } from '../../../store/redux/eventsActions';
 
 const ModalBills = ({
   modalVisible,
@@ -24,8 +25,11 @@ const ModalBills = ({
   currentBill,
   setCurrentBill,
 }) => {
-  const bills = useSelector((state) => state.events.currentEvent.bills);
+  const bills = useSelector((state) => state.events?.currentEvent?.bills);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const eventInfo = useSelector(
+    (state) => state.events?.currentEvent?.eventInfo
+  );
   const dispatch = useDispatch();
 
   const [billTitle, setBillTitle] = useState(
@@ -48,9 +52,8 @@ const ModalBills = ({
     if (billTitle.trim() == '' || isNaN(amount)) {
       setError(true);
     } else {
-      //HAVE TO ADD TO THE BILLS
       dispatch(
-        setCurrentEventBills([
+        setBills(eventInfo.eid, [
           {
             id: uuid.v4(),
             title: billTitle,

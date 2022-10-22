@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Bill from './Bill';
 
 import { setBills } from '../../../store/redux/eventsActions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const BillsContainer = ({
   // bills,
@@ -12,17 +10,7 @@ const BillsContainer = ({
   setModalVisible,
   // setBills,
 }) => {
-  const dispatch = useDispatch();
   const bills = useSelector((state) => state.events.currentEvent.bills);
-  const eventInfo = useSelector(
-    (state) => state.events?.currentEvent?.eventInfo
-  );
-
-  useEffect(() => {
-    if (bills?.length > 0) {
-      dispatch(setBills(eventInfo.eid, bills));
-    }
-  }, [bills]);
 
   return (
     <View style={styles.container}>

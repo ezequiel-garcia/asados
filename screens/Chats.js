@@ -17,7 +17,6 @@ const Chats = () => {
         arrayEvents = Object.values(events);
         setOrderedEvents(arrayEvents.sort((a, b) => a.date - b.date));
       }
-      console.log('actualizando lpm');
     });
     // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;

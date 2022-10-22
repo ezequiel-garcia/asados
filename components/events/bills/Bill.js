@@ -6,10 +6,14 @@ import { getDate, dateFromDB } from '../../../util/date';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentEventBills } from '../../../store/redux/eventsSlice';
+import { setBills } from '../../../store/redux/eventsActions';
 
 const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
   const dateFormat = getDate(dateFromDB(bill.date));
   const bills = useSelector((state) => state.events.currentEvent.bills);
+  const eventInfo = useSelector(
+    (state) => state.events?.currentEvent?.eventInfo
+  );
   const dispatch = useDispatch();
 
   function onEdit() {
@@ -17,9 +21,10 @@ const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
     setModalVisible(true);
   }
   function handleDelete() {
-    const newTasks = bills.filter((item) => item.id != bill.id);
+    const newBills = bills.filter((item) => item.id != bill.id);
 
-    dispatch(setCurrentEventBills(newTasks));
+    // dispatch(setCurrentEventBills(newTasks));
+    dispatch(setBills(eventInfo.eid, newBills));
   }
 
   return (

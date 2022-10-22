@@ -45,7 +45,7 @@ const EventChatScreen = () => {
         )
       );
     } else {
-      setOrderedMessages([]);
+      setOrderedMessages({});
     }
   }, [messages]);
 

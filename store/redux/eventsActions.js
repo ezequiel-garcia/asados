@@ -227,7 +227,6 @@ export const fetchEventInfo = (eventId) => {
             date: dateFromDB(currentEventInfo.date),
           })
         );
-        //dispatch(setCurrentEventInfo(doc.data()));
       } else {
         setCurrentEventInfo({});
       }
@@ -272,8 +271,10 @@ export const fetchMessages = (eventId) => {
 export const fetchBills = (eventId) => {
   return async (dispatch) => {
     const unsub = onSnapshot(doc(db, 'bills', eventId), (doc) => {
+      console.log(JSON.stringify(doc.data()) + '    data-----');
       if (doc.data()) {
         const { bills } = doc.data();
+        console.log(JSON.stringify(bills));
         dispatch(setCurrentEventBills(bills));
       } else dispatch(setCurrentEventBills([]));
     });
@@ -282,9 +283,6 @@ export const fetchBills = (eventId) => {
 
 export const setTasks = (eventId, tasks) => {
   return async () => {
-    if (!tasks) {
-      tasks = { tasks: [] };
-    }
     try {
       await setDoc(doc(db, 'tasks', eventId), {
         tasks,

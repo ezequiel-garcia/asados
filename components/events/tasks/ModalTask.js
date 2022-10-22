@@ -17,15 +17,18 @@ import { Colors } from '../../../constants/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentEventTasks } from '../../../store/redux/eventsSlice';
+import { setTasks } from '../../../store/redux/eventsActions';
 
 const ModalTask = ({
   modalVisible,
   setModalVisible,
-  setTasks,
   currentTask,
   setCurrentTask,
 }) => {
-  const tasks = useSelector((state) => state.events.currentEvent.tasks);
+  const tasks = useSelector((state) => state.events?.currentEvent?.tasks);
+  const eventInfo = useSelector(
+    (state) => state.events?.currentEvent?.eventInfo
+  );
   const dispatch = useDispatch();
 
   const [taskTitle, setTaskTitle] = useState('');
@@ -47,7 +50,7 @@ const ModalTask = ({
     } else {
       //HAVE TO ADD TO THE TASKS
       dispatch(
-        setCurrentEventTasks([
+        setTasks(eventInfo.eid, [
           {
             id: uuid.v4(),
             title: taskTitle,

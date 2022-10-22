@@ -5,7 +5,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentEventTasks } from '../../../store/redux/eventsSlice';
-import { deleteTasksFromDB } from '../../../store/redux/eventsActions';
+import {
+  deleteTasksFromDB,
+  setTasks,
+} from '../../../store/redux/eventsActions';
 
 const Task = ({ task, setCurrentTask, setModalVisible }) => {
   // const [task, setTask] = useState();
@@ -30,7 +33,7 @@ const Task = ({ task, setCurrentTask, setModalVisible }) => {
       }
     });
 
-    dispatch(setCurrentEventTasks(isDoneTasks));
+    dispatch(setTasks(eid, isDoneTasks));
   }
 
   function onEdit() {
@@ -41,12 +44,12 @@ const Task = ({ task, setCurrentTask, setModalVisible }) => {
   function handleDelete() {
     const newTasks = tasks.filter((item) => item.id != task.id);
 
-    dispatch(setCurrentEventTasks(newTasks));
+    dispatch(setTasks(eid, newTasks));
 
     //CHECK IF IS EMPTY NOW TO UPDATE THE DB FOR NOTHING
-    if (newTasks.length == 0) {
-      dispatch(deleteTasksFromDB(eid));
-    }
+    // if (newTasks.length == 0) {
+    //   dispatch(deleteTasksFromDB(eid));
+    // }
   }
 
   return (

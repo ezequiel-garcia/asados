@@ -38,6 +38,7 @@ const SocialMediaLogin = () => {
     const userInfo = await response.json();
     setUser(userInfo);
   }
+  //check working
 
   return (
     <View style={styles.containerSocialMedia}>

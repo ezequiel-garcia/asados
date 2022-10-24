@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "312204920970",
+    "firebase_url": "https://asados-2a41e-default-rtdb.firebaseio.com",
+    "project_id": "asados-2a41e",
+    "storage_bucket": "asados-2a41e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312204920970:android:38b6204ac55c21119d4573",
+        "android_client_info": {
+          "package_name": "host.exp.exponent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "312204920970-q0uttfofks4apdveldcu0lqh308pe7or.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDliL22nEY4gYjcQ4RkL0p1Ag9-vZPAs14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "312204920970-q0uttfofks4apdveldcu0lqh308pe7or.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "312204920970-hiju5ljtkf9ki2jt72luo1nc8q7besim.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

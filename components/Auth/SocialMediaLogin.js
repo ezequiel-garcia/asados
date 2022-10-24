@@ -1,8 +1,44 @@
+import { useState, useEffect } from 'react';
+
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { GoogleLogin } from '../../store/auth/auth-google';
-import React from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import {
+  REACT_APP_WEB_CLIENT_ID,
+  REACT_APP_IOS_CLIENT_ID,
+  REACT_APP_ANDROID_CLIENT_ID,
+} from '@env';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const SocialMediaLogin = () => {
+  const [accessToken, setAccessToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: REACT_APP_WEB_CLIENT_ID,
+    iosClientId: REACT_APP_IOS_CLIENT_ID,
+    androidClientId: REACT_APP_ANDROID_CLIENT_ID,
+  });
+
+  useEffect(() => {
+    if (response?.type == 'success') {
+      // user access token
+      setAccessToken(response.authentication.accessToken);
+      accessToken && fetchUserInfo();
+    }
+  }, [response, accessToken]);
+
+  async function fetchUserInfo() {
+    let response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const userInfo = await response.json();
+    setUser(userInfo);
+  }
+
   return (
     <View style={styles.containerSocialMedia}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -21,6 +57,7 @@ const SocialMediaLogin = () => {
               borderRadius: 50,
               alignItems: 'center',
             }}
+            onPress={() => promptAsync()}
           >
             <Image
               source={require('../../assets/facebook-login.png')}
@@ -45,6 +82,7 @@ const SocialMediaLogin = () => {
           </TouchableOpacity>
         </View>
         {/* <GoogleLogin /> */}
+        {user && <Text>USUARIOOOO {user}</Text>}
       </View>
     </View>
   );

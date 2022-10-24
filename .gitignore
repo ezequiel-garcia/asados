@@ -12,6 +12,7 @@ web-build/
 
 
 .env
+.plist
 
 # macOS
 .DS_Store

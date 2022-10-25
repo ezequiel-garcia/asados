@@ -9,8 +9,14 @@ import {
   REACT_APP_IOS_CLIENT_ID,
   REACT_APP_ANDROID_CLIENT_ID,
 } from '@env';
+import { makeRedirectUri } from 'expo-auth-session';
 
 WebBrowser.maybeCompleteAuthSession();
+
+// const redirectUri = makeRedirectUri({
+//   scheme: 'com.ezegarcia.Asados',
+//   path: 'redirect',
+// });
 
 const SocialMediaLogin = () => {
   const [accessToken, setAccessToken] = useState(null);
@@ -83,7 +89,11 @@ const SocialMediaLogin = () => {
           </TouchableOpacity>
         </View>
         {/* <GoogleLogin /> */}
-        {user && <Text>USUARIOOOO {user}</Text>}
+        {user && (
+          <Text style={{ color: 'white' }}>
+            USUARIOOOO {JSON.stringify(user)}
+          </Text>
+        )}
       </View>
     </View>
   );

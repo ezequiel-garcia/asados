@@ -2,6 +2,7 @@
   "expo": {
     "name": "Asados",
     "slug": "Asados",
+    "scheme": "com.ezegarcia.Asados",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -9,7 +9,12 @@ import {
   REACT_APP_IOS_CLIENT_ID,
   REACT_APP_ANDROID_CLIENT_ID,
 } from '@env';
-import { makeRedirectUri } from 'expo-auth-session';
+// import { makeRedirectUri } from 'expo-auth-session';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from 'firebase/auth';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -32,6 +37,10 @@ const SocialMediaLogin = () => {
       // user access token
       setAccessToken(response.authentication.accessToken);
       accessToken && fetchUserInfo();
+      const { id_token } = response.params;
+      const auth = getAuth();
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
     }
   }, [response, accessToken]);
 

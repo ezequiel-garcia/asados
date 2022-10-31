@@ -263,7 +263,7 @@ export const fetchMessages = (eventId) => {
       // console.log('Current data: ', doc.data());
       if (doc.data()) {
         dispatch(setCurrentEventMessages(doc.data()));
-      } else dispatch(setCurrentEventMessages([]));
+      } else dispatch(setCurrentEventMessages({}));
     });
   };
 };
@@ -271,7 +271,6 @@ export const fetchMessages = (eventId) => {
 export const fetchBills = (eventId) => {
   return async (dispatch) => {
     const unsub = onSnapshot(doc(db, 'bills', eventId), (doc) => {
-      console.log(JSON.stringify(doc.data()) + '    data-----');
       if (doc.data()) {
         const { bills } = doc.data();
         console.log(JSON.stringify(bills));

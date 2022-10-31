@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   background: {
     marginBottom: 10,
     flexDirection: 'row',
-    alignItems: 'top',
+    // alignItems: 'baseline',
     backgroundColor: '#5d7395fd',
     paddingVertical: 5,
     paddingHorizontal: 10,

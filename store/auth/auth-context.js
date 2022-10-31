@@ -65,7 +65,6 @@ export const AuthenticationContextProvider = ({ children }) => {
 
   const onRegister = async (name, email, password) => {
     //setIsLoading(true);
-
     try {
       const user = await registerRequest(email, password);
 
@@ -95,7 +94,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     setError(null);
   };
 
-  const forgotPassword = (email) => {
+  const forgotPassword = async (email) => {
     setError(false);
     setIsLoading(true);
     return sendPasswordResetEmail(getAuth(), email)

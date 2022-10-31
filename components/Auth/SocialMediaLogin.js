@@ -16,6 +16,9 @@ import {
   GoogleAuthProvider,
   signInWithCredential,
 } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+
+import { checkIfExist } from '../../store/redux/usersActions';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -26,35 +29,43 @@ WebBrowser.maybeCompleteAuthSession();
 
 const SocialMediaLogin = () => {
   const [accessToken, setAccessToken] = useState(null);
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: REACT_APP_WEB_CLIENT_ID,
     iosClientId: REACT_APP_IOS_CLIENT_ID,
     androidClientId: REACT_APP_ANDROID_CLIENT_ID,
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (response?.type == 'success') {
       // user access token
       setAccessToken(response.authentication.accessToken);
       accessToken && fetchUserInfo();
-      const { id_token } = response.params;
-      const auth = getAuth();
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential);
-      console.log(response);
     }
   }, [response, accessToken]);
 
   async function fetchUserInfo() {
-    let response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const userInfo = await response.json();
-    setUser(userInfo);
-    console.log(userInfo);
+    try {
+      let userResponse = await fetch(
+        'https://www.googleapis.com/userinfo/v2/me',
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const userInfo = await userResponse.json();
+      const { id_token } = response.params;
+      const auth = getAuth();
+      const credential = GoogleAuthProvider.credential(id_token);
+      const { user } = await signInWithCredential(auth, credential);
+
+      dispatch(checkIfExist(user.uid, userInfo.name));
+      console.log(user.uid + 'UIDDD');
+    } catch (e) {
+      console.log(e);
+    }
   }
   //check working
 
@@ -101,11 +112,6 @@ const SocialMediaLogin = () => {
           </TouchableOpacity>
         </View>
         {/* <GoogleLogin /> */}
-        {user && (
-          <Text style={{ color: 'white' }}>
-            USUARIOOOO {JSON.stringify(user)}
-          </Text>
-        )}
       </View>
     </View>
   );

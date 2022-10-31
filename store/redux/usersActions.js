@@ -9,6 +9,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import {
   getFirestore,
   setDoc,
+  getDoc,
   doc,
   onSnapshot,
   updateDoc,
@@ -41,7 +42,7 @@ export const addUserToDB = async (user, name) => {
     // const docRef = await setDoc(doc(db, 'users', user.uid), {
     await setDoc(doc(db, 'users', user.uid), {
       uid: user.uid,
-      name: name.capitalize(),
+      name: name.charAt(0).toUpperCase() + name.slice(1),
       profilePic:
         'https://firebasestorage.googleapis.com/v0/b/asados-2a41e.appspot.com/o/profileImages%2Fdefault.png?alt=media&token=cacfd608-5179-4826-acc1-1b747681eb92',
       events: {},
@@ -51,6 +52,31 @@ export const addUserToDB = async (user, name) => {
   } catch (e) {
     console.error('Error adding document: ', e);
   }
+};
+
+// Check when login with google if the user already exist, if not add user to DB
+export const checkIfExist = (token, name) => {
+  return async (dispatch) => {
+    try {
+      const docRef = doc(db, 'users', token);
+      const docSnap = await getDoc(docRef);
+
+      console.log('DATOS RECIBIDOS:   ' + token + 'NAMEEEE \n ' + name);
+
+      const user = { uid: token };
+
+      //  if does not exist add to userDB
+      if (!docSnap.exists()) {
+        console.log('NO EXISTTE');
+        await addUserToDB(user, name);
+        dispatch(fetchCurrentUser(token));
+      } else {
+        dispatch(fetchCurrentUser(token));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 };
 
 export const updateUserInfo = (user) => {

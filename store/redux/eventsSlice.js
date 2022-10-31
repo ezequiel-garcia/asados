@@ -9,7 +9,7 @@ const eventsSlice = createSlice({
       tasks: {},
       bills: {},
       participants: {},
-      messages: [],
+      messages: {},
     },
   },
   reducers: {
@@ -35,13 +35,13 @@ const eventsSlice = createSlice({
       state.currentEvent.eventInfo = action.payload || {};
     },
     setCurrentEventTasks(state, action) {
-      state.currentEvent.tasks = action.payload || [];
+      state.currentEvent.tasks = action.payload || {};
     },
     setCurrentEventBills(state, action) {
-      state.currentEvent.bills = action.payload || [];
+      state.currentEvent.bills = action.payload || {};
     },
     setCurrentEventMessages(state, action) {
-      state.currentEvent.messages = action.payload || [];
+      state.currentEvent.messages = action.payload || {};
     },
 
     clearCurrentEvent(state) {

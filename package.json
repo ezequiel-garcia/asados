@@ -33,7 +33,7 @@
     "expo-web-browser": "~10.2.1",
     "firebase": "^9.8.4",
     "i": "^0.3.7",
-    "lottie-ios": "3.4.0",
+    "lottie-ios": "^3.2.3",
     "lottie-react-native": "5.0.1",
     "npm": "^8.13.2",
     "react": "17.0.2",

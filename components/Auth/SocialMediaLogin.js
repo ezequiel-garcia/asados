@@ -5,6 +5,7 @@ import { GoogleLogin } from '../../store/auth/auth-google';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import {
+  REACT_APP_EXPO_CLIENT_ID,
   REACT_APP_WEB_CLIENT_ID,
   REACT_APP_IOS_CLIENT_ID,
   REACT_APP_ANDROID_CLIENT_ID,
@@ -41,6 +42,7 @@ const SocialMediaLogin = () => {
       const auth = getAuth();
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential);
+      console.log(response);
     }
   }, [response, accessToken]);
 
@@ -52,6 +54,7 @@ const SocialMediaLogin = () => {
     });
     const userInfo = await response.json();
     setUser(userInfo);
+    console.log(userInfo);
   }
   //check working
 
@@ -73,7 +76,6 @@ const SocialMediaLogin = () => {
               borderRadius: 50,
               alignItems: 'center',
             }}
-            onPress={() => promptAsync()}
           >
             <Image
               source={require('../../assets/facebook-login.png')}
@@ -89,6 +91,7 @@ const SocialMediaLogin = () => {
 
               borderRadius: 50,
             }}
+            onPress={() => promptAsync()}
           >
             <Image
               source={require('../../assets/google-login.png')}

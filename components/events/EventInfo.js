@@ -10,11 +10,10 @@ import Participants from './eventInfoComponents/Participants';
 const EventInfo = () => {
   //const currentEvent = events[0];
 
-  const currentEvent = useSelector(
-    (state) => state.events.currentEvent.eventInfo
-  );
+  const currentEvent = useSelector((state) => state.events.currentEvent);
 
-  console.log(JSON.stringify(currentEvent) + 'CURRENT EVENTTT');
+  console.log(JSON.stringify(currentEvent.eventInfo) + 'CURRENT EVENTTT');
+  console.log(JSON.stringify(currentEvent.participants) + 'PARTICIPANTS');
 
   return (
     <Background>

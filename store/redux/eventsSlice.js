@@ -8,7 +8,7 @@ const eventsSlice = createSlice({
       eventInfo: {},
       tasks: {},
       bills: {},
-      participants: {},
+      participants: [],
       messages: {},
     },
   },
@@ -44,6 +44,11 @@ const eventsSlice = createSlice({
       state.currentEvent.messages = action.payload || {};
     },
 
+    setCurrentEventParticipants(state, action) {
+      state.currentEvent.participants =
+        [...state.currentEvent.participants, action.payload] || {};
+    },
+
     clearCurrentEvent(state) {
       state.currentEvent = {};
     },
@@ -67,5 +72,6 @@ export const {
   setCurrentEventBills,
   setCurrentEventMessages,
   setCurrentEventTasks,
+  setCurrentEventParticipants,
 } = eventsSlice.actions;
 export default eventsSlice;

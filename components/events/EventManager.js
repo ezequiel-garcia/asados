@@ -199,7 +199,12 @@ const EventManager = ({ onEdit, route }) => {
         shareTasks,
         participants: edit
           ? eventForEdit.participants
-          : { [currentUser.uid]: currentUser.name },
+          : {
+              [currentUser.uid]: {
+                name: currentUser.name,
+                profilePic: currentUser.profilePic,
+              },
+            },
 
         imageURL: selectedImage,
         admin: currentUser.uid,

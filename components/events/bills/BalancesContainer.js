@@ -42,11 +42,11 @@ const BalancesContainer = () => {
     });
 
     // add the users that didn't put money to the list with amount of 0.
-    Object.entries(eventParticipants).forEach((participant) => {
-      if (!usersBills[participant[0]]) {
-        usersBills[participant[0]] = {
+    Object.values(eventParticipants).forEach((participant) => {
+      if (!usersBills[participant.uid]) {
+        usersBills[participant.uid] = {
           amount: 0,
-          name: participant[1],
+          name: participant.name,
         };
       }
     });

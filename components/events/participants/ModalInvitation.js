@@ -14,7 +14,10 @@ import { Colors } from '../../../constants/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { acceptEventInvitation } from '../../../store/redux/usersActions';
+import {
+  acceptEventInvitation,
+  rejectEventInvitation,
+} from '../../../store/redux/usersActions';
 
 const ModalInvitation = ({
   modalVisible,
@@ -24,8 +27,8 @@ const ModalInvitation = ({
 }) => {
   const dispatch = useDispatch();
 
-  function handleAccept() {
-    acceptEventInvitation(
+  async function handleAccept() {
+    await acceptEventInvitation(
       currentUser,
       currentUser.eventsInvitations,
       eventInvitation.eid
@@ -33,8 +36,12 @@ const ModalInvitation = ({
     setModalVisible(false);
   }
 
-  function onCancel() {
-    console.log('RECHAZO EVENT');
+  async function onCancel() {
+    await rejectEventInvitation(
+      currentUser,
+      currentUser.eventsInvitations,
+      eventInvitation.eid
+    );
     setModalVisible(false);
   }
 
@@ -51,21 +58,22 @@ const ModalInvitation = ({
         <View style={styles.modalView}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
-              <Text>Event Invitation</Text>
-              <Text>
-                {eventInvitation?.inviteName} has invite you to the event{' '}
-                {eventInvitation?.name}
+              <Text style={styles.title}>Event Invitation</Text>
+              <Text style={styles.text}>
+                <Text style={styles.bold}>{eventInvitation?.inviteName} </Text>
+                has invited you to the event{' '}
+                <Text style={styles.bold}>{eventInvitation?.name}</Text>
               </Text>
             </View>
           </View>
 
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity style={styles.button} onPress={handleAccept}>
-              <Text>ACCEPT</Text>
+              <Text style={styles.buttonText}>ACCEPT</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={onCancel}>
-              <Text>CANCEL</Text>
+              <Text style={styles.buttonText}>CANCEL</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -105,5 +113,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: Colors.secondary600,
     borderRadius: 10,
+  },
+  title: {
+    color: 'white',
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 20,
+    marginBottom: 15,
+  },
+  text: {
+    color: 'white',
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 15,
+    marginBottom: 5,
+  },
+  bold: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 16,
+    textTransform: 'capitalize',
+  },
+  buttonText: {
+    color: '#ffffffe0',
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 15,
   },
 });

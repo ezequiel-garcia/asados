@@ -190,7 +190,6 @@ export const sendEventInvitation = async (uid, invitations) => {
 
 export const acceptEventInvitation = async (user, invitations, eid) => {
   let event = {};
-  let invDeleted = { ...invitations };
   const eventRef = doc(db, 'events', eid);
   try {
     const eventSnap = await getDoc(eventRef);
@@ -218,7 +217,18 @@ export const acceptEventInvitation = async (user, invitations, eid) => {
       },
     });
     // delete the invitation
-    delete invDeleted[`${eid}`];
+    rejectEventInvitation(user, invitations, eid);
+  } catch (e) {
+    console.error('Error accepting invitation: ', e);
+  }
+};
+
+export const rejectEventInvitation = async (user, invitations, eid) => {
+  let invDeleted = { ...invitations };
+
+  delete invDeleted[`${eid}`];
+  const userRef = doc(db, 'users', user.uid);
+  try {
     await updateDoc(userRef, {
       eventsInvitations: invDeleted,
     });

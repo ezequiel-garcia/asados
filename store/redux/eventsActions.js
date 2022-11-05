@@ -158,6 +158,7 @@ export const leaveEvent = (uid, eid) => {
       await updateDoc(userRef, {
         [`participants.${uid}`]: deleteField(),
       });
+      dispatch(removeEvent(eid));
       dispatch(clearCurrentEvent());
     } catch (e) {
       console.error('Error deleting user from event db: ', e);

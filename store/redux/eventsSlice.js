@@ -45,8 +45,7 @@ const eventsSlice = createSlice({
     },
 
     setCurrentEventParticipants(state, action) {
-      state.currentEvent.participants =
-        [...state.currentEvent.participants, action.payload] || {};
+      state.currentEvent.participants = action.payload || {};
     },
 
     clearCurrentEvent(state) {

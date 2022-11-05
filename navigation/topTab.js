@@ -7,6 +7,7 @@ import TasksScreen from '../components/events/tasks/TasksScreen';
 import BillsScreen from '../components/events/bills/BillsScreen';
 import BillsStack from './billsStack';
 import EventChatScreen from '../components/events/chat/EventChatScreen';
+import InfoAndParticipants from './infoAndParticipants';
 
 //PROBANDO
 import EventFooter from '../components/footer/EventFooter';
@@ -24,7 +25,7 @@ export default function TopTabs() {
           tabBarStyle: { backgroundColor: Colors.primary800 },
         }}
       >
-        <Tab.Screen name="General" component={EventInfo} />
+        <Tab.Screen name="General" component={InfoAndParticipants} />
         <Tab.Screen name="Tasks" component={TasksScreen} />
         {/* <Tab.Screen name="Bills" component={BillsScreen} /> */}
         <Tab.Screen name="Bills" component={BillsStack} />

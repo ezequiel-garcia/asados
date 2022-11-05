@@ -1,15 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Title from '../../ui/Title';
 
-//SACARLOOO
-import { fetchTasks } from '../../../store/redux/eventsActions';
-
 import { Entypo } from '@expo/vector-icons';
 
 const Description = ({ currentEvent }) => {
-  //FOR THE TEST
-  fetchTasks('1b1eea7b-824b-4c0f-b3df-954e075e64da');
-
   return (
     <View style={styles.container}>
       <Title>Description</Title>

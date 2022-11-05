@@ -1,25 +1,38 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Title from '../../ui/Title';
 import { Colors } from '../../../constants/styles';
-import users from '../../../users';
+import { useNavigation } from '@react-navigation/native';
 
 //HAVE TO BRING FROM THE CURRENT EVENT THE PARTICIPANTS, FOR NOW I'LL DO WITH USERS
 
 const Participants = ({ currentEvent }) => {
-  const participants = users;
-  let toShowProfile;
-  if (participants.length > 4) {
-    toShowProfile = participants.slice(0, 4);
-  } else {
-    toShowProfile = participants;
+  const navigation = useNavigation();
+
+  const participants = currentEvent?.participants || {};
+  let toShowProfile = Object.values(participants);
+  const lengthParticipants = Object.keys(participants).length;
+
+  if (lengthParticipants > 4) {
+    toShowProfile = toShowProfile.slice(0, 4);
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Title>Participants ({participants.length})</Title>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ParticipantsScreen')}
+        >
+          <Title>Participants ({lengthParticipants})</Title>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ParticipantsScreen', {
+              screen: 'AddParticipants',
+              params: { addToEvent: true },
+            })
+          }
+        >
           <Text style={styles.textButton}>Add</Text>
         </TouchableOpacity>
       </View>
@@ -27,17 +40,23 @@ const Participants = ({ currentEvent }) => {
         {/* TAKE EVENT PARTICIPANTS AND PUT THEIR PICTURE, IF MORE THAN 4 SO ... 
             NOW I'LL TAKE THE USERS PICTURES. AT LEAST THE CREATOR PICTURE WILL BE THERE*/}
 
-        {toShowProfile.map((participant, idx) => {
+        {toShowProfile.map((participant) => {
           return (
-            <Image
-              key={participant.id}
-              style={styles.profilePicture}
-              source={participant.profilePicture}
-            />
+            <View key={participant.uid}>
+              <Image
+                style={styles.profilePicture}
+                source={{ uri: participant.profilePic }}
+              />
+              <Text style={styles.name}>
+                {participant.name.substring(0, participant.name.indexOf(' '))}
+              </Text>
+            </View>
           );
         })}
 
-        {participants.length > 4 && (
+        {/* {Object.values(participants).map(participant)} */}
+
+        {lengthParticipants > 4 && (
           <Text style={{ color: 'white', fontSize: 30 }}>...</Text>
         )}
       </View>
@@ -73,5 +92,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     overflow: 'hidden',
+  },
+  name: {
+    color: 'white',
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 12,
   },
 });

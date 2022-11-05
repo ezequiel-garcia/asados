@@ -280,40 +280,53 @@ export const fetchBills = (eventId) => {
   };
 };
 
-export const fetchParticipants = (eventId) => {
-  return async (dispatch) => {
-    const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
-      //console.log('Current data: ', doc.data());
-      // Get every participant data and put into participants
-      if (doc.data()) {
-        const { participants } = doc.data();
-        Object.keys(participants).map(async (userId) => {
-          dispatch(getUsersData(userId));
-        });
-      } else dispatch(setCurrentEventParticipants({}));
-    });
-  };
-};
+// export const fetchParticipants = (eventId) => {
+//   return async (dispatch) => {
+//     const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
+//       //console.log('Current data: ', doc.data());
+//       // Get every participant data and put into participants
+//       if (doc.data()) {
+//         const { participants } = doc.data();
+//         dispatch(setCurrentEventParticipants(participants));
+//       } else dispatch(setCurrentEventParticipants({}));
+//     });
+//   };
+// };
 
-const getUsersData = (userId) => {
-  return async (dispatch) => {
-    try {
-      const unsub = onSnapshot(doc(db, 'users', userId), (doc) => {
-        const user = doc.data();
-        const userInfo = {
-          name: user.name,
-          uid: user.uid,
-          profilePic: user.profilePic,
-        };
-        console.log(JSON.stringify(userInfo));
-        dispatch(setCurrentEventParticipants(userInfo));
-        // return userInfo;
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-};
+// export const fetchParticipants = (eventId) => {
+//   return async (dispatch) => {
+//     const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
+//       //console.log('Current data: ', doc.data());
+//       // Get every participant data and put into participants
+//       if (doc.data()) {
+//         const { participants } = doc.data();
+//         Object.keys(participants).map(async (userId) => {
+//           dispatch(getUsersData(userId));
+//         });
+//       } else dispatch(setCurrentEventParticipants({}));
+//     });
+//   };
+// };
+
+// const getUsersData = (userId) => {
+//   return async (dispatch) => {
+//     try {
+//       const unsub = onSnapshot(doc(db, 'users', userId), (doc) => {
+//         const user = doc.data();
+//         const userInfo = {
+//           name: user.name,
+//           uid: user.uid,
+//           profilePic: user.profilePic,
+//         };
+//         console.log(JSON.stringify(userInfo));
+//         dispatch(setCurrentEventParticipants(userInfo));
+//         // return userInfo;
+//       });
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   };
+// };
 
 export const setTasks = (eventId, tasks) => {
   return async () => {
@@ -357,7 +370,7 @@ export const fetchCurrentEvent = (eventId) => {
     dispatch(fetchMessages(eventId));
     dispatch(fetchTasks(eventId));
     dispatch(fetchBills(eventId));
-    dispatch(fetchParticipants(eventId));
+    // dispatch(fetchParticipants(eventId));
   };
 };
 

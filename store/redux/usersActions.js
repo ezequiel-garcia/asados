@@ -10,9 +10,11 @@ import {
   getFirestore,
   setDoc,
   getDoc,
+  getDocs,
   doc,
   onSnapshot,
   updateDoc,
+  collection,
 } from 'firebase/firestore';
 
 const db = getFirestore(app);
@@ -61,13 +63,11 @@ export const checkIfExist = (token, name) => {
       const docRef = doc(db, 'users', token);
       const docSnap = await getDoc(docRef);
 
-      console.log('DATOS RECIBIDOS:   ' + token + 'NAMEEEE \n ' + name);
-
       const user = { uid: token };
 
       //  if does not exist add to userDB
       if (!docSnap.exists()) {
-        console.log('NO EXISTTE');
+        console.log('NO exist');
         await addUserToDB(user, name);
         dispatch(fetchCurrentUser(token));
       } else {
@@ -94,43 +94,43 @@ export const updateUserInfo = (user) => {
   };
 };
 
-const addProfileImage = async (ref) => {
-  // Get the download URL
-  getDownloadURL(ref)
-    .then((url) => {
-      console.log(url + '-----> url');
-      return url;
-      // Insert url into an <img> tag to "download"
-    })
-    .catch((error) => {
-      // A full list of error codes is available at
-      // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case 'storage/object-not-found':
-          console.log(error);
-          // File doesn't exist
-          break;
-        case 'storage/unauthorized':
-          console.log(error);
+// const addProfileImage = async (ref) => {
+//   // Get the download URL
+//   getDownloadURL(ref)
+//     .then((url) => {
+//       console.log(url + '-----> url');
+//       return url;
+//       // Insert url into an <img> tag to "download"
+//     })
+//     .catch((error) => {
+//       // A full list of error codes is available at
+//       // https://firebase.google.com/docs/storage/web/handle-errors
+//       switch (error.code) {
+//         case 'storage/object-not-found':
+//           console.log(error);
+//           // File doesn't exist
+//           break;
+//         case 'storage/unauthorized':
+//           console.log(error);
 
-          // User doesn't have permission to access the object
-          break;
-        case 'storage/canceled':
-          console.log(error);
+//           // User doesn't have permission to access the object
+//           break;
+//         case 'storage/canceled':
+//           console.log(error);
 
-          // User canceled the upload
-          break;
+//           // User canceled the upload
+//           break;
 
-        // ...
+//         // ...
 
-        case 'storage/unknown':
-          console.log(error);
+//         case 'storage/unknown':
+//           console.log(error);
 
-          // Unknown error occurred, inspect the server response
-          break;
-      }
-    });
-};
+//           // Unknown error occurred, inspect the server response
+//           break;
+//       }
+//     });
+// };
 
 //upload profile picture
 export const uploadProfileImage = async (imageURI, userId) => {
@@ -160,6 +160,28 @@ const updateProfileImage = async (url, userId) => {
     const userRef = doc(db, 'users', userId);
     await updateDoc(userRef, {
       profilePic: url,
+    });
+  } catch (e) {
+    console.error('Error editing document: ', e);
+  }
+};
+
+export const fetchAllUsers = async () => {
+  let allUsers = {};
+  const querySnapshot = await getDocs(collection(db, 'users'));
+  querySnapshot.forEach((doc) => {
+    allUsers = { ...allUsers, [doc.id]: doc.data() };
+    // doc.data() is never undefined for query doc snapshots
+  });
+
+  return allUsers;
+};
+
+export const sendEventInvitation = async (uid, invitations) => {
+  try {
+    const userRef = doc(db, 'users', uid);
+    await updateDoc(userRef, {
+      eventsInvitations: invitations,
     });
   } catch (e) {
     console.error('Error editing document: ', e);

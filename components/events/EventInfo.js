@@ -8,19 +8,16 @@ import Description from './eventInfoComponents/Description';
 import Participants from './eventInfoComponents/Participants';
 
 const EventInfo = () => {
-  //const currentEvent = events[0];
-
   const currentEvent = useSelector((state) => state.events.currentEvent);
 
-  console.log(JSON.stringify(currentEvent.eventInfo) + 'CURRENT EVENTTT');
-  console.log(JSON.stringify(currentEvent.participants) + 'PARTICIPANTS');
+  // console.log(JSON.stringify(currentEvent.eventInfo) + 'CURRENT EVENTTT');
 
   return (
     <Background>
       <View style={styles.container}>
-        <DateAndTime currentEvent={currentEvent} />
-        <Description currentEvent={currentEvent} />
-        <Participants />
+        <DateAndTime currentEvent={currentEvent?.eventInfo} />
+        <Description currentEvent={currentEvent?.eventInfo} />
+        <Participants currentEvent={currentEvent?.eventInfo} />
       </View>
     </Background>
   );

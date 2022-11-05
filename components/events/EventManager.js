@@ -201,6 +201,7 @@ const EventManager = ({ onEdit, route }) => {
           ? eventForEdit.participants
           : {
               [currentUser.uid]: {
+                uid: currentUser.uid,
                 name: currentUser.name,
                 profilePic: currentUser.profilePic,
               },

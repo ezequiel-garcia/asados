@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View } from 'react-native';
-import { useContext, useEffect, useLayoutEffect } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../store/auth/auth-context';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,8 @@ import Title from '../components/ui/Title';
 import PreviousEvents from '../components/events/PreviousEvents';
 import UpcomingEvents from '../components/events/UpcomingEvents';
 import Background from '../components/ui/Background';
-import { setEvents } from '../store/redux/eventsSlice';
+import ModalInvitation from '../components/events/participants/ModalInvitation';
+// import { setEvents } from '../store/redux/eventsSlice';
 
 export default function HomeScreen() {
   const authCtx = useContext(AuthenticationContext);
@@ -21,28 +22,41 @@ export default function HomeScreen() {
 
   const currentUser = useSelector((state) => state.user.currentUser);
   const userEvents = useSelector((state) => state.user.currentUser?.events);
-
-  //console.log('EVENTOS DEL USUARIO DESDE HOME' + JSON.stringify(userEvents));
-  // console.log('CURRENT USER FROM HOME' + currentUser);
-  // console.log('CURRENT events FROM HOME' + JSON.stringify(userEvents));
+  const [invitation, setInvitation] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (!currentUser) {
       dispatch(fetchCurrentUser(authCtx.user.uid));
-      console.log('VACIOO');
     }
   }, [authCtx, dispatch]);
 
   useEffect(() => {
-    console.log(JSON.stringify(userEvents));
-
+    //console.log(JSON.stringify(userEvents));
     dispatch(fetchEvents(currentUser));
   }, [userEvents]);
+
+  useEffect(() => {
+    if (
+      currentUser?.eventsInvitations &&
+      Object.keys(currentUser.eventsInvitations).length > 0
+    ) {
+      setInvitation(Object.values(currentUser.eventsInvitations)[0]);
+      setModalVisible(true);
+    }
+  }, [currentUser, invitation]);
 
   return (
     <Background>
       <Header />
       <View style={{ flex: 1 }}>
+        <ModalInvitation
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          eventInvitation={invitation}
+          currentUser={currentUser}
+        />
+
         <View
           style={{
             flex: 1,

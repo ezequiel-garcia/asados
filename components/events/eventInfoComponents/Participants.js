@@ -42,13 +42,15 @@ const Participants = ({ currentEvent }) => {
 
         {toShowProfile.map((participant) => {
           return (
-            <View key={participant.uid}>
+            <View key={participant.uid} style={{ marginRight: 5 }}>
               <Image
                 style={styles.profilePicture}
                 source={{ uri: participant.profilePic }}
               />
               <Text style={styles.name}>
-                {participant.name.substring(0, participant.name.indexOf(' '))}
+                {participant.name.indexOf(' ') > 1
+                  ? participant.name.substring(0, participant.name.indexOf(' '))
+                  : participant.name}
               </Text>
             </View>
           );
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
   profiles: {
     marginTop: 20,
     flexDirection: 'row',
+    // width: '100%',
     alignItems: 'center',
     overflow: 'hidden',
   },
@@ -97,5 +100,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Montserrat_400Regular',
     fontSize: 12,
+    overflow: 'hidden',
   },
 });

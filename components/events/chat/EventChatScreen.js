@@ -27,7 +27,9 @@ import uuid from 'react-native-uuid';
 
 const EventChatScreen = () => {
   const dispatch = useDispatch();
-  const messages = useSelector((state) => state.events?.currentEvent?.messages);
+  const messages = useSelector(
+    (state) => state.events?.currentEvent?.messages || {}
+  );
   const eventInfo = useSelector(
     (state) => state.events?.currentEvent?.eventInfo
   );
@@ -44,8 +46,6 @@ const EventChatScreen = () => {
           (a, b) => b.timestamp?.toDate() - a.timestamp?.toDate()
         )
       );
-    } else {
-      setOrderedMessages({});
     }
   }, [messages]);
 

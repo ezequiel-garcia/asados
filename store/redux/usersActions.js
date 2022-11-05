@@ -184,6 +184,45 @@ export const sendEventInvitation = async (uid, invitations) => {
       eventsInvitations: invitations,
     });
   } catch (e) {
-    console.error('Error editing document: ', e);
+    console.error('Error sending invitation: ', e);
+  }
+};
+
+export const acceptEventInvitation = async (user, invitations, eid) => {
+  let event = {};
+  let invDeleted = { ...invitations };
+  const eventRef = doc(db, 'events', eid);
+  try {
+    const eventSnap = await getDoc(eventRef);
+    event = eventSnap.data();
+  } catch (e) {
+    console.log('Error fetching the event');
+  }
+
+  try {
+    const userRef = doc(db, 'users', user.uid);
+    // add the event id to the user db
+    await updateDoc(userRef, {
+      events: { ...user?.events, [event.eid]: true },
+    });
+
+    // add the user to the event
+    await updateDoc(eventRef, {
+      participants: {
+        ...event.participants,
+        [user.uid]: {
+          uid: user.uid,
+          name: user.name,
+          profilePic: user.profilePic,
+        },
+      },
+    });
+    // delete the invitation
+    delete invDeleted[`${eid}`];
+    await updateDoc(userRef, {
+      eventsInvitations: invDeleted,
+    });
+  } catch (e) {
+    console.error('Error accepting invitation: ', e);
   }
 };

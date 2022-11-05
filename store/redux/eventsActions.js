@@ -166,6 +166,36 @@ export const leaveEvent = (uid, eid) => {
   };
 };
 
+export const deleteParticipant = (uid, eid) => {
+  return async (dispatch) => {
+    console.log(uid, eid);
+    //delete event from user
+    try {
+      const userRef = doc(db, 'users', uid);
+      await updateDoc(userRef, {
+        //delete the specific eventId
+        [`events.${eid}`]: deleteField(),
+      });
+
+      console.log('succesfully deleted the event from user in db');
+    } catch (e) {
+      console.error('Error deleting event from user: ', e);
+    }
+
+    // delete user from event
+    try {
+      const eventRef = doc(db, 'events', eid);
+      await updateDoc(eventRef, {
+        [`participants.${uid}`]: deleteField(),
+      });
+      // dispatch(removeEvent(eid));
+      // dispatch(clearCurrentEvent());
+    } catch (e) {
+      console.error('Error deleting user from event db: ', e);
+    }
+  };
+};
+
 export const deleteEvent = (currentEvent) => {
   console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
   return async (dispatch) => {

@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    marginRight: 15,
+    // marginRight: 15,
   },
   profiles: {
     marginTop: 20,
@@ -101,5 +101,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_400Regular',
     fontSize: 12,
     overflow: 'hidden',
+    textAlign: 'center',
   },
 });

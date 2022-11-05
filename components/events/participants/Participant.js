@@ -1,13 +1,21 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
-import { sendEventInvitation } from '../../../store/redux/usersActions';
+import { deleteParticipant } from '../../../store/redux/eventsActions';
+
+import { Colors } from '../../../constants/styles';
 
 const Participant = ({ participant, onPressButton }) => {
   const route = useRoute();
   const currentEvent = useSelector((state) => state.events.currentEvent || {});
   const currentUser = useSelector((state) => state.user.currentUser);
   const addToEvent = route?.params?.addToEvent;
+
+  const dispatch = useDispatch();
+
+  const deleteUser = () => {
+    dispatch(deleteParticipant(participant.uid, currentEvent?.eventInfo?.eid));
+  };
 
   return (
     <View style={styles.background}>
@@ -25,12 +33,14 @@ const Participant = ({ participant, onPressButton }) => {
       {!addToEvent ? (
         currentUser.uid == currentEvent?.eventInfo?.admin ? (
           currentUser.uid !== participant.uid ? (
-            <Text>Delete</Text>
+            <TouchableOpacity onPress={deleteUser}>
+              <Text style={styles.buttonText}>Delete</Text>
+            </TouchableOpacity>
           ) : null
         ) : null
       ) : (
         <TouchableOpacity onPress={onPressButton}>
-          <Text>Add</Text>
+          <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -59,5 +69,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Montserrat_400Regular',
     color: 'white',
+  },
+  buttonText: {
+    color: Colors.secondary400,
+    fontFamily: 'Montserrat_600SemiBold',
   },
 });

@@ -17,6 +17,8 @@ import {
   collection,
 } from 'firebase/firestore';
 
+import { resizeAndCompress } from '../../util/imageManipulator';
+
 const db = getFirestore(app);
 const storage = getStorage();
 
@@ -136,7 +138,9 @@ export const updateUserInfo = (user) => {
 export const uploadProfileImage = async (imageURI, userId) => {
   const storageRef = ref(storage, `profileImages/${userId}`);
 
-  const response = await fetch(imageURI);
+  //Compress image before upload to db
+  const imageCompressed = await resizeAndCompress(imageURI);
+  const response = await fetch(imageCompressed.uri);
   const blob = await response.blob();
 
   uploadBytes(storageRef, blob)

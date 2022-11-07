@@ -29,6 +29,7 @@ import {
 } from 'firebase/firestore';
 
 import { dateFromDB } from '../../util/date';
+import { resizeAndCompress } from '../../util/imageManipulator';
 
 const db = getFirestore(app);
 const storage = getStorage();
@@ -409,7 +410,10 @@ export const fetchCurrentEvent = (eventId) => {
 export const uploadEventImage = async (imageURI, eventId) => {
   const storageRef = ref(storage, `eventImages/${eventId}`);
 
-  const response = await fetch(imageURI);
+  //Compress image before upload to db
+  const imageCompressed = await resizeAndCompress(imageURI);
+  const response = await fetch(imageCompressed.uri);
+
   const blob = await response.blob();
 
   uploadBytes(storageRef, blob)

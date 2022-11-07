@@ -10,7 +10,7 @@ export default Title;
 const styles = StyleSheet.create({
   title: {
     textTransform: 'capitalize',
-    fontSize: 25,
+    fontSize: 22,
     fontFamily: 'Montserrat_400Regular',
     color: 'white',
   },

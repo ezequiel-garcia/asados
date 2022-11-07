@@ -4,6 +4,7 @@ import Background from '../components/ui/Background';
 import ChatRow from '../components/chats/ChatRow';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import Title from '../components/ui/Title';
 
 const Chats = () => {
   const navigation = useNavigation();
@@ -27,13 +28,19 @@ const Chats = () => {
   return (
     <Background>
       <View style={styles.container}>
-        <FlatList
-          data={orderedEvents}
-          keyExtractor={(event) => event.eid}
-          renderItem={(eventData) => {
-            return <ChatRow key={eventData.item.eid} event={eventData.item} />;
-          }}
-        />
+        {orderedEvents.length > 0 ? (
+          <FlatList
+            data={orderedEvents}
+            keyExtractor={(event) => event.eid}
+            renderItem={(eventData) => {
+              return (
+                <ChatRow key={eventData.item.eid} event={eventData.item} />
+              );
+            }}
+          />
+        ) : (
+          <Text style={styles.noChats}>No chats </Text>
+        )}
       </View>
     </Background>
   );
@@ -44,5 +51,11 @@ export default Chats;
 const styles = StyleSheet.create({
   container: {
     padding: '5%',
+  },
+  noChats: {
+    color: '#ffffff8c',
+    fontSize: 20,
+    fontFamily: 'Montserrat_400Regular',
+    textAlign: 'center',
   },
 });

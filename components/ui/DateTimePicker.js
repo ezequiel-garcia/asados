@@ -43,7 +43,8 @@ const DateTimePicker = ({ mode, text, onConfirm, iconName }) => {
         mode={mode}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
-        minimumDate={new Date()}
+        minimumDate={mode == 'date' ? new Date() : null}
+        date={new Date()}
         display={mode == 'date' ? 'inline' : 'spinner'}
       />
     </View>

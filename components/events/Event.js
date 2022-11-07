@@ -39,7 +39,7 @@ const Event = ({ event }) => {
             <Text style={styles.description}>
               {description?.length < 55
                 ? description
-                : description.slice(0, 55) + ' ...'}
+                : description.slice(0, 40) + ' ...'}
             </Text>
           </View>
         </View>
@@ -94,5 +94,6 @@ const styles = StyleSheet.create({
   description: {
     color: 'white',
     fontFamily: 'Montserrat_300Light',
+    marginTop: 5,
   },
 });

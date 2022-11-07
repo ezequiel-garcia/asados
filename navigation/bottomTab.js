@@ -93,7 +93,7 @@ export default function MyTabs() {
         component={Chats}
         options={{
           tabBarLabelStyle: { fontSize: 15 },
-          tabBarBadge: 3,
+          // tabBarBadge: 3,
           tabBarBadgeStyle: { backgroundColor: '#f05555' },
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="wechat" color={color} size={size} />

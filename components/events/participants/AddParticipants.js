@@ -26,12 +26,12 @@ const AddParticipants = () => {
     getAllUsers();
   }, []);
 
-  function sendInvitation(user) {
+  async function sendInvitation(user) {
     const invitations = {
       ...user.eventsInvitations,
       [eid]: { eid: eid, name: name, inviteName: currentUser.name },
     };
-    sendEventInvitation(user.uid, invitations);
+    await sendEventInvitation(user.uid, invitations);
     getAllUsers();
   }
 

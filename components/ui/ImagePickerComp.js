@@ -16,8 +16,9 @@ const ImagePickerComp = ({ onSetImage }) => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
     console.log(pickerResult);
 
-    // onSetImage({ localUri: pickerResult.uri });
-    onSetImage(pickerResult.uri);
+    if (!pickerResult.cancelled) {
+      onSetImage(pickerResult.uri);
+    }
   };
 
   return (

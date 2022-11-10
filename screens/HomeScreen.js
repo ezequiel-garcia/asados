@@ -26,18 +26,21 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser && authCtx.isAuthenticated) {
       dispatch(fetchCurrentUser(authCtx.user.uid));
     }
   }, [authCtx, dispatch]);
 
   useEffect(() => {
     //console.log(JSON.stringify(userEvents));
-    dispatch(fetchEvents(currentUser));
+    if (currentUser && authCtx.isAuthenticated) {
+      dispatch(fetchEvents(currentUser));
+    }
   }, [userEvents]);
 
   useEffect(() => {
     if (
+      authCtx.isAuthenticated &&
       currentUser?.eventsInvitations &&
       Object.keys(currentUser.eventsInvitations).length > 0
     ) {
@@ -75,7 +78,7 @@ export default function HomeScreen() {
               alignItems: 'center',
             }}
           >
-            <Title>Upcoming events</Title>
+            <Title>Upcoming events!!</Title>
 
             <UpcomingEvents />
           </View>

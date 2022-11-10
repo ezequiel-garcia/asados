@@ -9,12 +9,17 @@ import BillsStack from './billsStack';
 import EventChatScreen from '../components/events/chat/EventChatScreen';
 import InfoAndParticipants from './infoAndParticipants';
 
-//PROBANDO
 import EventFooter from '../components/footer/EventFooter';
+import { useSelector } from 'react-redux';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function TopTabs() {
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const eventInfo = useSelector(
+    (state) => state.events?.currentEvent?.eventInfo
+  );
+
   return (
     <>
       <EventHeader />
@@ -26,12 +31,15 @@ export default function TopTabs() {
         }}
       >
         <Tab.Screen name="General" component={InfoAndParticipants} />
-        <Tab.Screen name="Tasks" component={TasksScreen} />
-        {/* <Tab.Screen name="Bills" component={BillsScreen} /> */}
-        <Tab.Screen name="Bills" component={BillsStack} />
+        {/* Check if in the event tasks and bills are shared */}
+        {currentUser.uid == eventInfo?.admin || eventInfo?.shareTasks ? (
+          <Tab.Screen name="Tasks" component={TasksScreen} />
+        ) : null}
+        {currentUser.uid == eventInfo?.admin || eventInfo?.Bills == true ? (
+          <Tab.Screen name="Bills" component={BillsStack} />
+        ) : null}
         <Tab.Screen name="Chat" component={EventChatScreen} />
       </Tab.Navigator>
-
       <EventFooter />
     </>
   );

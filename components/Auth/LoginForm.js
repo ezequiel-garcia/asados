@@ -83,43 +83,43 @@ function AuthForm() {
         <KeyboardAvoidingView behavior="position">
           <Animation />
           <Text style={styles.title}>Login</Text>
+          <View style={{ alignContent: 'center', alignItems: 'center' }}>
+            <View style={{ width: '90%' }}>
+              <Input
+                label="Email Address"
+                onUpdateValue={(e) => inputChangeHandler('email', e)}
+                value={inputs.email.value}
+                keyboardType="email-address"
+                isInvalid={!inputs.email.isValid}
+              />
 
-          <View style={{ width: 300 }}>
-            <Input
-              label="Email Address"
-              onUpdateValue={(e) => inputChangeHandler('email', e)}
-              value={inputs.email.value}
-              keyboardType="email-address"
-              isInvalid={!inputs.email.isValid}
-            />
+              <Input
+                label="Password"
+                onUpdateValue={(p) => inputChangeHandler('password', p)}
+                secure
+                value={inputs.password.value}
+                isInvalid={!inputs.password.isValid}
+              />
+              {submitError && (
+                <Text style={styles.errorText}>
+                  Login Authentication Failed. Check your data and try again.
+                </Text>
+              )}
 
-            <Input
-              label="Password"
-              onUpdateValue={(p) => inputChangeHandler('password', p)}
-              secure
-              value={inputs.password.value}
-              isInvalid={!inputs.password.isValid}
-            />
-            {submitError && (
-              <Text style={styles.errorText}>
-                Login Authentication Failed. Check your data and try again.
-              </Text>
-            )}
+              <TouchableOpacity
+                onPress={() => {
+                  authCtx.resetError();
+                  Navigation.navigate('ForgotPassword');
+                }}
+              >
+                <Text style={styles.text}>Forgot your password?</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => {
-                authCtx.resetError();
-                Navigation.navigate('ForgotPassword');
-              }}
-            >
-              <Text style={styles.text}>Forgot your password?</Text>
-            </TouchableOpacity>
-
-            <View style={styles.buttons}>
-              <Button onPress={submitHandler}>LOGIN</Button>
+              <View style={styles.buttons}>
+                <Button onPress={submitHandler}>LOGIN</Button>
+              </View>
             </View>
           </View>
-
           {/* // Social media buttons */}
           <SocialMediaLogin />
         </KeyboardAvoidingView>

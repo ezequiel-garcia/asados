@@ -9,9 +9,9 @@ const EventFooter = () => {
         colors={['#354d5f6c', '#0d1f2d06']}
         style={styles.tabsContainer}
       >
-        <TabElement icon="home" label="Home" size={27} />
-        <TabElement icon="plus" label="" size={40} />
-        <TabElement icon="wechat" label="Chats" size={27} />
+        <TabElement icon="home" label="Home" size={27} navTo={'Home'} />
+        <TabElement icon="plus" label="" size={40} navTo={'Create Event'} />
+        <TabElement icon="wechat" label="Chats" size={27} navTo={'Chats'} />
       </LinearGradient>
     </View>
   );

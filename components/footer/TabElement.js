@@ -4,11 +4,11 @@ import { Colors } from '../../constants/styles';
 
 import { useNavigation } from '@react-navigation/native';
 
-const TabElement = ({ icon, label, size }) => {
+const TabElement = ({ icon, label, size, navTo }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    const navTo = label;
+    // const navTo = label;
     navigation.navigate('TabBarHome', {
       screen: navTo,
       params: { onEdit: false },

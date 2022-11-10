@@ -45,11 +45,6 @@ export const fetchEvents = (currentUser) => {
       }
 
       Object.keys(currentUser?.events).map(async (eventId) => {
-        // const docRef = doc(db, 'events', eventId);
-        // const docSnap = await getDoc(docRef);
-
-        // if (docSnap.exists()) {
-        //   const currentEvent = docSnap.data();
         const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
           if (doc.data()) {
             const currentEvent = doc.data();
@@ -248,35 +243,43 @@ export const setLastMessage = (eventId, message) => {
 
 export const fetchEventInfo = (eventId) => {
   return async (dispatch) => {
-    const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
-      console.log('Current data: ', doc.data());
-      // dispatch to the tasks
+    try {
+      const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
+        console.log('Current data: ', doc.data());
+        // dispatch to the tasks
 
-      if (doc.data()) {
-        const currentEventInfo = doc.data();
-        dispatch(
-          setCurrentEventInfo({
-            ...currentEventInfo,
-            date: dateFromDB(currentEventInfo.date),
-          })
-        );
-      } else {
-        setCurrentEventInfo({});
-      }
-    });
+        if (doc.data()) {
+          const currentEventInfo = doc.data();
+          dispatch(
+            setCurrentEventInfo({
+              ...currentEventInfo,
+              date: dateFromDB(currentEventInfo.date),
+            })
+          );
+        } else {
+          setCurrentEventInfo({});
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
 export const fetchTasks = (eventId) => {
   return async (dispatch) => {
-    const unsub = onSnapshot(doc(db, 'tasks', eventId), (doc) => {
-      //console.log('Current data: ', doc.data());
-      // dispatch to the tasks
-      if (doc.data()) {
-        const { tasks } = doc.data();
-        dispatch(setCurrentEventTasks(tasks));
-      } else dispatch(setCurrentEventTasks([]));
-    });
+    try {
+      const unsub = onSnapshot(doc(db, 'tasks', eventId), (doc) => {
+        //console.log('Current data: ', doc.data());
+        // dispatch to the tasks
+        if (doc.data()) {
+          const { tasks } = doc.data();
+          dispatch(setCurrentEventTasks(tasks));
+        } else dispatch(setCurrentEventTasks([]));
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
@@ -292,12 +295,16 @@ export const deleteTasksFromDB = (eid) => {
 
 export const fetchMessages = (eventId) => {
   return async (dispatch) => {
-    const unsub = onSnapshot(doc(db, 'messages', eventId), (doc) => {
-      // console.log('Current data: ', doc.data());
-      if (doc.data()) {
-        dispatch(setCurrentEventMessages(doc.data()));
-      } else dispatch(setCurrentEventMessages({}));
-    });
+    try {
+      const unsub = onSnapshot(doc(db, 'messages', eventId), (doc) => {
+        // console.log('Current data: ', doc.data());
+        if (doc.data()) {
+          dispatch(setCurrentEventMessages(doc.data()));
+        } else dispatch(setCurrentEventMessages({}));
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
@@ -311,54 +318,6 @@ export const fetchBills = (eventId) => {
     });
   };
 };
-
-// export const fetchParticipants = (eventId) => {
-//   return async (dispatch) => {
-//     const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
-//       //console.log('Current data: ', doc.data());
-//       // Get every participant data and put into participants
-//       if (doc.data()) {
-//         const { participants } = doc.data();
-//         dispatch(setCurrentEventParticipants(participants));
-//       } else dispatch(setCurrentEventParticipants({}));
-//     });
-//   };
-// };
-
-// export const fetchParticipants = (eventId) => {
-//   return async (dispatch) => {
-//     const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
-//       //console.log('Current data: ', doc.data());
-//       // Get every participant data and put into participants
-//       if (doc.data()) {
-//         const { participants } = doc.data();
-//         Object.keys(participants).map(async (userId) => {
-//           dispatch(getUsersData(userId));
-//         });
-//       } else dispatch(setCurrentEventParticipants({}));
-//     });
-//   };
-// };
-
-// const getUsersData = (userId) => {
-//   return async (dispatch) => {
-//     try {
-//       const unsub = onSnapshot(doc(db, 'users', userId), (doc) => {
-//         const user = doc.data();
-//         const userInfo = {
-//           name: user.name,
-//           uid: user.uid,
-//           profilePic: user.profilePic,
-//         };
-//         console.log(JSON.stringify(userInfo));
-//         dispatch(setCurrentEventParticipants(userInfo));
-//         // return userInfo;
-//       });
-//     } catch (e) {
-//       console.log(e);
-//     }
-//   };
-// };
 
 export const setTasks = (eventId, tasks) => {
   return async () => {

@@ -5,26 +5,8 @@ import Background from '../../ui/Background';
 import Button from '../../ui/Button';
 import ModalTask from './ModalTask';
 
-const tasksStam = [
-  {
-    id: 1,
-    title: 'Comprar carne',
-    inCharge: 'Ezequiel',
-  },
-  {
-    id: 2,
-    title: 'Alcohol',
-    inCharge: 'Pepe',
-  },
-  {
-    id: 3,
-    title: 'Comprar verduras, papa, tomatte, cebolla',
-    inCharge: 'Pepe',
-  },
-];
-
 const TasksScreen = () => {
-  const [tasks, setTasks] = useState(tasksStam);
+  // const [tasks, setTasks] = useState(tasksStam);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
 
@@ -36,15 +18,15 @@ const TasksScreen = () => {
           setModalVisible={setModalVisible}
           currentTask={currentTask}
           setCurrentTask={setCurrentTask}
-          setTasks={setTasks}
+          // setTasks={setTasks}
         />
 
         {/* receive all this stuff so from the task i can open the modal with edit and delete */}
         <TasksContainer
-          tasks={tasks}
+          // tasks={tasks}
           setCurrentTask={setCurrentTask}
           setModalVisible={setModalVisible}
-          setTasks={setTasks}
+          // setTasks={setTasks}
         />
 
         <Button

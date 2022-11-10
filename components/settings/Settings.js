@@ -125,12 +125,6 @@ const Settings = () => {
                   >
                     SAVE
                   </Button>
-                  <Button
-                    personalStyle={styles.buttonCancel}
-                    onPress={handleDelete}
-                  >
-                    DELETE ACCOUNT
-                  </Button>
                 </View>
                 <Logout />
               </View>

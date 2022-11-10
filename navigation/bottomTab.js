@@ -25,11 +25,7 @@ export default function MyTabs() {
           fontFamily: 'Montserrat_500Medium',
           borderBottomWidth: 0,
         },
-        tabBarStyle: {
-          //   backgroundColor: Colors.primary600,
-          //   borderRadius: 50,
-          //   backgroundColor: 'transparent',
-        },
+
         headerStyle: {
           backgroundColor: Colors.primary800,
         },
@@ -48,21 +44,6 @@ export default function MyTabs() {
           />
         ),
       }}
-      //   tabBar={(props) => {
-      //     return (
-      //       <LinearGradient
-      //         colors={['#0d1f2d1f', '#0d1f2d00']}
-      //         start={{ x: 0, y: 0 }}
-      //         end={[0, 1]}
-      //         // style={{ padding: 30 }}
-      //       >
-      //         <BottomTabBar
-      //           {...props}
-      //           style={{ backgroundColor: 'transparent' }}
-      //         />
-      //       </LinearGradient>
-      //     );
-      //   }}
     >
       <Tab.Screen
         name="Home"

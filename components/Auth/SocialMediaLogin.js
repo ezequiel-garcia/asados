@@ -40,7 +40,8 @@ const SocialMediaLogin = () => {
   useEffect(() => {
     if (response?.type == 'success') {
       // user access token
-      setAccessToken(response.authentication.accessToken);
+      console.log(JSON.stringify(response));
+      setAccessToken(response?.authentication?.accessToken);
       accessToken && fetchUserInfo();
     }
   }, [response, accessToken]);
@@ -56,7 +57,7 @@ const SocialMediaLogin = () => {
         }
       );
       const userInfo = await userResponse.json();
-      const { id_token } = response.params;
+      const { id_token } = response?.params;
       const auth = getAuth();
       const credential = GoogleAuthProvider.credential(id_token);
       const { user } = await signInWithCredential(auth, credential);
@@ -67,51 +68,37 @@ const SocialMediaLogin = () => {
       console.log(e);
     }
   }
-  //check working
 
   return (
     <View style={styles.containerSocialMedia}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={{ flex: 1, height: 0.5, backgroundColor: '#ffffffa7' }} />
         <View>
-          <Text style={styles.text}>Or login with</Text>
+          <Text style={styles.text}>Or</Text>
         </View>
         <View style={{ flex: 1, height: 0.5, backgroundColor: '#ffffffa7' }} />
       </View>
       <View style={styles.socialMediaButtons}>
-        <View style={styles.socialMediaButton}>
+        <View style={{ width: '100%' }}>
           <TouchableOpacity
-            style={{
-              backgroundColor: '#6262fb',
-
-              borderRadius: 50,
-              alignItems: 'center',
-            }}
-          >
-            <Image
-              source={require('../../assets/facebook-login.png')}
-              style={{ width: 70, height: 70 }}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#ffffff',
-
-              borderRadius: 50,
-            }}
+            style={styles.googleButton}
             onPress={() => promptAsync()}
           >
-            <Image
-              source={require('../../assets/google-login.png')}
-              style={{ width: 70, height: 70 }}
-              resizeMode="contain"
-            />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                source={require('../../assets/google-login.png')}
+                style={{ width: 50, height: 50 }}
+                resizeMode="contain"
+              />
+              <Text style={styles.buttonText}>Continue with google</Text>
+            </View>
           </TouchableOpacity>
         </View>
-        {/* <GoogleLogin /> */}
       </View>
     </View>
   );
@@ -121,17 +108,20 @@ export default SocialMediaLogin;
 
 const styles = StyleSheet.create({
   containerSocialMedia: {
-    width: 300,
+    width: '100%',
     marginTop: 45,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  socialMediaButton: {
+  googleButton: {
+    backgroundColor: '#ffffff',
+    width: '100%',
+    borderRadius: 10,
     marginRight: 30,
   },
   socialMediaButtons: {
     flexDirection: 'row',
-    width: 200,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -141,5 +131,10 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 10,
     marginRight: 10,
+  },
+  buttonText: {
+    color: '#5f5f5f',
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 18,
   },
 });

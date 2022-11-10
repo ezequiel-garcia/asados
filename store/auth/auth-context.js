@@ -44,6 +44,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       setIsLoading(false);
     } else {
       setIsLoading(false);
+      setUser(null);
     }
   });
 
@@ -85,9 +86,9 @@ export const AuthenticationContextProvider = ({ children }) => {
   const onLogout = async () => {
     console.log('byee');
     await signOut(getAuth());
-    dispatch(clearEventState({}));
+    // setUser(null);
     dispatch(clearUser());
-    setUser(null);
+    dispatch(clearEventState({}));
   };
 
   const resetError = () => {

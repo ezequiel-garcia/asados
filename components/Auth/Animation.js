@@ -27,8 +27,8 @@ export default Animation;
 
 const styles = StyleSheet.create({
   animContainer: {
-    width: '100%',
-    height: 200,
+    width: '80%',
+    height: 180,
     marginBottom: 20,
   },
 });

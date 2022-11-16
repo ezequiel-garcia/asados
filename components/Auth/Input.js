@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   inputInvalid: {
-    backgroundColor: Colors.error50,
-    borderWidth: 1,
-    borderColor: Colors.error500,
+    // backgroundColor: Colors.error50,
+    borderWidth: 3,
+    borderColor: Colors.error50,
   },
 });

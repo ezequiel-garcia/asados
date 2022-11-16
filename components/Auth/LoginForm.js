@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   SafeAreaView,
+  ScrollView,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -80,11 +82,17 @@ function AuthForm() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <KeyboardAvoidingView behavior="position">
+        {/* <ScrollView> */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+        >
           <Animation />
           <Text style={styles.title}>Login</Text>
           <View style={{ alignContent: 'center', alignItems: 'center' }}>
             <View style={{ width: '90%' }}>
+              {!inputs.email.isValid && (
+                <Text style={styles.errorText}>Invalid email</Text>
+              )}
               <Input
                 label="Email Address"
                 onUpdateValue={(e) => inputChangeHandler('email', e)}
@@ -92,7 +100,11 @@ function AuthForm() {
                 keyboardType="email-address"
                 isInvalid={!inputs.email.isValid}
               />
-
+              {!inputs.password.isValid && (
+                <Text style={styles.errorText}>
+                  Invalid password. Minimum 7 characters
+                </Text>
+              )}
               <Input
                 label="Password"
                 onUpdateValue={(p) => inputChangeHandler('password', p)}
@@ -123,7 +135,7 @@ function AuthForm() {
           {/* // Social media buttons */}
           <SocialMediaLogin />
         </KeyboardAvoidingView>
-
+        {/* </ScrollView> */}
         <View style={styles.signupContainer}>
           <TouchableOpacity
             onPress={() => {
@@ -163,10 +175,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Montserrat_300Light',
   },
-  errorText: {
-    color: Colors.error200,
-    marginBottom: 10,
-  },
+  // errorText: {
+  //   color: Colors.error200,
+  //   marginBottom: 10,
+  // },
   buttons: {
     marginTop: 25,
   },
@@ -178,5 +190,9 @@ const styles = StyleSheet.create({
   signupContainer: {
     marginTop: 40,
     alignSelf: 'center',
+  },
+  errorText: {
+    color: Colors.error50,
+    fontFamily: 'Montserrat_400Regular',
   },
 });

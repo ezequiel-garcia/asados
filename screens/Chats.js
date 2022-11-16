@@ -23,8 +23,6 @@ const Chats = () => {
     return unsubscribe;
   }, [navigation, events]);
 
-  useLayoutEffect(() => {}, [events]);
-
   return (
     <Background>
       <View style={styles.container}>

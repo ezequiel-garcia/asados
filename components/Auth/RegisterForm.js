@@ -7,6 +7,9 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
@@ -115,19 +118,27 @@ function RegisterForm() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <KeyboardAvoidingView behavior="position">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+        >
           <Animation />
 
           <Text style={styles.title}> Register</Text>
 
           <View style={{ width: 300 }}>
+            {!inputs.name.isValid && (
+              <Text style={styles.errorText}>Invalid name.</Text>
+            )}
             <Input
               label="User Name"
               onUpdateValue={(e) => inputChangeHandler('name', e)}
               value={inputs.name.value}
               keyboardType="email-address"
-              isInvalid={!inputs.email.isValid}
+              isInvalid={!inputs.name.isValid}
             />
+            {!inputs.email.isValid && (
+              <Text style={styles.errorText}>Invalid Email.</Text>
+            )}
             <Input
               label="Email Address"
               onUpdateValue={(e) => inputChangeHandler('email', e)}
@@ -136,6 +147,11 @@ function RegisterForm() {
               isInvalid={!inputs.email.isValid}
             />
 
+            {!inputs.confirmEmail.isValid && (
+              <Text style={styles.errorText}>
+                The emails have to be the same
+              </Text>
+            )}
             <Input
               label="Confirm Email Address"
               onUpdateValue={(e) => inputChangeHandler('confirmEmail', e)}
@@ -143,7 +159,11 @@ function RegisterForm() {
               keyboardType="email-address"
               isInvalid={!inputs.confirmEmail?.isValid}
             />
-
+            {!inputs.password.isValid && (
+              <Text style={styles.errorText}>
+                Invalid password. Minimum 7 characters
+              </Text>
+            )}
             <Input
               label="Password"
               onUpdateValue={(p) => inputChangeHandler('password', p)}
@@ -151,7 +171,11 @@ function RegisterForm() {
               value={inputs.password.value}
               isInvalid={!inputs.password.isValid}
             />
-
+            {!inputs.confirmPassword.isValid && (
+              <Text style={styles.errorText}>
+                The passwords have to be the same
+              </Text>
+            )}
             <Input
               label="Confirm Password"
               onUpdateValue={(p) => inputChangeHandler('confirmPassword', p)}
@@ -169,23 +193,23 @@ function RegisterForm() {
             <View style={styles.buttons}>
               <Button onPress={submitHandler}>SIGNUP</Button>
             </View>
-          </View>
-          {/*  <SocialMediaLogin /> */}
-        </KeyboardAvoidingView>
 
-        <View style={styles.signupContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              authCtx.resetError();
-              Navigation.navigate('Login');
-            }}
-          >
-            <Text style={styles.text}>
-              Do you have an account?
-              <Text style={styles.signup}> LOGIN</Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
+            <View style={styles.signupContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  authCtx.resetError();
+                  Navigation.navigate('Login');
+                }}
+              >
+                <Text style={styles.text}>
+                  Do you have an account?
+                  <Text style={styles.signup}> LOGIN</Text>
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {/* </ScrollView> */}
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -196,10 +220,11 @@ export default RegisterForm;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '80%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.primary800,
-    padding: 20,
+    padding: 40,
   },
   title: {
     color: '#ffffff',
@@ -214,8 +239,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_200ExtraLight',
   },
   errorText: {
-    color: Colors.error200,
-    marginBottom: 10,
+    color: Colors.error50,
+    fontFamily: 'Montserrat_400Regular',
   },
   buttons: {
     marginTop: 25,
@@ -227,7 +252,6 @@ const styles = StyleSheet.create({
   },
   signupContainer: {
     marginTop: 30,
-
     alignSelf: 'center',
   },
 });

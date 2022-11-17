@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 10,
     marginBottom: 10,
+    overflow: 'hidden',
   },
   date: {
     alignItems: 'center',

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { SafeAreaView } from 'react-native';
 
 // import AuthContent from '../components/Auth/AuthContent';
 // import LoadingOverlay from '../components/ui/LoadingOverlay';

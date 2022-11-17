@@ -2,7 +2,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 const Title = ({ children }) => {
-  return <Text style={styles.title}>{children}</Text>;
+  return (
+    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.title}>
+      {children}
+    </Text>
+  );
 };
 
 export default Title;

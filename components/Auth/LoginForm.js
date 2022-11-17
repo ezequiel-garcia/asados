@@ -83,72 +83,70 @@ function AuthForm() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         {/* <ScrollView> */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-        >
-          <Animation />
-          <Text style={styles.title}>Login</Text>
-          <View style={{ alignContent: 'center', alignItems: 'center' }}>
-            <View style={{ width: '90%' }}>
-              {!inputs.email.isValid && (
-                <Text style={styles.errorText}>Invalid email</Text>
-              )}
-              <Input
-                label="Email Address"
-                onUpdateValue={(e) => inputChangeHandler('email', e)}
-                value={inputs.email.value}
-                keyboardType="email-address"
-                isInvalid={!inputs.email.isValid}
-              />
-              {!inputs.password.isValid && (
-                <Text style={styles.errorText}>
-                  Invalid password. Minimum 7 characters
-                </Text>
-              )}
-              <Input
-                label="Password"
-                onUpdateValue={(p) => inputChangeHandler('password', p)}
-                secure
-                value={inputs.password.value}
-                isInvalid={!inputs.password.isValid}
-              />
-              {submitError && (
-                <Text style={styles.errorText}>
-                  Login Authentication Failed. Check your data and try again.
-                </Text>
-              )}
+        <SafeAreaView style={{ flex: 1 }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+          >
+            <Animation />
+            <Text style={styles.title}>Login</Text>
+            <View style={{ alignContent: 'center', alignItems: 'center' }}>
+              <View style={{ width: '90%' }}>
+                {!inputs.email.isValid && <Text>Invalid email</Text>}
+                <Input
+                  label="Email Address"
+                  onUpdateValue={(e) => inputChangeHandler('email', e)}
+                  value={inputs.email.value}
+                  keyboardType="email-address"
+                  isInvalid={!inputs.email.isValid}
+                />
+                {!inputs.password.isValid && (
+                  <Text>Invalid password. Minimum 7 characters</Text>
+                )}
+                <Input
+                  label="Password"
+                  onUpdateValue={(p) => inputChangeHandler('password', p)}
+                  secure
+                  value={inputs.password.value}
+                  isInvalid={!inputs.password.isValid}
+                />
+                {submitError && (
+                  <Text style={styles.errorText}>
+                    Login Authentication Failed. Check your data and try again.
+                  </Text>
+                )}
 
-              <TouchableOpacity
-                onPress={() => {
-                  authCtx.resetError();
-                  Navigation.navigate('ForgotPassword');
-                }}
-              >
-                <Text style={styles.text}>Forgot your password?</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    authCtx.resetError();
+                    Navigation.navigate('ForgotPassword');
+                  }}
+                >
+                  <Text style={styles.text}>Forgot your password?</Text>
+                </TouchableOpacity>
 
-              <View style={styles.buttons}>
-                <Button onPress={submitHandler}>LOGIN</Button>
+                <View style={styles.buttons}>
+                  <Button onPress={submitHandler}>LOGIN</Button>
+                </View>
               </View>
             </View>
+            {/* // Social media buttons */}
+            <SocialMediaLogin />
+          </KeyboardAvoidingView>
+          {/* </ScrollView> */}
+          <View style={styles.signupContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                authCtx.resetError();
+                Navigation.navigate('SignIn');
+              }}
+            >
+              <Text style={styles.text}>
+                Don't have an account?
+                <Text style={styles.signup}> SIGNUP</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
-          {/* // Social media buttons */}
-          <SocialMediaLogin />
-        </KeyboardAvoidingView>
-        {/* </ScrollView> */}
-        <View style={styles.signupContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              authCtx.resetError();
-              Navigation.navigate('SignIn');
-            }}
-          >
-            <Text style={styles.text}>
-              Don't have an account?
-              <Text style={styles.signup}> SIGNUP</Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </SafeAreaView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: Colors.primary800,
     padding: 20,
   },
@@ -175,10 +173,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Montserrat_300Light',
   },
-  // errorText: {
-  //   color: Colors.error200,
-  //   marginBottom: 10,
-  // },
+  errorText: {
+    color: Colors.error200,
+    marginBottom: 10,
+  },
   buttons: {
     marginTop: 25,
   },
@@ -188,11 +186,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_500Medium',
   },
   signupContainer: {
-    marginTop: 40,
+    marginTop: 10,
+    width: '90%',
     alignSelf: 'center',
   },
   errorText: {
     color: Colors.error50,
-    fontFamily: 'Montserrat_400Regular',
+    fontFamily: 'Montserrat_300Light',
   },
 });

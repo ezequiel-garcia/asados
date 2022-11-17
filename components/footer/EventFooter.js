@@ -20,7 +20,7 @@ const EventFooter = () => {
 export default EventFooter;
 
 const styles = StyleSheet.create({
-  container: { height: 90 },
+  container: { height: '8%' },
   tabsContainer: {
     height: 100,
     paddingHorizontal: 50,

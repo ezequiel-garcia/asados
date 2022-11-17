@@ -336,8 +336,8 @@ export default EventManager;
 
 const styles = StyleSheet.create({
   scroll: {
-    flex: 1,
-    justifyContent: 'center',
+    // flex: 1,
+    // justifyContent: 'center',
     // alignItems: 'center',
     // alignContent: 'center',
   },

@@ -35,7 +35,8 @@ export default function TopTabs() {
         {currentUser.uid == eventInfo?.admin || eventInfo?.shareTasks ? (
           <Tab.Screen name="Tasks" component={TasksScreen} />
         ) : null}
-        {currentUser.uid == eventInfo?.admin || eventInfo?.Bills == true ? (
+        {currentUser.uid == eventInfo?.admin ||
+        eventInfo?.shareBills == true ? (
           <Tab.Screen name="Bills" component={BillsStack} />
         ) : null}
         <Tab.Screen name="Chat" component={EventChatScreen} />

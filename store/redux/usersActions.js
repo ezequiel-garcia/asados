@@ -89,11 +89,30 @@ export const updateUserInfo = (user) => {
       await updateDoc(userRef, {
         ...user,
       });
+      updateUserInEvents(user);
       console.log('succesfully user updated  ');
     } catch (e) {
       console.error('Error updating user', e);
     }
   };
+};
+
+//Update user events with new info after update profil
+const updateUserInEvents = async (user) => {
+  console.log(JSON.stringify(user) + 'user received');
+  // Go throw all the events and update the user data
+  Object.keys(user?.events).map(async (eventId) => {
+    const eventRef = doc(db, 'events', eventId);
+    await updateDoc(eventRef, {
+      //update the user profile
+      [`participants.${user.uid}`]: {
+        name: user.name,
+        profilePic: user.profilePic,
+        uid: user.uid,
+      },
+    });
+    console.log('succesfully updated the user data in the events');
+  });
 };
 
 //upload profile picture

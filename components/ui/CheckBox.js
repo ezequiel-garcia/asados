@@ -21,7 +21,8 @@ const CheckBox = ({ onPress, checkBoxState, text, decoration }) => {
         borderRadius: 5,
       }}
       style={{
-        overflow: 'hidden',
+        // overflow: 'hidden',
+        width: '85%',
       }}
     />
   );

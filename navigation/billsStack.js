@@ -1,10 +1,9 @@
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Settings from '../components/settings/Settings';
+
 
 import BillsScreen from '../components/events/bills/BillsScreen';
 import BalancesContainer from '../components/events/bills/BalancesContainer';
-import { Colors } from '../constants/styles';
+
 
 const Stack = createNativeStackNavigator();
 

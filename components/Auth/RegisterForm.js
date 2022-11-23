@@ -20,6 +20,7 @@ import Input from './Input';
 import Animation from './Animation';
 import SocialMediaLogin from './SocialMediaLogin';
 
+
 import { AuthenticationContext } from '../../store/auth/auth-context';
 
 function RegisterForm() {

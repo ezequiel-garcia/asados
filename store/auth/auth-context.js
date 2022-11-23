@@ -12,8 +12,6 @@ import { fetchCurrentUser, addUserToDB } from '../redux/usersActions';
 import { clearEventState } from '../redux/eventsSlice';
 import { clearUser, setCurrentUser } from '../redux/currentUserSlice';
 import { useDispatch } from 'react-redux';
-//USER DATA
-import users from '../../users';
 
 import { loginRequest, registerRequest } from './auth-service';
 
@@ -22,9 +20,9 @@ export const AuthenticationContext = createContext({
   isLoading: false,
   user: null,
   error: null,
-  //VER SI LO DEJO ACA O NO
+
   userData: null,
-  // ----------------
+
   onLogin: (email, password) => {},
   onRegister: (name, emailIsValid, password) => {},
   onLogout: () => {},

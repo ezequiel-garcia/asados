@@ -5,17 +5,21 @@ import { getTime } from '../../../util/date';
 const EventChatRow = ({ message }) => {
   return (
     <View style={styles.background}>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', flex: 1 }}>
         <Image
           style={styles.profilePicture}
           source={{ uri: message.photoURL }}
         />
-        <View>
+        <View style={{ width: '85%' }}>
           <Text style={styles.displayName}>{message.displayName}</Text>
-          <Text style={styles.message}>{message.message}</Text>
+          <View>
+            <Text style={styles.message}>{message.message}</Text>
+          </View>
         </View>
       </View>
-      <Text style={styles.time}>{getTime(message?.timestamp?.toDate())}</Text>
+      <View>
+        <Text style={styles.time}>{getTime(message?.timestamp?.toDate())}</Text>
+      </View>
     </View>
   );
 };

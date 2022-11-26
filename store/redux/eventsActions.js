@@ -9,6 +9,7 @@ import {
   setCurrentEventBills,
   setCurrentEventTasks,
   setCurrentEventParticipants,
+  getEvents,
 } from './eventsSlice';
 import { addEventToUser, removeEventFromUser } from './currentUserSlice';
 import app from '../../config/firebase';
@@ -44,32 +45,75 @@ export const fetchEvents = (currentUser) => {
         return;
       }
 
-      Object.keys(currentUser?.events).map(async (eventId) => {
+      // Object.keys(currentUser?.events).map((eventId) => {
+      //   console.log('SE ESTA LLAMANDO A ESTEEE');
+      //   const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
+      //     if (doc.data()) {
+      //       const currentEvent = doc.data();
+      //       dispatch(
+      //         addEvent({
+      //           ...currentEvent,
+      //           date: new Date(
+      //             currentEvent.date.seconds * 1000 +
+      //               currentEvent.date.nanoseconds / 1000000
+      //           ),
+      //         })
+      //       );
+      //     } else {
+      //       // doc.data() will be undefined in this case
+      //       console.log('No such document!');
+      //     }
+      //   });
+      //   return unsub;
+      // });
+      let eventoos = {};
+      console.log(JSON.stringify(currentUser?.events) + 'EVEntis');
+      Object.keys(currentUser?.events).map((eventId) => {
+        console.log('Entra a cada evento');
+        console.log('SE ESTA LLAMANDO A ESTEEE');
         const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
           if (doc.data()) {
             const currentEvent = doc.data();
-            dispatch(
-              addEvent({
+            eventoos = {
+              ...eventoos,
+              [currentEvent.eid]: {
                 ...currentEvent,
                 date: new Date(
                   currentEvent.date.seconds * 1000 +
                     currentEvent.date.nanoseconds / 1000000
                 ),
-              })
-            );
+              },
+            };
+
+            dispatch(setEvents(eventoos));
+
+            // dispatch(
+            //   addEvent({
+            //     ...currentEvent,
+            //     date: new Date(
+            //       currentEvent.date.seconds * 1000 +
+            //         currentEvent.date.nanoseconds / 1000000
+            //     ),
+            //   })
+            // );
           } else {
             // doc.data() will be undefined in this case
             console.log('No such document!');
           }
         });
+        // console.log(JSON.stringify(eventoos) + 'EVENTOOS');
         return unsub;
       });
+      // console.log(JSON.stringify(eventoos));
+      // console.log('LLEGAMOS HASTA ACAA');
+      // setEvents(eventoos);
 
-      //   return events;
+      // return eventoos;
     };
 
     try {
       await fetchData();
+
       //   const evnt = await fetchData();
       //   console.log('EVENTOOOS DESDE FETCH' + evnt);
       //   dispatch(setEvents(events || []));
@@ -166,6 +210,17 @@ export const leaveEvent = (uid, eid) => {
 export const deleteParticipant = (uid, eid) => {
   return async (dispatch) => {
     console.log(uid, eid);
+
+    // delete user from event
+    try {
+      const eventRef = doc(db, 'events', eid);
+      await updateDoc(eventRef, {
+        [`participants.${uid}`]: deleteField(),
+      });
+    } catch (e) {
+      console.error('Error deleting user from event db: ', e);
+    }
+
     //delete event from user
     try {
       const userRef = doc(db, 'users', uid);
@@ -177,16 +232,6 @@ export const deleteParticipant = (uid, eid) => {
       console.log('succesfully deleted the event from user in db');
     } catch (e) {
       console.error('Error deleting event from user: ', e);
-    }
-
-    // delete user from event
-    try {
-      const eventRef = doc(db, 'events', eid);
-      await updateDoc(eventRef, {
-        [`participants.${uid}`]: deleteField(),
-      });
-    } catch (e) {
-      console.error('Error deleting user from event db: ', e);
     }
   };
 };

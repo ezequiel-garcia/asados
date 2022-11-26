@@ -4,13 +4,26 @@ import { useSelector } from 'react-redux';
 
 import { Text, View } from 'react-native';
 import { upcoming } from '../../store/redux/eventsSlice';
+import { useState } from 'react';
+import { useLayoutEffect } from 'react';
 
 //DUMMY DATA
 //import { events } from '../../dummyData';
 
 const UpcomingEvents = () => {
   const events = useSelector((state) => state.events.events);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const upc = useSelector((state) => upcoming(state));
+
+  const [upcom, setUpcoming] = useState([]);
+
+  useLayoutEffect(() => {
+    setUpcoming(
+      upc.filter((event) =>
+        Object.keys(event?.participants).includes(currentUser.uid)
+      )
+    );
+  }, [currentUser?.events, events]);
 
   // console.log(upc);
 
@@ -28,8 +41,8 @@ const UpcomingEvents = () => {
   // }
   // }
 
-  return upc.length > 0 ? (
-    <Events dataEvents={upc} />
+  return upcom.length > 0 ? (
+    <Events dataEvents={upcom} />
   ) : (
     <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
       <Text

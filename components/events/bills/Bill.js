@@ -15,7 +15,6 @@ const Bill = ({ bill, setCurrentBill, setModalVisible, setBills }) => {
     (state) => state.events?.currentEvent?.eventInfo
   );
   const dispatch = useDispatch();
-  console.log(JSON.stringify(dateFormat));
 
   function onEdit() {
     setCurrentBill(bill);

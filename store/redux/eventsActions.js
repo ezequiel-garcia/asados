@@ -62,6 +62,7 @@ export const fetchEvents = (currentUser) => {
             console.log('No such document!');
           }
         });
+        return unsub;
       });
 
       //   return events;
@@ -184,8 +185,6 @@ export const deleteParticipant = (uid, eid) => {
       await updateDoc(eventRef, {
         [`participants.${uid}`]: deleteField(),
       });
-      // dispatch(removeEvent(eid));
-      // dispatch(clearCurrentEvent());
     } catch (e) {
       console.error('Error deleting user from event db: ', e);
     }
@@ -193,7 +192,7 @@ export const deleteParticipant = (uid, eid) => {
 };
 
 export const deleteEvent = (currentEvent) => {
-  console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
+  // console.log(JSON.stringify(currentEvent) + '--> currentdelete ');
   return async (dispatch) => {
     async function deleteEventsFromUser() {
       // first delete the event from users
@@ -245,7 +244,7 @@ export const fetchEventInfo = (eventId) => {
   return async (dispatch) => {
     try {
       const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
-        console.log('Current data: ', doc.data());
+        // console.log('Current data: ', doc.data());
         // dispatch to the tasks
 
         if (doc.data()) {
@@ -269,14 +268,18 @@ export const fetchEventInfo = (eventId) => {
 export const fetchTasks = (eventId) => {
   return async (dispatch) => {
     try {
-      const unsub = onSnapshot(doc(db, 'tasks', eventId), (doc) => {
-        //console.log('Current data: ', doc.data());
-        // dispatch to the tasks
-        if (doc.data()) {
-          const { tasks } = doc.data();
-          dispatch(setCurrentEventTasks(tasks));
-        } else dispatch(setCurrentEventTasks([]));
-      });
+      const unsub = onSnapshot(
+        doc(db, 'tasks', eventId),
+        { includeMetadataChanges: true },
+        (doc) => {
+          //console.log('Current data: ', doc.data());
+          // dispatch to the tasks
+          if (doc.data()) {
+            const { tasks } = doc.data();
+            dispatch(setCurrentEventTasks(tasks));
+          } else dispatch(setCurrentEventTasks([]));
+        }
+      );
     } catch (e) {
       console.log(e);
     }

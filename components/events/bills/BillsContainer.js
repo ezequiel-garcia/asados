@@ -17,6 +17,7 @@ const BillsContainer = ({
       {bills?.length == 0 && <Text style={styles.noBills}>No bills</Text>}
       <FlatList
         data={bills}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(bill) => bill.id}
         renderItem={(itemData) => (
           <Bill

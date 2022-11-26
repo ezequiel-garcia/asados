@@ -89,6 +89,7 @@ const EventChatScreen = () => {
             {/* Messages */}
             <FlatList
               ref={flatlistRef}
+              showsVerticalScrollIndicator={false}
               // reverse
               inverted={-1}
               // data={Object.values(messages)}
@@ -139,6 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 5,
     borderWidth: 0.3,
     borderColor: Colors.primary600,
     padding: 2,

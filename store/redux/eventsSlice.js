@@ -21,11 +21,9 @@ const eventsSlice = createSlice({
       const event = action.payload;
       state.events = { ...state.events, [event.eid]: event };
     },
-
     removeEvent(state, action) {
       delete state.events?.[action.payload];
     },
-
     // current event actions
     setCurrentEventInfo(state, action) {
       state.currentEvent = action.payload || null;
@@ -73,4 +71,14 @@ export const {
   setCurrentEventTasks,
   setCurrentEventParticipants,
 } = eventsSlice.actions;
+
+export const upcoming = (state) => {
+  const upcom = Object.values(state.events.events)
+    .filter((e) => e.date >= new Date())
+    .sort((a, b) => a.date - b.date);
+
+  // console.log(JSON.stringify(upcom) + 'UPCOMINGG');
+  return upcom;
+};
+
 export default eventsSlice;

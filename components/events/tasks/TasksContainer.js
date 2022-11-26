@@ -13,6 +13,7 @@ const TasksContainer = ({ setCurrentTask, setModalVisible }) => {
       {tasks?.length == 0 && <Text style={styles.noTasks}>No tasks</Text>}
       <FlatList
         data={tasks}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(task) => task.id}
         renderItem={(itemData) => (
           <Task

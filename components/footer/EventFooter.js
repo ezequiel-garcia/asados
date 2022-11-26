@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   tabsContainer: {
     height: 100,
     paddingHorizontal: 50,
+    paddingBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

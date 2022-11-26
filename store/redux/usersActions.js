@@ -22,21 +22,36 @@ import { resizeAndCompress } from '../../util/imageManipulator';
 const db = getFirestore(app);
 const storage = getStorage();
 
+// export const fetchCurrentUser = (uid) => {
+//   return async (dispatch) => {
+//     const fetchData = async () => {
+//       const unsub = onSnapshot(doc(db, 'users', uid), (doc) => {
+//         const userInfo = doc.data();
+//         dispatch(setCurrentUser(userInfo));
+//       });
+
+//       console.log('fetching current user' + uid);
+//     };
+
+//     try {
+//       await fetchData();
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+// };
+
 export const fetchCurrentUser = (uid) => {
   return async (dispatch) => {
-    const fetchData = async () => {
+    try {
       const unsub = onSnapshot(doc(db, 'users', uid), (doc) => {
         const userInfo = doc.data();
         dispatch(setCurrentUser(userInfo));
       });
 
       console.log('fetching current user' + uid);
-    };
-
-    try {
-      await fetchData();
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e);
     }
   };
 };
@@ -99,7 +114,7 @@ export const updateUserInfo = (user) => {
 
 //Update user events with new info after update profil
 const updateUserInEvents = async (user) => {
-  console.log(JSON.stringify(user) + 'user received');
+  // console.log(JSON.stringify(user) + 'user received');
   // Go throw all the events and update the user data
   Object.keys(user?.events).map(async (eventId) => {
     const eventRef = doc(db, 'events', eventId);

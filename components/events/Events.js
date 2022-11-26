@@ -1,5 +1,7 @@
 import { View, FlatList } from 'react-native';
 import Event from './Event';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Events = ({ dataEvents }) => {
   return (

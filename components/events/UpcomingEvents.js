@@ -3,28 +3,34 @@ import Events from './Events';
 import { useSelector } from 'react-redux';
 
 import { Text, View } from 'react-native';
+import { upcoming } from '../../store/redux/eventsSlice';
 
 //DUMMY DATA
 //import { events } from '../../dummyData';
 
 const UpcomingEvents = () => {
   const events = useSelector((state) => state.events.events);
+  const upc = useSelector((state) => upcoming(state));
 
-  if (Object.keys(events).length > 0) {
-    let arrayEvents = [];
+  // console.log(upc);
 
-    arrayEvents = Object.values(events);
+  // if (Object.keys(events).length > 0) {
+  //   let arrayEvents = [];
 
-    const upcoming = arrayEvents
-      .filter((e) => e.date >= new Date())
-      .sort((a, b) => a.date - b.date);
+  //   arrayEvents = Object.values(events);
 
-    if (upcoming.length > 0) {
-      return <Events dataEvents={upcoming} />;
-    }
-  }
+  //   const upcoming = arrayEvents
+  //     .filter((e) => e.date >= new Date())
+  //     .sort((a, b) => a.date - b.date);
 
-  return (
+  // if (upcoming.length > 0) {
+  //   return <Events dataEvents={upcoming} />;
+  // }
+  // }
+
+  return upc.length > 0 ? (
+    <Events dataEvents={upc} />
+  ) : (
     <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
       <Text
         style={{

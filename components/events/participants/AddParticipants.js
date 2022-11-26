@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllUsers } from '../../../store/redux/usersActions';
@@ -7,6 +13,8 @@ import Background from '../../ui/Background';
 import Participant from './Participant';
 
 import { sendEventInvitation } from '../../../store/redux/usersActions';
+
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const AddParticipants = () => {
   const navigation = useNavigation();
@@ -37,6 +45,18 @@ const AddParticipants = () => {
 
   return (
     <Background>
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          alignContent: 'center',
+          alignItems: 'center',
+          padding: 10,
+        }}
+        onPress={navigation.goBack}
+      >
+        <Ionicons name="chevron-back" size={30} color="#ffffffd7" />
+        <Text style={{ color: '#ffffffd7', fontSize: 20 }}>Back</Text>
+      </TouchableOpacity>
       <View style={styles.container}>
         <FlatList
           keyExtractor={(item) => item.uid}

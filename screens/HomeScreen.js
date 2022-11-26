@@ -36,6 +36,7 @@ export default function HomeScreen() {
     if (currentUser && authCtx.isAuthenticated) {
       dispatch(fetchEvents(currentUser));
     }
+    console.log(JSON.stringify(userEvents) + 'USER EVENTSSS');
   }, [userEvents]);
 
   useEffect(() => {

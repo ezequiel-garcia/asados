@@ -1,14 +1,11 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import EventHeader from '../components/header/EventHeader';
 import { Colors } from '../constants/styles';
-import EventInfo from '../components/events/EventInfo';
-import Settings from '../components/settings/Settings';
 import TasksScreen from '../components/events/tasks/TasksScreen';
-import BillsScreen from '../components/events/bills/BillsScreen';
 import BillsStack from './billsStack';
 import EventChatScreen from '../components/events/chat/EventChatScreen';
 import InfoAndParticipants from './infoAndParticipants';
-
+import { Dimensions } from 'react-native';
 import EventFooter from '../components/footer/EventFooter';
 import { useSelector } from 'react-redux';
 

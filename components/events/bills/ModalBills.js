@@ -80,14 +80,15 @@ const ModalBills = ({
           return {
             id: bill.id,
             title: billTitle,
-            owner: currentUser.name,
+            owner: { name: currentUser.name, uid: currentUser.uid },
             amount: amount,
             date: bill.date,
           };
         }
       });
 
-      dispatch(setCurrentEventBills(editedBills));
+      dispatch(setBills(eventInfo.eid, editedBills));
+      // dispatch(setCurrentEventBills(editedBills));
       onCancel();
     }
   }

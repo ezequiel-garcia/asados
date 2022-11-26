@@ -78,7 +78,8 @@ const ModalTask = ({
         }
       });
 
-      dispatch(setCurrentEventTasks(editedTasks));
+      dispatch(setTasks(eventInfo.eid, editedTasks));
+      // dispatch(setCurrentEventTasks(editedTasks));
       onCancel();
     }
   }

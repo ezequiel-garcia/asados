@@ -5,7 +5,7 @@ import { Text, View } from 'react-native';
 import Events from './Events';
 
 const PreviousEvents = () => {
-  const events = useSelector((state) => state.events.events);
+  const events = useSelector((state) => state?.events?.events);
 
   if (Object.keys(events).length > 0) {
     let arrayEvents = [];

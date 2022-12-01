@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -35,10 +36,12 @@ function AuthForm() {
     },
   });
   const [submitError, setSubmitError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (authCtx.error) {
       setSubmitError(true);
+      setIsLoading(false);
     } else {
       setSubmitError(false);
     }
@@ -75,6 +78,7 @@ function AuthForm() {
       });
     } else {
       // If inputs are ok Login
+      setIsLoading(true);
       authCtx.onLogin(inputs.email.value, inputs.password.value);
     }
   }
@@ -88,6 +92,7 @@ function AuthForm() {
             behavior={Platform.OS === 'ios' ? 'position' : 'height'}
           >
             <Animation />
+            {isLoading ? <ActivityIndicator size="large" /> : null}
             <Text style={styles.title}>Login</Text>
             <View style={{ alignContent: 'center', alignItems: 'center' }}>
               <View style={{ width: '90%' }}>
@@ -130,7 +135,7 @@ function AuthForm() {
               </View>
             </View>
             {/* // Social media buttons */}
-            <SocialMediaLogin />
+            <SocialMediaLogin setIsLoading={setIsLoading} />
           </KeyboardAvoidingView>
           {/* </ScrollView> */}
           <View style={styles.signupContainer}>

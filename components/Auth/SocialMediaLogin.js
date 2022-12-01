@@ -27,7 +27,7 @@ WebBrowser.maybeCompleteAuthSession();
 //   path: 'redirect',
 // });
 
-const SocialMediaLogin = () => {
+const SocialMediaLogin = ({ setIsLoading }) => {
   const [accessToken, setAccessToken] = useState(null);
   // const [user, setUser] = useState(null);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
@@ -38,9 +38,11 @@ const SocialMediaLogin = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (response) {
+      setIsLoading(true);
+    }
     if (response?.type == 'success') {
       // user access token
-      console.log(JSON.stringify(response));
       setAccessToken(response?.authentication?.accessToken);
       accessToken && fetchUserInfo();
     }

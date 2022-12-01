@@ -15,9 +15,10 @@ const EventInfo = () => {
   const currentEvent = useSelector((state) => state.events.currentEvent);
   const currentUser = useSelector((state) => state.user.currentUser);
 
+  console.log(JSON.stringify(currentEvent));
   useEffect(() => {
     if (
-      Object.keys(currentEvent.eventInfo.participants).includes(
+      Object.keys(currentEvent?.eventInfo?.participants).includes(
         currentUser.uid
       ) == false
     ) {

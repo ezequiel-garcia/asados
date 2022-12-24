@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { leaveEvent } from '../../store/redux/eventsActions';
+import { leaveEvent, setBills } from '../../store/redux/eventsActions';
 import { AuthenticationContext } from '../../store/auth/auth-context';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -48,6 +48,14 @@ const EventHeader = () => {
     } else {
       //IF IS A GUEST LEAVE THE EVENT
       dispatch(leaveEvent(currentUser.uid, currentEvent?.eventInfo?.eid));
+
+      //delete the user bills in the event
+      const newBills = currentEvent?.bills.filter(
+        (item) => item.owner.uid != currentUser.uid
+      );
+
+      // dispatch(setCurrentEventBills(newTasks));
+      dispatch(setBills(currentEvent?.eventInfo?.eid, newBills));
 
       navigation.navigate('TabBarHome');
     }

@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../store/auth/auth-context';
@@ -24,6 +24,7 @@ export default function HomeScreen() {
   const userEvents = useSelector((state) => state.user.currentUser?.events);
   const [invitation, setInvitation] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!currentUser && authCtx.isAuthenticated) {
@@ -36,7 +37,7 @@ export default function HomeScreen() {
     if (currentUser && authCtx.isAuthenticated) {
       dispatch(fetchEvents(currentUser));
     }
-    console.log(JSON.stringify(userEvents) + 'USER EVENTSSS');
+    // console.log(JSON.stringify(userEvents) + 'USER EVENTSSS');
   }, [userEvents]);
 
   useEffect(() => {
@@ -60,42 +61,45 @@ export default function HomeScreen() {
           eventInvitation={invitation}
           currentUser={currentUser}
         />
-
-        <View
-          style={{
-            flex: 1,
-            padding: 20,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            //height: '70%',
-            // overflow: 'hidden',
-          }}
-        >
+        {isLoading ? (
+          <ActivityIndicator size="large" />
+        ) : (
           <View
             style={{
-              flex: 6,
-              // justifyContent: 'flex-start',
-
+              flex: 1,
+              padding: 20,
+              justifyContent: 'space-between',
               alignItems: 'center',
+              //height: '70%',
+              // overflow: 'hidden',
             }}
           >
-            <Title>Upcoming events!!</Title>
+            <View
+              style={{
+                flex: 6,
+                // justifyContent: 'flex-start',
 
-            <UpcomingEvents />
+                alignItems: 'center',
+              }}
+            >
+              <Title>Upcoming events!!</Title>
+
+              <UpcomingEvents />
+            </View>
+
+            <View
+              style={{
+                flex: 3,
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}
+            >
+              <Title>Previous events</Title>
+
+              <PreviousEvents />
+            </View>
           </View>
-
-          <View
-            style={{
-              flex: 3,
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Title>Previous events</Title>
-
-            <PreviousEvents />
-          </View>
-        </View>
+        )}
       </View>
     </Background>
   );

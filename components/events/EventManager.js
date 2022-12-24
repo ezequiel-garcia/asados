@@ -213,7 +213,7 @@ const EventManager = ({ onEdit, route }) => {
 
       try {
         const url = await uploadEventImage(selectedImage, event.eid);
-        console.log(url);
+        // console.log(url);
       } catch (e) {
         console.log(e);
       }

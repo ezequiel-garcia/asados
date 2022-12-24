@@ -20,8 +20,8 @@ const currentUserSlice = createSlice({
     },
     //receive the event ID
     removeEventFromUser(state, action) {
-      console.log(action.payload + '---payload para eliminar');
-      console.log(state.currentUser.events);
+      // console.log(action.payload + '---payload para eliminar');
+      // console.log(state.currentUser.events);
       // state.currentUser.events = Object.entries(
       //   state.currentUser.events
       // ).filter(([key, value]) => key != action.payload);

@@ -38,7 +38,7 @@ const storage = getStorage();
 export const fetchEvents = (currentUser) => {
   return async (dispatch) => {
     const fetchData = async () => {
-      console.log('fetching user events');
+      // console.log('fetching user events');
 
       if (!currentUser?.events) {
         dispatch(setEvents({}));
@@ -67,10 +67,10 @@ export const fetchEvents = (currentUser) => {
       //   return unsub;
       // });
       let eventoos = {};
-      console.log(JSON.stringify(currentUser?.events) + 'EVEntis');
+      // console.log(JSON.stringify(currentUser?.events) + 'EVEntis');
       Object.keys(currentUser?.events).map((eventId) => {
-        console.log('Entra a cada evento');
-        console.log('SE ESTA LLAMANDO A ESTEEE');
+        // console.log('Entra a cada evento');
+        // console.log('SE ESTA LLAMANDO A ESTEEE');
         const unsub = onSnapshot(doc(db, 'events', eventId), (doc) => {
           if (doc.data()) {
             const currentEvent = doc.data();
@@ -146,7 +146,7 @@ export const addEventToDB = (event, user) => {
           participants: event.participants,
         });
 
-        console.log('succesfully added');
+        // console.log('succesfully added');
       } catch (e) {
         console.error('Error adding document: ', e);
       }
@@ -170,7 +170,7 @@ export const addEventToUserDB = (user, eventId) => {
       await updateDoc(userRef, {
         events: { ...userEvents, [eventId]: true },
       });
-      console.log('succesfully added event to user in db');
+      // console.log('succesfully added event to user in db');
       dispatch(addEventToUser(eventId));
     } catch (e) {
       console.error('Error adding document: ', e);
@@ -188,7 +188,7 @@ export const leaveEvent = (uid, eid) => {
         [`events.${eid}`]: deleteField(),
       });
 
-      console.log('succesfully deleted the event from user in db');
+      // console.log('succesfully deleted the event from user in db');
     } catch (e) {
       console.error('Error deleting event from user: ', e);
     }
@@ -209,7 +209,7 @@ export const leaveEvent = (uid, eid) => {
 
 export const deleteParticipant = (uid, eid) => {
   return async (dispatch) => {
-    console.log(uid, eid);
+    // console.log(uid, eid);
 
     // delete user from event
     try {
@@ -425,7 +425,7 @@ export const uploadEventImage = async (imageURI, eventId) => {
 
   uploadBytes(storageRef, blob)
     .then(async (snapshot) => {
-      console.log('Uploaded a blob or file!');
+      // console.log('Uploaded a blob or file!');
       try {
         const url = await getDownloadURL(storageRef);
         updateEventImage(url, eventId);

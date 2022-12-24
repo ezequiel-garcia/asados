@@ -65,9 +65,9 @@ const SocialMediaLogin = ({ setIsLoading }) => {
       const { user } = await signInWithCredential(auth, credential);
 
       dispatch(checkIfExist(user.uid, userInfo.name));
-      console.log(user.uid + 'UIDDD');
+      // console.log(user.uid + 'UIDDD');
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

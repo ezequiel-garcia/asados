@@ -49,7 +49,7 @@ export const fetchCurrentUser = (uid) => {
         dispatch(setCurrentUser(userInfo));
       });
 
-      console.log('fetching current user' + uid);
+      // console.log('fetching current user' + uid);
     } catch (e) {
       console.log(e);
     }
@@ -67,7 +67,7 @@ export const addUserToDB = async (user, name) => {
       events: {},
     });
 
-    console.log('succesfully added');
+    // console.log('succesfully added');
   } catch (e) {
     console.error('Error adding document: ', e);
   }

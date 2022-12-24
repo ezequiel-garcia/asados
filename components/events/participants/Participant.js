@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
-import { deleteParticipant } from '../../../store/redux/eventsActions';
+import {
+  deleteParticipant,
+  setBills,
+} from '../../../store/redux/eventsActions';
 
 import { Colors } from '../../../constants/styles';
 
@@ -15,6 +18,13 @@ const Participant = ({ participant, onPressButton }) => {
 
   const deleteUser = () => {
     dispatch(deleteParticipant(participant.uid, currentEvent?.eventInfo?.eid));
+    //delete the user bills in the event
+    const newBills = currentEvent?.bills.filter(
+      (item) => item.owner.uid != participant.uid
+    );
+
+    // dispatch(setCurrentEventBills(newTasks));
+    dispatch(setBills(currentEvent?.eventInfo?.eid, newBills));
   };
 
   return (

@@ -53,7 +53,7 @@ const ForgotPassword = () => {
     } else {
       // If email it's ok, send the email verificaftion
       const valid = await authCtx.forgotPassword(inputs.email.value);
-      console.log(valid);
+      // console.log(valid);
       if (valid) {
         Alert.alert('Email Sent', 'The reset password was sent to your email');
         Navigation.navigate('Login');

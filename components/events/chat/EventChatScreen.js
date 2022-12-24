@@ -86,14 +86,13 @@ const EventChatScreen = () => {
           keyboardVerticalOffset={190}
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            {/* Messages */}
             <FlatList
               ref={flatlistRef}
               showsVerticalScrollIndicator={false}
               // reverse
               inverted={-1}
               // data={Object.values(messages)}
-              data={orderedMessages}
+              data={Object.values(messages).length ? orderedMessages : []}
               keyExtractor={(item) => item.id}
               renderItem={({ item: message }) =>
                 message.userId == currentUser.uid ? (
